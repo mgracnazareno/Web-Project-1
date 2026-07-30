@@ -1,85 +1,116 @@
 # CareSchedule
 
-CareSchedule is a responsive medical appointment scheduling application developed as a five-week academic web project. It allows healthcare professionals to publish available appointment times and allows patients to find, book, view, and cancel appointments.
+CareSchedule is a responsive medical appointment scheduling application developed as part of a five-week academic web development project. The application enables patients to schedule medical appointments while allowing healthcare professionals to manage their availability and appointments through a secure web interface.
 
-> This is a simulated academic application. It must use fictional demonstration accounts and fictional medical information only.
+> **Disclaimer:** This is a simulated academic application. All users, appointments, and medical information are fictional and are intended for educational purposes only.
 
-## Client Need
+---
 
-The client needs a reliable system that helps patients and healthcare professionals manage appointments. When scheduling is handled manually, patients may not know which times are available and healthcare professionals may receive overlapping requests.
+# Client Need
 
-CareSchedule addresses this problem by providing one database-backed source for availability and appointments.
+The client requires a reliable appointment scheduling system that simplifies appointment management for both patients and healthcare professionals. Managing appointments manually often leads to scheduling conflicts, unavailable time slots, and missed appointments.
 
-## Target Users
+CareSchedule solves this problem by providing a centralized, database-driven scheduling system where healthcare professionals publish available appointment times and patients can conveniently book appointments online.
 
-### Patient
+---
 
-The primary user is a patient who wants to:
+# Target Users
 
-- create an account and log in;
-- view available appointment times;
-- book an appointment;
-- provide a reason for the consultation;
-- view upcoming appointments; and
-- cancel a future appointment.
+## Patient
 
-### Healthcare Professional
+Patients can:
 
-The secondary user is a healthcare professional who wants to:
+- Register for an account
+- Log in securely
+- View available appointment slots
+- Book appointments
+- Provide a reason for the consultation
+- View upcoming appointments
+- View appointment history
+- Cancel future appointments
+- Manage their personal profile
 
-- create an account and log in;
-- publish available appointment times;
-- manage their own availability; and
-- view appointments booked by patients.
+---
 
-## Main Workflow
+## Healthcare Professional
 
-1. A healthcare professional creates an available time slot.
-2. A patient views the open appointment times.
-3. The patient selects a slot and submits the booking form.
-4. The server validates the request and confirms that the slot is still available.
-5. The appointment is saved in the database.
-6. The patient and healthcare professional dashboards display the updated information.
+Healthcare professionals can:
 
-## Project Scope
+- Register for an account
+- Log in securely
+- Manage their professional profile
+- Publish available appointment times
+- Edit or remove availability
+- View scheduled appointments
+- Manage patient bookings
 
-### Must-Have Features
+---
 
-- Patient and healthcare professional registration
+# Main Workflow
+
+1. A healthcare professional registers and publishes available appointment slots.
+2. A patient registers or logs in.
+3. The patient browses available appointment times.
+4. The patient selects an appointment and submits a booking request.
+5. The application validates that the selected appointment is still available.
+6. The appointment is stored in the database.
+7. The patient and healthcare professional dashboards are automatically updated.
+
+---
+
+# Project Scope
+
+## Must-Have Features
+
+- User registration
 - Login and logout
-- Role-based dashboards
-- Availability creation and management
-- Appointment search and booking
-- Appointment viewing and cancellation
+- Role-based authentication
+- Patient dashboard
+- Healthcare professional dashboard
+- Profile management
+- Appointment booking
+- Appointment cancellation
+- Appointment history
+- Availability management
 - Server-side validation
 - Authorization and ownership checks
-- Success, error, loading, and empty states
-- Responsive and accessible interface
+- Responsive design
+- Accessibility considerations
 
-### Optional Features
+---
 
-Optional features will only be considered after the main workflow is complete:
+## Optional Features
 
-- Search filters by specialty or date
-- Availability editing
-- Appointment status filters
-- English and French interface
+The following features may be implemented if time permits:
 
-### Out of Scope
+- Search appointments by specialty
+- Search appointments by date
+- Appointment filtering
+- English and French localization
+- Profile image uploads
 
-The five-week version will not include:
+---
 
-- clinic accounts or clinic administration;
-- a complete administrator dashboard;
-- medical records or document sharing;
-- live chat or a chatbot;
-- real email or SMS reminders;
-- billing, payments, or insurance validation; or
-- location-based clinic search.
+## Out of Scope
 
-## Planned Technology
+The academic version will **not** include:
 
-### Backend
+- Multiple clinics
+- Administrator dashboard
+- Medical records
+- File uploads
+- Online payments
+- Insurance processing
+- Email reminders
+- SMS notifications
+- Video consultations
+- AI chatbot
+
+---
+
+# Planned Technology
+
+## Backend
 
 - Python
 - Flask
@@ -87,125 +118,298 @@ The five-week version will not include:
 - Flask-Login
 - SQLite
 
-### Frontend
+---
 
-The frontend track will be finalized before implementation:
+## Frontend
 
-- **Track A:** Jinja templates, HTML, CSS or Bootstrap, and JavaScript; or
-- **Track B:** React frontend connected to a Flask JSON API.
+- HTML5
+- CSS3
+- Bootstrap 5
+- JavaScript
+- Jinja Templates
 
-### Development Tools
+---
 
-- Figma for UX/UI design
-- Trello for project management
-- Git and GitHub for version control
+## Development Tools
 
-## Proposed Database Models
+- Figma
+- Trello
+- Git
+- GitHub
+- Visual Studio Code
 
-### User
+---
 
-Represents patient and healthcare professional accounts.
+# Proposed Database Models
 
-Important fields:
+## User
 
-- `id`
-- `first_name`
-- `last_name`
-- `email`
-- `password_hash`
-- `role`
-- `specialty`
+Stores authentication information for every account.
 
-### Availability
+### Fields
 
-Represents an appointment time published by a healthcare professional.
+- id
+- email
+- password_hash
+- role *(patient or healthcare_professional)*
+- created_at
 
-Important fields:
+---
 
-- `id`
-- `doctor_id`
-- `start_time`
-- `end_time`
-- `is_booked`
+## Patient
 
-### Appointment
+Stores patient information.
 
-Represents a booking made by a patient.
+### Fields
 
-Important fields:
+- id
+- user_id *(FK → User.id)*
+- first_name
+- last_name
+- phone
+- date_of_birth
 
-- `id`
-- `patient_id`
-- `availability_id`
-- `reason`
-- `description`
-- `status`
-- `created_at`
+---
 
-## Proposed Relationships
+## HealthcareProfessional
 
-- One healthcare professional can create many availability records.
-- One patient can have many appointments.
-- One availability record can have zero or one appointment.
+Stores healthcare professional information.
 
-## Project Documentation
+### Fields
 
-Project documents will be stored in the `docs` directory:
+- id
+- user_id *(FK → User.id)*
+- first_name
+- last_name
+- specialty
+- phone
+- office_location
+- biography
+
+---
+
+## Availability
+
+Represents appointment slots created by healthcare professionals.
+
+### Fields
+
+- id
+- healthcare_professional_id *(FK → HealthcareProfessional.id)*
+- start_time
+- end_time
+- is_booked
+
+---
+
+## Appointment
+
+Represents appointments booked by patients.
+
+### Fields
+
+- id
+- patient_id *(FK → Patient.id)*
+- availability_id *(FK → Availability.id)*
+- reason
+- description
+- status
+- created_at
+
+---
+
+# Proposed Relationships
+
+- One User has one Patient profile or one Healthcare Professional profile.
+- One Healthcare Professional can create many Availability records.
+- One Healthcare Professional can receive many Appointments through their Availability records.
+- One Patient can book many Appointments.
+- One Availability record can be associated with zero or one Appointment.
+
+---
+
+# Planned Pages
+
+## Public Pages
+
+- Home
+- Login
+- Register
+
+---
+
+## Patient Pages
+
+- Dashboard
+- Book Appointment
+- My Appointments
+- Appointment History
+- Patient Profile
+
+---
+
+## Healthcare Professional Pages
+
+- Dashboard
+- Manage Availability
+- Manage Appointments
+- Healthcare Professional Profile
+
+---
+
+# UI Design
+
+The user interface is being designed in **Figma** following a user-centered design process.
+
+### Ready
+
+- Information architecture
+- Low-fidelity wireframes
+- High-fidelity mockups
+- User flow planning
+- Desktop layouts
+
+### Upcoming
+
+- Interactive prototype
+- Mobile responsive layouts
+- Component library
+
+---
+
+# Project Documentation
 
 ```text
 docs/
 ├── diagrams/
+│   ├── use-case-diagram.pdf
+│   ├── class-diagram.pdf
+│   └── er-diagram.pdf
+│
 ├── figma/
+│   ├── low-fidelity/
+│   ├── high-fidelity/
+│   └── prototype-link.md
+│
 ├── journal/
+│   ├── journal.md
+│   └── project-design-journal.pdf
+│
 ├── presentations/
-└── trello/
+│
+├── trello/
+│
+└── weeks/
+    ├── week-0-definition-design/
+    ├── week-1/
+    ├── week-2/
+    ├── week-3/
+    ├── week-4/
+    └── week-5/
 ```
 
-## Project Links
+---
 
-- **Figma Design:** In progress
-- [Trello Board](https://trello.com/invite/b/6a697834197cdd9d1ce1bf92/ATTI49527a5f964be3d9250d3331b7491f8d6918B42E/web-project-1)
-- [GitHub Repository](https://github.com/mgracnazareno/Web-Project-1)
+# Project Links
 
-## Installation
+- **Figma Prototype:** Coming Soon
+- **Trello Board:** https://trello.com/invite/b/6a697834197cdd9d1ce1bf92/ATTI49527a5f964be3d9250d3331b7491f8d6918B42E/web-project-1
+- **GitHub Repository:** https://github.com/mgracnazareno/Web-Project-1
 
-Installation instructions will be added during backend development.
+---
 
-The final instructions will explain how to:
+# Installation
 
-1. clone the repository;
-2. create and activate a virtual environment;
-3. install the dependencies;
-4. configure environment variables;
-5. create the database; and
-6. run the application.
+Installation instructions will be completed during the implementation phase.
 
-## Project Status
+The final guide will explain how to:
 
-The project is currently in **Week 1: Definition and Design**.
+1. Clone the repository.
+2. Create and activate a virtual environment.
+3. Install project dependencies.
+4. Configure environment variables.
+5. Initialize the database.
+6. Run the Flask application locally.
 
-Current work includes:
+---
 
-- defining the client need and target users;
-- controlling the project scope;
-- planning the primary workflow;
-- creating the Figma design;
-- planning the database and routes;
-- creating the use case diagram; and
-- preparing the initial repository.
+# Project Status
 
-## Privacy and Security
+## Current Phase
+
+**Week 1 — Definition & Design**
+
+### Completed
+
+- Client requirements analysis
+- Target audience definition
+- Project scope planning
+- Primary workflow design
+- Initial database design
+- Entity relationship planning
+- Use Case Diagram
+- Class Diagram
+- Low-fidelity wireframes
+- High-fidelity mockups
+- GitHub repository
+- Trello board
+- Project journal
+- README documentation
+
+### In Progress
+
+- Interactive Figma prototype
+- Flask project setup
+- SQLAlchemy models
+- Authentication system
+- Initial page templates
+
+### Upcoming
+
+- CRUD functionality
+- Appointment booking
+- Availability management
+- Responsive implementation
+- Testing
+- Deployment
+- Final presentation
+
+---
+
+# Future Improvements
+
+Possible future enhancements include:
+
+- Email appointment reminders
+- SMS notifications
+- Google Calendar integration
+- Doctor profile pictures
+- Medical history management
+- Online consultations
+- Mobile application
+- Administrator dashboard
+- Clinic management
+- Analytics dashboard
+
+---
+
+# Privacy and Security
 
 - Only fictional demonstration data will be used.
 - Passwords will be securely hashed.
-- Real passwords, API keys, and secrets will not be committed.
-- The `.env` file and local database will be excluded using `.gitignore`.
-- Authorization checks will prevent users from modifying records they do not own.
+- Sensitive configuration values will be stored in environment variables.
+- The `.env` file and SQLite database will be excluded using `.gitignore`.
+- Authorization checks will ensure users can only access or modify records they own.
+- User authentication will be implemented using Flask-Login.
 
-## Author
+---
 
-**[Mary Grace Nazareno]**
+# Author
 
-Course: **[582-32W-VA]**
+**Mary Grace Nazareno**
 
+**Course:** 582-32W-VA — Web Project 1
 
+**Institution:** Vanier College
+
+**Semester:** Summer 2026
