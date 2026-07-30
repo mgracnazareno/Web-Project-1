@@ -261,7 +261,7 @@ Represents appointments booked by patients.
 
 The user interface is being designed in **Figma** following a user-centered design process.
 
-### Completed
+### Ready
 
 - Information architecture
 - Low-fidelity wireframes
