@@ -284,7 +284,7 @@ docs/
 ├── diagrams/
 │   ├── use-case-diagram.pdf
 │   ├── class-diagram.pdf
-│   └── er-diagram.pdf
+│   
 │
 ├── figma/
 │   ├── low-fidelity/
@@ -300,7 +300,6 @@ docs/
 ├── trello/
 │
 └── weeks/
-    ├── week-0-definition-design/
     ├── week-1/
     ├── week-2/
     ├── week-3/
@@ -349,7 +348,6 @@ The final guide will explain how to:
 - Entity relationship planning
 - Use Case Diagram
 - Class Diagram
-- Low-fidelity wireframes
 - High-fidelity mockups
 - GitHub repository
 - Trello board
@@ -363,6 +361,7 @@ The final guide will explain how to:
 - SQLAlchemy models
 - Authentication system
 - Initial page templates
+- Low-fidelity wireframes
 
 ### Upcoming
 
