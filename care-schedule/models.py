@@ -1,3 +1,4 @@
+import enum
 from flask_login import UserMixin
 
 from flask_sqlalchemy import SQLAlchemy
@@ -24,6 +25,8 @@ class Patient(UserMixin, db.Model):
 
     dob = db.Column(db.Date)
 
+    appointments = db.relationship("Appointment", back_populates="patient")
+
     # methods
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -32,4 +35,17 @@ class Patient(UserMixin, db.Model):
         return check_password_hash(self.password_hash, password)
 
     def __repr__(self):
-        return(f"<Patient {self.id}: {self.username}")
+        return(f"<Patient {self.id}: {self.username}>")
+
+
+class Appointment(db.Model):
+    __tablename__ = "appointment"
+
+    id = db.Column(db.Integer, primary_key = True)
+
+    reason = db.Column(db.Text, nullable = False)
+
+    patient_id = db.Column(db.Integer, db.ForeignKey("patient.id"), nullable = False)
+
+    patient = db.relationship("Patient", back_populates="appointments")
+
