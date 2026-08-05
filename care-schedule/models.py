@@ -57,3 +57,28 @@ class Appointment(db.Model):
 
     patient = db.relationship("Patient", back_populates="appointments")
 
+
+class Professional(UserMixin, db.Model):
+    __tablename__ = "professional"
+
+    id = db.Column(db.Integer, primary_key = True)
+
+    email = db.Column(db.String(255), nullable = False, unique = True)
+
+    username = db.Column(db.String(255), nullable = False, unique= True)
+
+    password_hash = db.Column(db.String(255), nullable = False)
+
+    firstname = db.Column(db.String(150), nullable = False)
+
+    lastname = db.Column(db.String(150), nullable=False)
+
+    specialty = db.Column(db.String(150), nullable= False)
+
+    biograph = db.Column(db.Text)
+
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
