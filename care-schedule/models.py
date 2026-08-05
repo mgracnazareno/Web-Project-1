@@ -11,9 +11,9 @@ class Patient(UserMixin, db.Model):
 
     id = db.Column(db.Integer, primary_key = True)
 
-    email = db.Column(db.String(255), nullable = False)
+    email = db.Column(db.String(255), nullable = False, unique=True)
 
-    username = db.Column(db.String(100), nullable = False)
+    username = db.Column(db.String(100), nullable = False, unique= True)
 
     password_hash = db.Column(db.String(255), nullable = False)
 
@@ -50,6 +50,8 @@ class Appointment(db.Model):
     reason = db.Column(db.Text, nullable = False)
 
     status = db.Column(db.Enum(AppointmentStatus), nullable= False, default = AppointmentStatus.CONFIRMED)
+
+    scheduled_at = db.Column(db.DateTime, nullable=False)
 
     patient_id = db.Column(db.Integer, db.ForeignKey("patient.id"), nullable = False)
 
