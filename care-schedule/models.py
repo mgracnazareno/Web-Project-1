@@ -28,6 +28,10 @@ class Patient(UserMixin, db.Model):
     appointments = db.relationship("Appointment", back_populates="patient")
 
     # methods
+    # Flask-login can tell a Patient apart from a Professional with the same numeric id
+    def get_id(self):
+        return f"Patient:{self.id}"
+    
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
 
@@ -35,7 +39,7 @@ class Patient(UserMixin, db.Model):
         return check_password_hash(self.password_hash, password)
 
     def __repr__(self):
-        return(f"<Patient {self.id}: {self.username}>")
+        return(f"<Patient{self.id}: {self.username}>")
 
 class AppointmentStatus(enum.Enum):
     CONFIRMED = "confirmed"
@@ -96,6 +100,9 @@ class Professional(UserMixin, db.Model):
         back_populates = "professional"
     )
 
+    def get_id(self):
+        return f"Professional:{self.id}"
+
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
 
@@ -126,3 +133,13 @@ class Availability(db.Model):
 
     # One slot has at most one appointment
     appointment = db.relationship("Appointment", back_populates="availability")
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "date": self.start_time.date().isoformat(),         # "2026-08-05"
+            "start_time": self.start_time.strftime("%H:%M"),    # "14:30"
+            "end_time": self.end_time.strftime("%H:%M"),
+            "is_booked": self.is_booked,
+            "professional_id": self.professional_id
+        }
