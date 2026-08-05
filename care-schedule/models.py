@@ -37,13 +37,19 @@ class Patient(UserMixin, db.Model):
     def __repr__(self):
         return(f"<Patient {self.id}: {self.username}>")
 
-
+class AppointmentStatus(enum.Enum):
+    CONFIRMED = "confirmed"
+    CANCELLED = "cancelled"
+    COMPLETED = "completed"
+    NO_SHOW = "no_show"
 class Appointment(db.Model):
     __tablename__ = "appointment"
 
     id = db.Column(db.Integer, primary_key = True)
 
     reason = db.Column(db.Text, nullable = False)
+
+    status = db.Column(db.Enum(AppointmentStatus), nullable= False, default = AppointmentStatus.CONFIRMED)
 
     patient_id = db.Column(db.Integer, db.ForeignKey("patient.id"), nullable = False)
 
