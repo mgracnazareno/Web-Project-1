@@ -42,6 +42,8 @@ class AppointmentStatus(enum.Enum):
     CANCELLED = "cancelled"
     COMPLETED = "completed"
     NO_SHOW = "no_show"
+
+
 class Appointment(db.Model):
     __tablename__ = "appointment"
 
@@ -56,6 +58,18 @@ class Appointment(db.Model):
     patient_id = db.Column(db.Integer, db.ForeignKey("patient.id"), nullable = False)
 
     patient = db.relationship("Patient", back_populates="appointments")
+
+    availability_id = db.Column(
+        db.Integer,
+        db.ForeignKey("availability.id"),
+        nullable=False,
+        unique=True  # one slot can be booked once
+    )
+
+    availability = db.relationship(
+        "Availability",
+        back_populates="appointment"
+    )
 
 
 class Professional(UserMixin, db.Model):
@@ -75,10 +89,40 @@ class Professional(UserMixin, db.Model):
 
     specialty = db.Column(db.String(150), nullable= False)
 
-    biograph = db.Column(db.Text)
+    biography = db.Column(db.Text)
+
+    availabilities = db.relationship(
+        "Availability",
+        back_populates = "professional"
+    )
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+class Availability(db.Model):
+    __tablename__ = "availability"
+
+    id = db.Column(db.Integer, primary_key = True)
+
+    start_time = db.Column(db.DateTime, nullable = False)
+
+    end_time = db.Column(db.DateTime, nullable = False)
+
+    is_booked = db.Column(db.Boolean, nullable = False, default = False)
+
+    professional_id = db.Column(
+        db.Integer,
+        db.ForeignKey("professional.id"),
+        nullable = False
+    )
+
+    professional = db.relationship(
+        "Professional",
+        back_populates = "availabilities"
+    )
+
+    # One slot has at most one appointment
+    appointment = db.relationship("Appointment", back_populates="availability")
