@@ -9,7 +9,7 @@ from flask_sqlalchemy import SQLAlchemy
 # loads environment variables from .env file First
 load_dotenv()
 
-from .models import db, Patient
+from .models import db, Patient, Professional
 from .main_routes import main
 from .patient_routes import patients
 from werkzeug.security import generate_password_hash
@@ -42,4 +42,9 @@ with app.app_context():
 
 @login_manager.user_loader
 def load_user(user_id):
-    return db.session.get(Patient, int(user_id))
+    try:
+        user_type, record_id = user_id.split(":", 1)
+        model = {"Patient": Patient, "Professional": Professional}.get(user_type)
+        return db.session.get(model, int(record_id)) if model else None
+    except (AttributeError, TypeError, ValueError):
+        return None

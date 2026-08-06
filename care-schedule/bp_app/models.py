@@ -15,13 +15,13 @@ class Patient(UserMixin, db.Model):
 
     username = db.Column(db.String(100), nullable = False, unique= True)
 
-    password_hash = db.Column(db.String(255), nullable = False)
+    password_hash = db.Column(db.String(255), nullable = True)
 
-    firstname = db.Column(db.String(150), nullable = False)
+    firstname = db.Column(db.String(150), nullable = True)
 
-    lastname = db.Column(db.String(150), nullable = False)
+    lastname = db.Column(db.String(150), nullable = True)
 
-    phone = db.Column(db.String(15), nullable = False)
+    phone = db.Column(db.String(15), nullable = True)
 
     dob = db.Column(db.Date)
 
@@ -39,7 +39,7 @@ class Patient(UserMixin, db.Model):
         return check_password_hash(self.password_hash, password)
 
     def __repr__(self):
-        return(f"<Patient{self.id}: {self.username}>")
+        return f"<Patient{self.id}: {self.username}>"
 
 class AppointmentStatus(enum.Enum):
     CONFIRMED = "confirmed"

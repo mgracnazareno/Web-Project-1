@@ -9,7 +9,7 @@ patients = Blueprint("patients", __name__)
 @patients.route("/register", methods=["GET", "POST"])
 def register():
     if current_user.is_authenticated:
-        return redirect(url_for("dashboard"))
+        return redirect(url_for("patients.dashboard"))
 
     if request.method == "POST":
         username = request.form['username'].strip()
@@ -34,7 +34,7 @@ def register():
         db.session.commit()
 
         flash("Your account has been created!!!", "success")
-        return redirect(url_for("login"))
+        return redirect(url_for("patients.login"))
 
     return render_template("patient_register.html")
 
@@ -55,9 +55,9 @@ def login():
             return render_template("patient_login.html", email=email)
 
         login_user(patient)
-        flash("You are not logged in.", "danger")
+        flash("You are now logged in.", "success")
 
-        return redirect(url_for("dashboard"))
+        return redirect(url_for("patients.dashboard"))
 
     return render_template("patient_login.html")
 
