@@ -4,7 +4,7 @@ from flask_login import (LoginManager, current_user, login_required, login_user,
 from .models import db, Patient
 from .utils import validate_password
 
-patients = Blueprint("patients", __name__, url_prefix="/patient")
+patients = Blueprint("patients", __name__)
 
 @patients.route("/login", methods=["GET", "POST"])
 def login():
@@ -12,14 +12,14 @@ def login():
         return redirect(url_for("patients.dashboard"))
 
     if request.method == "POST":
-        username = request.form["username"].strip()
+        email = request.form["email"].strip()
         password = request.form["password"]
 
-        patient = Patient.query.filter_by(username=username).first()
+        patient = Patient.query.filter_by(email=email).first()
 
         if patient is None or not patient.check_password(password):
             flash("Invalid username or password", "error")
-            return render_template("patient_login.html", username=username)
+            return render_template("patient_login.html", email=email)
 
         login_user(patient)
         flash("You are not logged in.", "success")
@@ -28,4 +28,7 @@ def login():
 
     return render_template("patient_login.html")
 
-
+@patients.route("/dashboard")
+@login_required
+def dashboard():
+    return render_template("dashboard.html")

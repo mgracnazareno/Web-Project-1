@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Patient Portal Login</h2>
+
+{% with messages = get_flashed_messages( with_categories= true) %}
+{% if messages %}
+<div class="flash-messages">
+    {% for category, messages in messages %}
+    <p class="alert alert-{{ category }}">{{ message }}</p>
+    {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
+
+<form action="{{ url_for('patients.login') }}" method="POST">
+    <div>
+        <label for="email">Email</label>
+        <input type="text" id="email" name="email" value="{{ email if email else '' }}" required autofocus>
+    </div>
+    <br>
+
+    <div>
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required>
+    </div>
+
+    <br>
+
+    <button type="submit">Login</button>
+</form>
+
+
+
+{% endblock %}

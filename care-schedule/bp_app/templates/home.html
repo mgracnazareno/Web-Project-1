@@ -8,14 +8,20 @@
 </head>
 
 <body>
-    <h2>Home page</h2>
+
 
     <!-- login link  -->
     <nav>
         <a href="/">Home</a>
-        <a href="/login">Patient Login</a>
+        <a href="{{ url_for('patients.login')}}">Patient Login</a>
         <a href="/login">Doctor Login</a>
     </nav>
+
+    <main>
+        {% block content %}
+        <h1>Welcome to Care Schedule Booking App</h1>
+        {% endblock %}
+    </main>
 </body>
 
 </html>
