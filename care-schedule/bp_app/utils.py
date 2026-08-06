@@ -1,4 +1,5 @@
 # Validation helpers
+from .models import Patient
 
 def validate_password(password):
     if len(password) < 8:
@@ -14,4 +15,27 @@ def validate_password(password):
         return "Password must contain a digit."
     
     return None
-    
+
+def validate_registration(username, email, password):
+    errors = []
+
+    if not username:
+        errors.append("Username is required")
+    elif len(username) > 50:
+        errors.append("Username may containt at most 50 characters.")
+    elif any(character.isspace() for character in username):
+        errors.append("Username may not contain whitespace")
+
+
+    if Patient.query.filter_by(username=username).first():
+        errors.append("That username is already in use!")
+
+    if Patient.query.filter_by(email=email).first():
+        errors.append("That email is already registered.")
+
+    # Password validation
+    password_error = validate_password(password)
+    if password_error:
+        errors.append(password_error)
+
+    return errors

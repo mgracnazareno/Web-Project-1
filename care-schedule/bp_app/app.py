@@ -12,6 +12,7 @@ load_dotenv()
 from .models import db, Patient
 from .main_routes import main
 from .patient_routes import patients
+from werkzeug.security import generate_password_hash
 
 app = Flask(__name__)
 
@@ -37,6 +38,7 @@ app.register_blueprint(patients)
 
 with app.app_context():
     db.create_all()
+
 
 @login_manager.user_loader
 def load_user(user_id):

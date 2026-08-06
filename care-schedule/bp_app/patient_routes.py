@@ -6,6 +6,39 @@ from .utils import validate_password
 
 patients = Blueprint("patients", __name__)
 
+@patients.route("/register", methods=["GET", "POST"])
+def register():
+    if current_user.is_authenticated:
+        return redirect(url_for("dashboard"))
+
+    if request.method == "POST":
+        username = request.form['username'].strip()
+        email = request.form['email'].strip()
+        password = request.form['password']
+
+        errors = validate_password(username, email, password)
+
+        if errors:
+            for error in errors:
+                flash(error, "error")
+            return render_template(
+                "register.html", username=username, email=email
+            )
+
+        # create patient
+        patient = Patient(username=username, email=email)
+        patient.set_password(password)
+
+        # add it to the table
+        db.session.add(patient)
+        db.session.commit()
+
+        flash("Your account has been created!!!", "success")
+        return redirect(url_for("login"))
+
+    return render_template("patient_register.html")
+
+
 @patients.route("/login", methods=["GET", "POST"])
 def login():
     if current_user.is_authenticated:
@@ -22,7 +55,7 @@ def login():
             return render_template("patient_login.html", email=email)
 
         login_user(patient)
-        flash("You are not logged in.", "success")
+        flash("You are not logged in.", "danger")
 
         return redirect(url_for("dashboard"))
 
