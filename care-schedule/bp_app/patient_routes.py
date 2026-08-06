@@ -22,7 +22,7 @@ def register():
             for error in errors:
                 flash(error, "error")
             return render_template(
-                "register.html", username=username, email=email
+                "patient_register.html", username=username, email=email
             )
 
         # create patient

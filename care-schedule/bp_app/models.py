@@ -87,11 +87,11 @@ class Professional(UserMixin, db.Model):
 
     password_hash = db.Column(db.String(255), nullable = False)
 
-    firstname = db.Column(db.String(150), nullable = False)
+    firstname = db.Column(db.String(150), nullable = True)
 
-    lastname = db.Column(db.String(150), nullable=False)
+    lastname = db.Column(db.String(150), nullable = True)
 
-    specialty = db.Column(db.String(150), nullable= False)
+    specialty = db.Column(db.String(150), nullable = True)
 
     biography = db.Column(db.Text)
 
