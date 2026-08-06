@@ -2,7 +2,7 @@ from flask import (Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import (LoginManager, current_user, login_required, login_user, logout_user)
 
 from .models import db, Patient
-from .utils import validate_password
+from .utils import validate_password, validate_registration
 
 patients = Blueprint("patients", __name__)
 
@@ -16,7 +16,7 @@ def register():
         email = request.form['email'].strip()
         password = request.form['password']
 
-        errors = validate_password(username, email, password)
+        errors = validate_registration(username, email, password)
 
         if errors:
             for error in errors:
