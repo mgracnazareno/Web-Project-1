@@ -33,7 +33,7 @@ def register():
             for error in errors:
                 flash(error, "danger")
                 # re-render the form, keeping what the user typed (except password)
-                return render_template(
+            return render_template(
                     "professional/register.html",
                     username=username,
                     email=email,
@@ -44,41 +44,44 @@ def register():
                 )
 
             # No errors - create and save the Professional
-            professional_user = Professional(
-                username=username,
-                email=email,
-                firstname=firstname,
-                lastname=lastname,
-                specialty=specialty,
-                biography=bio,
-            )
+        professional_user = Professional(
+            username=username,
+            email=email,
+            firstname=firstname,
+            lastname=lastname,
+            specialty=specialty,
+            biography=bio,
+        )
 
-            professional_user.set_password(password)
+        professional_user.set_password(password)
 
-            db.session.add(professional_user)
-            db.session.commit()
+        db.session.add(professional_user)
+        db.session.commit()
 
-            flash("Your account has been created!!!", "success")
-            return redirect(url_for("professional.login"))
+        flash("Your account has been created!!!", "success")
+        return redirect(url_for("professional.login"))
 
     # GET request
     return render_template("professional/register.html")
 
 @professional.route("/professional/login", methods=["GET", "POST"])
 def login():
-    if current_user.is_authenticated:
+    if current_user.is_authenticated and isinstance(current_user, Professional):
         return redirect(url_for("professional.dashboard"))
 
     if request.method == "POST":
-        username = request.form["username"].strip()
         email = request.form["email"].strip()
         password = request.form["password"]
 
-        professional_user = Professional.query.filter_by(username=username).first()
+        professional_user = Professional.query.filter_by(email=email).first()
 
-        if professional_user is None or not professional.check_password(password):
-            flash("Invalid username or password", "error")
-            return render_template("professional/login.html", username=username, email=email)
+        if professional_user is None:
+            flash("No account found with that email. Please register.", "error")
+            return redirect(url_for("professional.register"))
+
+        if professional_user is None or not professional_user.check_password(password):
+            flash("Invalid email or password", "error")
+            return render_template("professional/login.html",  email=email)
 
         login_user(professional_user)
 
