@@ -66,7 +66,7 @@ def login():
 def dashboard():
     return render_template("dashboard.html")
 
-@patients.route("/logout", methods=["POST"])
+@patients.route("/logout")
 @login_required
 def logout():
     logout_user()

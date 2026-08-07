@@ -8,6 +8,7 @@ from flask import Blueprint, flash, render_template, redirect, url_for, request
 professional = Blueprint("professional", __name__)
 
 @professional.route("/professional/dashboard")
+@login_required
 def dashboard():
     return render_template("/professional/dashboard.html")
 
@@ -86,10 +87,7 @@ def login():
 
     return render_template("professional/login.html")
 
-@professional.route("/professional/dashboard")
-@login_required
-def dashboard():
-    return render_template("professional/dashboard.html")
+
 
 @professional.route("/professional/logout", methods=["POST"])
 @login_required
