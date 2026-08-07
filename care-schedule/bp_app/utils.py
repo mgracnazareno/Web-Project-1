@@ -1,5 +1,6 @@
 # Validation helpers
-from .models import Patient
+from .models import Patient, Professional
+
 
 def validate_password(password):
     if len(password) < 8:
@@ -81,3 +82,14 @@ def validate_credentials(username, email, password,model):
 
 def validate_patient_registration(username, email, password):
     return validate_credentials(username, email, password, Patient)
+
+def validate_professional_registration(username, email, password, firstname, lastname, specialty, bio):
+    errors =validate_credentials(username, email, password, Professional)
+
+    if not firstname:
+        errors.append("First name is required.")
+    elif len(firstname) > 50:
+        errors.append("First name may contain at most 50 characters.")
+    elif any(character.isspace() for character in firstname):
+        errors.append("First name may not contain whitespace.")
+    return errors
