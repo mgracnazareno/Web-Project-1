@@ -16,13 +16,26 @@ def validate_password(password):
     
     return None
 
+
+def validate_email(email):
+    if not email:
+        return "Email is required."
+
+    if len(email) > 255:
+        return "Email must contain at most 50 characters."
+
+    if "@" not in email:
+        return "Invalid email address."
+
+    return None
+
 def validate_registration(username, email, password):
     errors = []
 
     if not username:
         errors.append("Username is required")
     elif len(username) > 50:
-        errors.append("Username may containt at most 50 characters.")
+        errors.append("Username may contain at most 50 characters.")
     elif any(character.isspace() for character in username):
         errors.append("Username may not contain whitespace")
 
@@ -39,3 +52,4 @@ def validate_registration(username, email, password):
         errors.append(password_error)
 
     return errors
+
