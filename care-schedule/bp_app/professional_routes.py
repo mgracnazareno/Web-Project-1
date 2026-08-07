@@ -26,5 +26,5 @@ def register():
         specialty = request.form['specialty'].strip()
         bio = request.form['biography'].strip()
 
-        errors = validate_registration(username, email, password, firstname, lastname, specialty, bio)
+        errors = validate_registration(username, email, password)
     return None

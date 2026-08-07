@@ -53,3 +53,29 @@ def validate_registration(username, email, password):
 
     return errors
 
+def validate_credentials(username, email, password,model):
+    errors = []
+
+    if not username:
+        errors.append("Username is required")
+    elif len(username) > 50:
+        errors.append("Username may contain at most 50 characters.")
+    elif any(character.isspace() for character in username):
+        errors.append("Username may not contain whitespace.")
+
+    if model.query.filter_by(username=username).first():
+        errors.append("That username is already in use!")
+
+    if model.query.filter_by(email=email).first():
+        errors.append("That email is already registered.")
+
+    email_error = validate_email(email)
+    if email_error:
+        errors.append(email_error)
+
+    password_error = validate_password(password)
+    if password_error:
+        errors.append(password_error)
+
+    return errors
+
