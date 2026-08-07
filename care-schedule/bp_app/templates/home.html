@@ -10,6 +10,6 @@ CareSchedule Booking App - Home
 <section>
     <p>Select an option below to get started:</p>
     <a href="{{ url_for('patients.login') }}">Patient Login</a> |
-    <a href="/login">Doctor Login</a>
+    <a href="{{ url_for('professional.login') }}">Doctor Login</a>
 </section>
 {% endblock %}

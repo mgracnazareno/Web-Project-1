@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <h3>Professional Registration</h3>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <form action="{{ url_for('professional.register') }}" method="POST">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" value="{{ username or '' }}" required>
+
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" value="{{ email or '' }}" required>
+
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required>
+
+        <label for="firstname">First name</label>
+        <input type="text" id="firstname" name="firstname" value="{{ firstname or '' }}">
+
+        <label for="lastname">Last name</label>
+        <input type="text" id="lastname" name="lastname" value="{{ lastname or '' }}">
+
+        <label for="specialty">Specialty</label>
+        <input type="text" id="specialty" name="specialty" value="{{ specialty or '' }}">
+
+        <label for="biography">Biography</label>
+        <textarea id="biography" name="biography">{{ biography or '' }}</textarea>
+
+        <button type="submit">Register</button>
+    </form>
+
+{% endblock %}

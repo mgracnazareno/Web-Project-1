@@ -12,6 +12,7 @@ load_dotenv()
 from .models import db, Patient, Professional
 from .main_routes import main
 from .patient_routes import patients
+from .professional_routes import professional
 from werkzeug.security import generate_password_hash
 
 app = Flask(__name__)
@@ -35,6 +36,7 @@ login_manager.init_app(app)
 # Register blueprints
 app.register_blueprint(main)
 app.register_blueprint(patients)
+app.register_blueprint(professional)
 
 with app.app_context():
     db.create_all()

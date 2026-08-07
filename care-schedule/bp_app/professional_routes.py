@@ -1,10 +1,8 @@
 
-import os
-from dotenv import load_dotenv
 
 from bp_app.models import db, Professional
-from utils import validate_registration, validate_professional_registration
-from flask_login import current_user
+from .utils import validate_registration, validate_professional_registration
+from flask_login import (LoginManager, current_user, login_user)
 from flask import Blueprint, flash, render_template, redirect, url_for, request
 
 professional = Blueprint("professional", __name__)
@@ -33,7 +31,7 @@ def register():
         if errors:
             for error in errors:
                 flash(error, "danger")
-                # re-render the form, keepint what the user typed (except password)
+                # re-render the form, keeping what the user typed (except password)
                 return render_template(
                     "professional/register.html",
                     username=username,
@@ -64,3 +62,26 @@ def register():
 
     # GET request
     return render_template("professional/register.html")
+
+@professional.route("/professional/login", methods=["GET", "POST"])
+def login():
+    if current_user.is_authenticated:
+        return redirect(url_for("professional.dashboard"))
+
+    if request.method == "POST":
+        username = request.form["username"].strip()
+        email = request.form["email"].strip()
+        password = request.form["password"]
+
+        professional_user = Professional.query.filter_by(username=username).first()
+
+        if professional_user is None or not professional.check_password(password):
+            flash("Invalid username or password", "error")
+            return render_template("professional/login.html", username=username, email=email)
+
+        login_user(professional_user)
+
+        flash("You are now logged in.", "success")
+        return redirect(url_for("professional.dashboard"))
+
+    return render_template("professional/login.html")
