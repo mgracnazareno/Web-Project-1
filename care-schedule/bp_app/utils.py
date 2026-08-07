@@ -79,3 +79,5 @@ def validate_credentials(username, email, password,model):
 
     return errors
 
+def validate_patient_registration(username, email, password):
+    return validate_credentials(username, email, password, Patient)
