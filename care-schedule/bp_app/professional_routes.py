@@ -2,7 +2,7 @@
 
 from bp_app.models import db, Professional
 from .utils import validate_registration, validate_professional_registration
-from flask_login import (LoginManager, current_user, login_user)
+from flask_login import (LoginManager, current_user, login_user, login_required,logout_user)
 from flask import Blueprint, flash, render_template, redirect, url_for, request
 
 professional = Blueprint("professional", __name__)
@@ -85,3 +85,15 @@ def login():
         return redirect(url_for("professional.dashboard"))
 
     return render_template("professional/login.html")
+
+@professional.route("/professional/dashboard")
+@login_required
+def dashboard():
+    return render_template("professional/dashboard.html")
+
+@professional.route("/professional/logout", methods=["POST"])
+@login_required
+def logout():
+    logout_user()
+    flash("You have been logged out.", "success")
+    return redirect(url_for("main.home"))
