@@ -1,12 +1,10 @@
-
 from datetime import datetime
 from bp_app.models import db, Professional, Availability
 from .utils import validate_registration, validate_professional_registration
-from flask_login import (LoginManager, current_user, login_user, login_required,logout_user)
+from flask_login import (LoginManager, current_user, login_user, login_required, logout_user)
 from flask import Blueprint, flash, render_template, redirect, url_for, request
 
 professional = Blueprint("professional", __name__)
-
 
 SPECIALTIES = [
     "Family Medicine",
@@ -18,10 +16,21 @@ SPECIALTIES = [
     "Dentistry",
 ]
 
+
 @professional.route("/professional/dashboard")
 @login_required
 def dashboard():
-    return render_template("/professional/dashboard.html")
+    if not isinstance(current_user, Professional):
+        flash("This page is for professionals only.","error")
+        return redirect(url_for("main.home"))
+
+    slots = (
+        Availability.query
+        .filter_by(professional_id=current_user.id)
+        .order_by(Availability.start_time.asc())
+        .all()
+    )
+    return render_template("professional/dashboard.html",slots=slots)
 
 
 @professional.route("/professional/register", methods=["GET", "POST"])
@@ -45,14 +54,14 @@ def register():
                 flash(error, "danger")
                 # re-render the form, keeping what the user typed (except password)
             return render_template(
-                    "professional/register.html",
-                    username=username,
-                    email=email,
-                    firstname=firstname,
-                    lastname=lastname,
-                    specialty=specialty,
-                    bio=bio,
-                )
+                "professional/register.html",
+                username=username,
+                email=email,
+                firstname=firstname,
+                lastname=lastname,
+                specialty=specialty,
+                bio=bio,
+            )
 
             # No errors - create and save the Professional
         professional_user = Professional(
@@ -75,6 +84,7 @@ def register():
     # GET request
     return render_template("professional/register.html")
 
+
 @professional.route("/professional/login", methods=["GET", "POST"])
 def login():
     if current_user.is_authenticated and isinstance(current_user, Professional):
@@ -92,7 +102,7 @@ def login():
 
         if professional_user is None or not professional_user.check_password(password):
             flash("Invalid email or password", "error")
-            return render_template("professional/login.html",  email=email)
+            return render_template("professional/login.html", email=email)
 
         login_user(professional_user)
 
@@ -102,13 +112,13 @@ def login():
     return render_template("professional/login.html")
 
 
-
 @professional.route("/professional/logout", methods=["POST"])
 @login_required
 def logout():
     logout_user()
     flash("You have been logged out.", "success")
     return redirect(url_for("main.home"))
+
 
 @professional.route("/professional/availability/add", methods=["GET", "POST"])
 @login_required
@@ -157,9 +167,10 @@ def add_availability():
         db.session.commit()
 
         flash("Availability added", "success")
-        return redirect(url_for("/professional.manage_availability"))
+        return redirect(url_for("professional.manage_availability"))
 
     return render_template("professional/add_availability.html")
+
 
 @professional.route("/professional/availability")
 @login_required
@@ -174,6 +185,27 @@ def manage_availability():
         .order_by(Availability.start_time)
         .all()
     )
-    return render_template("professionals/manage_availability.html", slots=slots)
+    return render_template("professional/manage_availability.html", slots=slots)
 
 
+@professional.route("/professional/availability/<int:slot_id>/delete", methods=["POST"])
+@login_required
+def delete_availability(slot_id):
+    if not isinstance(current_user, Professional):
+        flash("This page is for professionals only.", "error")
+        return redirect(url_for("main.home"))
+
+    slot = db.session.get(Availability, slot_id)
+
+    if slot is None or slot.professional_id != current_user.id:
+        flash("Availability not found.", "error")
+        return redirect(url_for("professional.manage_availability"))
+
+    if slot.appointment is not None:
+        flash("This slot is booked and can't be deleted.", "error")
+        return redirect(url_for("professional.manage_availability"))
+
+    db.session.delete(slot)
+    db.session.commit()
+    flash("Availability removed.", "success")
+    return redirect(url_for("professional.manage_availability"))
