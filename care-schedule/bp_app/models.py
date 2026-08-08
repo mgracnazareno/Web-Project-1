@@ -132,7 +132,7 @@ class Availability(db.Model):
     )
 
     # One slot has at most one appointment
-    appointment = db.relationship("Appointment", back_populates="availability")
+    appointment = db.relationship("Appointment", back_populates="availability", uselist=False)
 
     def to_dict(self):
         return {

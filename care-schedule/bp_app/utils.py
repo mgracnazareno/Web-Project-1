@@ -23,7 +23,7 @@ def validate_email(email):
         return "Email is required."
 
     if len(email) > 255:
-        return "Email must contain at most 50 characters."
+        return "Email must contain at most 255 characters."
 
     if "@" not in email:
         return "Invalid email address."

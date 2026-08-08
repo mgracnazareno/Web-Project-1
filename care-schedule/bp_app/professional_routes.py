@@ -1,11 +1,22 @@
 
-
-from bp_app.models import db, Professional
+from datetime import datetime
+from bp_app.models import db, Professional, Availability
 from .utils import validate_registration, validate_professional_registration
 from flask_login import (LoginManager, current_user, login_user, login_required,logout_user)
 from flask import Blueprint, flash, render_template, redirect, url_for, request
 
 professional = Blueprint("professional", __name__)
+
+
+SPECIALTIES = [
+    "Family Medicine",
+    "Cardiology",
+    "Dermatology",
+    "Pediatrics",
+    "Psychiatry",
+    "Physiotherapy",
+    "Dentistry",
+]
 
 @professional.route("/professional/dashboard")
 @login_required

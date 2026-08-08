@@ -22,7 +22,15 @@
         <input type="text" id="lastname" name="lastname" value="{{ lastname or '' }}">
 
         <label for="specialty">Specialty</label>
-        <input type="text" id="specialty" name="specialty" value="{{ specialty or '' }}">
+        <select name="specialty" id="specialty" required>
+            <option value="" disabled {{ 'selected' if not specialty }}>--Select a specialty--</option>
+            {% for specialty in specialties %}
+                <option value="{{ specialty }}" {{ 'selected' if specialty == selected_specialty }}>
+                    {{ specialty }}
+                </option>
+            {% endfor %}
+                >
+        </select>
 
         <label for="biography">Biography</label>
         <textarea id="biography" name="biography">{{ biography or '' }}</textarea>
