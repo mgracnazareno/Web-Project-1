@@ -1,0 +1,34 @@
+{% extends "professional/dashboard.html" %}
+{% block title %}Manage Availability{% endblock %}
+
+{% block content %}
+    <h3>Manage Availability</h3>
+    <a href="{{ url_for('professional.add_availability.html') }}">+ Add Availability</a>
+
+    {% if slots %}
+    <table>
+        <tr>
+            <th>Date</th>
+            <th>Start</th>
+            <th>End</th>
+            <th>Status</th>
+            <th></th>
+        </tr>
+        {% for slot in slots %}
+        <tr>
+            <td>{{ slot.start_time.strftime("%Y-%m-%d") }}</td>
+            <td>{{ slot.start_time.strftime("%H-%M") }}</td>
+            <td>{{ slot.start_time.strftime("%H-%M") }}</td>
+            <td>{{ "Booked" if slot.appointment else "Open" }}</td>
+            <td>
+                {% if not slot.appointment %}
+                   <p>delete</p>
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+    </table>
+    {% else %}
+        <p>You haven't added any availabiity yet.</p>
+    {% endif %}
+{% endblock %}

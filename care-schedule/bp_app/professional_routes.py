@@ -157,7 +157,23 @@ def add_availability():
         db.session.commit()
 
         flash("Availability added", "success")
-        return redirect(url_for("/professional.add.availability"))
+        return redirect(url_for("/professional.manage_availability"))
 
     return render_template("professional/add_availability.html")
+
+@professional.route("/professional/availability")
+@login_required
+def manage_availability():
+    if not isinstance(current_user, Professional):
+        flash("This page is for professionals only.", "error")
+        return redirect(url_for('main.home'))
+
+    slots = (
+        Availability.query
+        .filter_by(professional_id=current_user.id)
+        .order_by(Availability.start_time)
+        .all()
+    )
+    return render_template("professionals/manage_availability.html", slots=slots)
+
 
