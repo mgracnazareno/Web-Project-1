@@ -109,3 +109,55 @@ def logout():
     logout_user()
     flash("You have been logged out.", "success")
     return redirect(url_for("main.home"))
+
+@professional.route("/professional/availability/add", methods=["GET", "POST"])
+@login_required
+def add_availability():
+    if not isinstance(current_user, Professional):
+        flash("This page is for Professionals only.", "danger")
+        return redirect(url_for("main.home"))
+
+    if request.method == "POST":
+        date_str = request.form.get("date", "")
+        start_str = request.form.get("start_time", "")
+        end_str = request.form.get("end_time", "")
+
+        # datetime - local inputs
+        try:
+            start = datetime.strptime(f"{date_str} {start_str}", "%Y-%m-%d %H:%M")
+            end = datetime.strptime(f"{date_str} {end_str}", "%Y-%m-%d %H:%M")
+        except ValueError:
+            flash("Please enter a valid date and times.", "danger")
+            return render_template("professional/add_availability.html")
+
+        if end <= start:
+            flash("End tiime must be after the start time.", "error")
+            return render_template("professional/add_availability.html")
+
+        if start <= datetime.now():
+            flash("Availability must be in the future.", "error")
+            return render_template("professional/add_availability.html")
+
+        overlap = Availability.query.filter(
+            Availability.professional_id == current_user.id,
+            Availability.start_time < end,
+            Availability.end_time > start
+        ).first()
+
+        if overlap:
+            flash("This time overlaps one of your existing slots", "error")
+            return render_template("professional/add_availability.html")
+
+        slot = Availability(
+            professional_id=current_user.id,
+            start_time=start,
+            end_time=end,
+        )
+        db.session.add(slot)
+        db.session.commit()
+
+        flash("Availability added", "success")
+        return redirect(url_for("/professional.add.availability"))
+
+    return render_template("professional/add_availability.html")
+
