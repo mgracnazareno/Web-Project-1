@@ -108,3 +108,47 @@ def my_appointments():
                     .order_by(Appointment.scheduled_at)
                     .all())
     return render_template("patients/my_appointments.html", appointments=appointments)
+
+@patients.route("/book/<int:availability_id>", methods=["GET", "POST"])
+@login_required
+def confirm_booking(availability_id):
+    if not isinstance(current_user, Patient):
+        flash("Only patients can book an appointment", "warning")
+        return redirect(url_for("main.home"))
+
+    slot = db.session.get(Availability, availability_id)
+
+    # Slot must exist, still be open, and still be in the future
+    if slot is None or slot.is_booked or slot.start_time <= datetime.now():
+        flash("That slot is no longer available", "error")
+        return redirect(url_for("patients.book"))
+
+    if request.method == "POST":
+        reason = request.form.get("reason", "").strip()
+
+        if not reason:
+            flash("Please provide a reason for your visit.", "error")
+            return render_template("patients/confirm_booking.html", slot=slot)
+
+        appointment = Appointment(
+            reason=reason,
+            scheduled_at=slot.start_time,
+            patient_id=current_user.id,
+            availability_id=slot.id
+        )
+
+        slot.is_booked = True
+        db.session.add(appointment)
+
+        try:
+            db.session.commit()
+        except IntegrityError:
+            # unique = True on availability_id: someone booked this slot first
+            db.session.rollback()
+            flash("Sorry, that slots was just booked sy someone else", "error")
+            return redirect(url_for("patients.book"))
+
+        flash("Your appointment is confirmed!", "success")
+        return redirect(url_for("patients.my_appointments"))
+
+    return render_template("patients/confirm_booking.html",slot=slot)

@@ -3,4 +3,32 @@
 {% block content %}
     <h2>My Appointments</h2>
 
+    {% if appointments %}
+      <table border="1" cellpadding="8">
+        <thead>
+          <tr>
+            <th>Date & Time</th>
+            <th>Professional</th>
+            <th>Specialty</th>
+            <th>Reason</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for appt in appointments %}
+            <tr>
+              <td>{{ appt.scheduled_at.strftime("%a, %b %d, %Y — %I:%M %p") }}</td>
+              <td>{{ appt.availability.professional.username }}</td>
+              <td>{{ appt.availability.professional.specialty or 'General' }}</td>
+              <td>{{ appt.reason }}</td>
+              <td>{{ appt.status.value }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p>You have no appointments yet.
+        <a href="{{ url_for('patients.book') }}">Book one now</a>.
+      </p>
+    {% endif %}
 {% endblock %}

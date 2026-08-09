@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Confirm Booking{% endblock %}
+
+{% block content %}
+    <h2>Confirm Your Appointment</h2>
+
+    <p>
+        <strong>Dr. {{ slot.professional.username }}</strong>
+        ({{ slot.professional.specialty or 'General' }}) <br>
+        {{ slot.start_time.strftime("%A, %B %d, %Y") }} —
+        {{ slot.start_time.strftime("%I:%M %p") }} to {{ slot.end_time.strftime("%I:%M %p") }}
+    </p>
+
+    <form method="POST">
+      <label for="reason">Reason for visit:</label><br>
+      <textarea id="reason" name="reason" rows="4" cols="40" required></textarea><br>
+    <button type="submit">Confirm Booking</button>
+    <a href="{{ url_for('patients.book') }}">Cancel</a>
+</form>
+{% endblock %}
