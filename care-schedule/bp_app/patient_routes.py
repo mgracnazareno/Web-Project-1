@@ -1,8 +1,12 @@
+from datetime import datetime
+
 from flask import (Blueprint, render_template, request, redirect, url_for, flash)
 from flask_login import (LoginManager, current_user, login_required, login_user, logout_user)
 
-from .models import db, Patient
+from .models import db, Patient, Availability, Appointment
 from .utils import validate_password, validate_registration
+
+from sqlalchemy.exc import IntegrityError
 
 patients = Blueprint("patients", __name__)
 
@@ -64,6 +68,12 @@ def login():
 @patients.route("/dashboard")
 @login_required
 def dashboard():
+    if not isinstance(current_user, Patient):
+        flash("This page is for patients only.", "error")
+        return redirect(url_for("main.home"))
+
+    # Fetch patient's upcoming booked appointments
+
     return render_template("dashboard.html")
 
 @patients.route("/logout")
@@ -72,3 +82,29 @@ def logout():
     logout_user()
     flash("You have been logged out.", "success")
     return redirect(url_for("main.home"))
+
+
+@patients.route("/book")
+@login_required
+def book():
+    if not isinstance(current_user, Patient):
+        flash("Only patients can book appointments.", "warning")
+        return redirect(url_for("main.home"))
+
+    slots = (
+        Availability.query
+        .filter(Availability.is_booked == False,
+                   Availability.start_time > datetime.now())
+        .order_by(Availability.start_time)
+        .all()
+    )
+    return render_template("patients/book.html", slots=slots)
+
+@patients.route("/appointments")
+@login_required
+def my_appointments():
+    appointments = (Appointment.query
+                    .filter_by(patient_id=current_user.id)
+                    .order_by(Appointment.scheduled_at)
+                    .all())
+    return render_template("patients/my_appointments.html", appointments=appointments)

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div>
+  <h2>Book an Appointment</h2>
+
+  {% if slots %}
+    {% for professional, prof_slots in slots|groupby("professional.username") %}
+      <div>
+        <div>
+          <strong>Dr. {{ professional }}</strong>
+          <span>({{ prof_slots[0].professional.specialty or 'General' }})</span>
+        </div>
+        <div>
+          {% for slot in prof_slots %}
+            <a href="{{ url_for('patients.confirm_booking', availability_id=slot.id) }}">
+              {{ slot.start_time.strftime("%a, %b %d — %I:%M %p") }}
+            </a>
+          {% endfor %}
+        </div>
+      </div>
+      <hr>
+    {% endfor %}
+  {% else %}
+    <p>No available slots right now. Please check back later.</p>
+  {% endif %}
+</div>
+{% endblock %}
