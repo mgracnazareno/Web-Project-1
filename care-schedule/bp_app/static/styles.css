@@ -1,3 +1,79 @@
+@import url("./css/base.css");
+
+
+/*HOME*/
+header {
+  background: var(--app-navy);
+}
+
+
+/*BANNER*/
+.hero-banner {
+  min-height: 100vh;
+  background-blend-mode: overlay;
+  background: rgba(0, 0, 0, 75%) url("images/banner-img.png") no-repeat center;
+}
+
+h1 {
+  color:white;
+}
+
+.btn-primary {
+  background-color: #0FBFAD;
+  border-color: #0FBFAD;
+  color: #0C1929;
+}
+
+/*SERVICES */
+.services {
+  background:  #E6F0F2;
+  padding: 5rem 0;
+}
+
+.services .section-header h2 {
+  color: var(--app-navy);
+}
+
+.services .section-header p {
+  color: var(--app-muted);
+}
+
+.card-services {
+  background: #fff;
+  color: var(--app-navy);
+  border: 1px solid var(--app-border);
+  border-radius: 16px;
+  transition: transform 0.25s ease, box-shadow  0.25s ease;
+}
+
+.card-services p {
+  color: var(--app-muted);
+}
+
+.card-services:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 28px rgba(14, 39, 64, 0.12);
+}
+
+.service-icon {
+    width: 140px;
+    height: 140px;
+    object-fit: contain;
+}
+
+.service-icon-book {
+    transform: scale(1);
+}
+
+.service-icon-manage {
+    transform: scale(1);
+}
+
+.service-icon-availability {
+  width: 200px;
+  height: 140px;
+}
+
 .auth-card {
   max-width: 400px;
   margin: 2rem auto;

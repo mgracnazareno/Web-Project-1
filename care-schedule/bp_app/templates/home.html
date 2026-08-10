@@ -1,15 +1,63 @@
 {% extends 'base.html' %}
 
 {% block title %}
-CareSchedule Booking App - Home
+    CareSchedule Booking App - Home
 {% endblock %}
+
+{% block banner %}
+    {% include 'components/banner.html' %}
+{% endblock %}
+
 
 {% block content %}
-<h1>Welcome to Care Schedule Booking App</h1>
 
-<section>
-    <p>Select an option below to get started:</p>
-    <a href="{{ url_for('patients.login') }}">Patient Login</a> |
-    <a href="{{ url_for('professional.login') }}">Doctor Login</a>
-</section>
-{% endblock %}
+    <section class="services">
+        <div class="container">
+            <div class="section-header text-center py-3">
+                <h2>Our Services</h2>
+                <p>Simple tools to make healthcare appointment scheduling easier.</p>
+            </div>
+
+            {# CARD 01 #}
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card-services text-center h-100 p-4">
+{#                        <i class="bi bi-calendar-check fs-1"></i>#}
+
+                        <img src="{{ url_for('static', filename='images/Appointment Dashboard.svg') }}" alt="" class="service-icon service-icon-book" >
+
+                        <h3 class="h5">Book Appointment</h3>
+                        <p> Browse available healthcare professional and book an appointment that fits your
+                            schedule.</p>
+                    </div>
+                </div>
+
+                {# CARD 02 #}
+                <div class="col-md-4">
+                    <div class="card-services text-center h-100 p-4">
+{#                        <i class="bi bi-calendar-week fs-1"></i>#}
+                        <img src="{{ url_for('static', filename='images/CALENDER.svg') }}" alt="" class="service-icon service-icon-manage">
+                        <h3 class="h5">Manage Appointments</h3>
+                        <p> View your upcoming appointments and manage your bookings in one convenient place.</p>
+                    </div>
+                </div>
+
+
+                {# CARD 03 #}
+                <div class="col-md-4">
+                    <div class="card-services text-center h-100 p-4">
+{#                        <i class="bi bi-clock fs-1"></i>#}
+                        <img src="{{ url_for('static', filename='images/Doctor.svg') }}" alt="" class="service-icon service-icon-availability">
+                        <h3 class="h5">Manage Availability</h3>
+                        <p> Healthcare professionals can publish and manage their available appointment times.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section>
+        <p>Select an option below to get started:</p>
+        <a href="{{ url_for('patients.login') }}">Patient Login</a> |
+        <a href="{{ url_for('professional.login') }}">Doctor Login</a>
+    </section>
+{% endblock %}`

@@ -1,6 +1,6 @@
 :root {
     --app-teal: #1b7a96; /* accent, links, primary buttons */
-    --app-navy: #0e2740; /* sidebar, hero, headings */
+    --app-navy: #0C1929; /* sidebar, hero, headings */
     --app-offwhite: #f7fafb; /* cards, sidebar text */
     --app-success: #1e8a5f; /* Available slot, Confirmed */
     --app-error: #c0201a; /* Cancelled, delete, validation */
