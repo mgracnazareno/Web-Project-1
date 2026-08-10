@@ -39,6 +39,7 @@ app.register_blueprint(patients)
 app.register_blueprint(professional)
 
 with app.app_context():
+    print(">>> DB URI:", app.config['SQLALCHEMY_DATABASE_URI'])
     db.create_all()
 
 

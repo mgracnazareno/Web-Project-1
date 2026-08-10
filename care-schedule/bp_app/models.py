@@ -66,7 +66,10 @@ class Appointment(db.Model):
     availability_id = db.Column(
         db.Integer,
         db.ForeignKey("availability.id"),
-        nullable=False,
+
+        # nullable so canceled appointments can release their slot
+        # (cancel sets this to None + frees Availability.is_booked for rebooking)
+        nullable=True,
         unique=True  # one slot can be booked once
     )
 

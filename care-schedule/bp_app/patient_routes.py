@@ -153,7 +153,8 @@ def confirm_booking(availability_id):
 
     return render_template("patients/confirm_booking.html",slot=slot)
 
-@patients.route('/appointments/<int:appointment_id>cancel', method=['POST'])
+
+@patients.route('/appointments/<int:appointment_id>/cancel', methods=['POST'])
 @login_required
 def cancel_appointment(appointment_id):
     appointment = Appointment.query.get_or_404(appointment_id)
@@ -167,9 +168,51 @@ def cancel_appointment(appointment_id):
     # free the slot so others can book it
     if appointment.availability:
         appointment.availability.is_booked = False
-        appointment.availability_id = None
 
     appointment.status = AppointmentStatus.CANCELLED
     db.session.commit()
     flash('Appointment cancelled.', 'success')
     return redirect(url_for('patients.my_appointments'))
+
+
+@patients.route('/appointments/<int:appointment_id>/reschedule', methods=['GET', 'POST'])
+@login_required
+def reschedule_appointment(appointment_id):
+    appointment = Appointment.query.get_or_404(appointment_id)
+
+    if appointment.patient_id != current_user.id:
+        abort(403)
+    if appointment.status != AppointmentStatus.CONFIRMED:
+        flash('This appointment cannot be rescheduled.', 'warning')
+        return redirect(url_for('patients.my_appointments'))
+
+    professional = appointment.availability.professional
+
+    open_slots = Availability.query.filter(
+        Availability.professional_id == professional.id,
+        Availability.is_booked == False,
+        Availability.start_time > datetime.now()
+    ).order_by(Availability.start_time).all()
+
+    if request.method == 'POST':
+        new_slot = Availability.query.get(request.form.get('availability_id'))
+
+        if not new_slot or new_slot.is_booked or new_slot.professional_id != professional.id:
+            flash('That slot is no longer available.', 'danger')
+            return redirect(url_for('booking.reschedule_appointment',
+                                    appointment_id=appointment.id))
+
+        # release old slot, claim new one
+        appointment.availability.is_booked = False
+        new_slot.is_booked = True
+        appointment.availability = new_slot
+        appointment.scheduled_at = new_slot.start_time
+        db.session.commit()
+
+        flash('Appointment rescheduled.', 'success')
+        return redirect(url_for('patients.my_appointments'))
+
+    return render_template('patients/reschedule.html',
+                           appointment=appointment,
+                           professional=professional,
+                           slots=open_slots)

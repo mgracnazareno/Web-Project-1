@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Reschedule Appointment</h1>
+
+<p>
+    Current appointment with <strong>{{ professional.username }}</strong>
+    ({{ professional.specialty }}) —
+    {{ appointment.scheduled_at.strftime('%a, %b %d, %Y — %I:%M %p') }}
+</p>
+
+{% if slots %}
+    <form method="post">
+        <p>Choose a new time slot:</p>
+        {% for slot in slots %}
+            <div>
+                <input type="radio" name="availability_id" value="{{ slot.id }}"
+                       id="slot-{{ slot.id }}" required>
+                <label for="slot-{{ slot.id }}">
+                    {{ slot.start_time.strftime('%a, %b %d, %Y — %I:%M %p') }}
+                </label>
+            </div>
+        {% endfor %}
+        <button type="submit">Confirm New Time</button>
+        <a href="{{ url_for('patients.my_appointments') }}">Back</a>
+    </form>
+{% else %}
+    <p>Walang open slots si {{ professional.username }} right now.</p>
+    <a href="{{ url_for('patients.my_appointments') }}">Back to My Appointments</a>
+{% endif %}
+{% endblock %}
