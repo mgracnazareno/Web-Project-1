@@ -1,9 +1,9 @@
 from datetime import datetime
 
-from flask import (Blueprint, render_template, request, redirect, url_for, flash)
+from flask import (Blueprint, render_template, request, redirect, url_for, flash, abort)
 from flask_login import (LoginManager, current_user, login_required, login_user, logout_user)
 
-from .models import db, Patient, Availability, Appointment
+from .models import db, Patient, Availability, Appointment, AppointmentStatus
 from .utils import validate_password, validate_registration
 
 from sqlalchemy.exc import IntegrityError
@@ -152,3 +152,24 @@ def confirm_booking(availability_id):
         return redirect(url_for("patients.my_appointments"))
 
     return render_template("patients/confirm_booking.html",slot=slot)
+
+@patients.route('/appointments/<int:appointment_id>cancel', method=['POST'])
+@login_required
+def cancel_appointment(appointment_id):
+    appointment = Appointment.query.get_or_404(appointment_id)
+
+    if appointment.patient_id != current_user.id:
+        abort(403)
+    if appointment.status != AppointmentStatus.CONFIRMED:
+        flash("This appointment can no longer be cancelled.", "warning")
+        return redirect(url_for('patients.my_appointments'))
+
+    # free the slot so others can book it
+    if appointment.availability:
+        appointment.availability.is_booked = False
+        appointment.availability_id = None
+
+    appointment.status = AppointmentStatus.CANCELLED
+    db.session.commit()
+    flash('Appointment cancelled.', 'success')
+    return redirect(url_for('patients.my_appointments'))
