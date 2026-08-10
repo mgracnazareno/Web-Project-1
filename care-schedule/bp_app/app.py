@@ -13,6 +13,7 @@ from .models import db, Patient, Professional
 from .main_routes import main
 from .patient_routes import patients
 from .professional_routes import professional
+from .api_routes import api
 from werkzeug.security import generate_password_hash
 
 app = Flask(__name__)
@@ -38,6 +39,7 @@ app.register_blueprint(main)
 app.register_blueprint(patients)
 app.register_blueprint(professional)
 
+app.register_blueprint(api)
 with app.app_context():
     print(">>> DB URI:", app.config['SQLALCHEMY_DATABASE_URI'])
     db.create_all()
