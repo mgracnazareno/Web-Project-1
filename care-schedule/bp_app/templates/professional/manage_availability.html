@@ -17,8 +17,8 @@
         {% for slot in slots %}
         <tr>
             <td>{{ slot.start_time.strftime("%Y-%m-%d") }}</td>
-            <td>{{ slot.start_time.strftime("%H-%M") }}</td>
-            <td>{{ slot.start_time.strftime("%H-%M") }}</td>
+            <td>{{ slot.start_time.strftime("%I-%M %p") }}</td>
+            <td>{{ slot.end_time.strftime("%I-%M %p" ) }}</td>
             <td>{{ "Booked" if slot.appointment else "Open" }}</td>
             <td>
                 {% if not slot.appointment %}

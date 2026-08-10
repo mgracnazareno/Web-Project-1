@@ -25,7 +25,7 @@
         <a href="{{ url_for('patients.my_appointments') }}">Back</a>
     </form>
 {% else %}
-    <p>Walang open slots si {{ professional.username }} right now.</p>
+    <p>No open slots available for  {{ professional.username }} right now.</p>
     <a href="{{ url_for('patients.my_appointments') }}">Back to My Appointments</a>
 {% endif %}
 {% endblock %}
