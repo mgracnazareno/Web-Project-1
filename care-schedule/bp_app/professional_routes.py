@@ -187,6 +187,61 @@ def manage_availability():
     )
     return render_template("professional/manage_availability.html", slots=slots)
 
+@professional.route("/professional/availability/<int:slot_id>/edit", methods=["GET", "POST"])
+@login_required
+def edit_availability(slot_id):
+    if not isinstance(current_user, Professional):
+        flash("This page is for professionals only.", "error")
+        return redirect(url_for("main.home"))
+
+    slot = db.session.get(Availability, slot_id)
+
+    if slot is None or slot.professional_id != current_user.id:
+        flash("Availability not found", "error")
+        return redirect(url_for("professional.manage_availability"))
+
+    if slot.appointment is not None:
+        flash("This slot is booked and can't be edited.", "error")
+        return redirect(url_for("professional.manage_availability"))
+
+    if request.method == "POST":
+        date_str = request.form.get("date", "").strip()
+        start_str = request.form.get("start_time", "").strip()
+        end_str = request.form.get("end_time", "").strip()
+
+        try:
+            start_dt = datetime.strptime(f"{date_str} {start_str}", "%Y-%m-%d %H:%M")
+            end_dt = datetime.strptime(f"{date_str} {end_str}", "%Y-%m-%d %H:%M")
+        except ValueError:
+            flash("Please provide a valid date, start time, and end time.", "error")
+            return render_template("/professional/edit_availability.html", slot=slot)
+
+        if end_dt <= start_dt:
+            flash("End time must be after the start time.", "error")
+            return render_template("professional/edit_availability.html", slot=slot)
+
+        if start_dt < datetime.now():
+            flash("Availability can't be set in the past.", "error")
+            return render_template("professional/edit_availability.html", slot=slot)
+
+        overlap = Availability.query.filter(
+            Availability.professional_id == current_user.id,
+            Availability.id != slot.id,
+            Availability.start_time < end_dt,
+            Availability.end_time > start_dt,
+        ).first()
+
+        if overlap is not None:
+            flash("This time overlaps with another one of your slots.", "error")
+            return render_template("professional/edit_availability.html", slot=slot)
+
+        slot.start_time = start_dt
+        slot.end_time = end_dt
+        db.session.commit()
+        flash("Availability updated.", "success")
+        return redirect(url_for("professional.manage_availability"))
+
+    return render_template("professional/edit_availability.html", slot=slot)
 
 @professional.route("/professional/availability/<int:slot_id>/delete", methods=["POST"])
 @login_required
