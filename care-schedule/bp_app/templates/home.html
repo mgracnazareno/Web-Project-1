@@ -15,16 +15,17 @@
         <div class="container">
             <div class="section-header text-center py-3">
                 <h2>Our Services</h2>
-                <p>Simple tools to make healthcare appointment scheduling easier.</p>
+                <p class="mb-4">Simple tools to make healthcare appointment scheduling easier.</p>
             </div>
 
             {# CARD 01 #}
             <div class="row g-4">
                 <div class="col-md-4">
                     <div class="card-services text-center h-100 p-4">
-{#                        <i class="bi bi-calendar-check fs-1"></i>#}
+                        {#                        <i class="bi bi-calendar-check fs-1"></i>#}
 
-                        <img src="{{ url_for('static', filename='images/Appointment Dashboard.svg') }}" alt="" class="service-icon service-icon-book" >
+                        <img src="{{ url_for('static', filename='images/Appointment Dashboard.svg') }}" alt=""
+                             class="service-icon service-icon-book">
 
                         <h3 class="h5">Book Appointment</h3>
                         <p> Browse available healthcare professional and book an appointment that fits your
@@ -35,8 +36,9 @@
                 {# CARD 02 #}
                 <div class="col-md-4">
                     <div class="card-services text-center h-100 p-4">
-{#                        <i class="bi bi-calendar-week fs-1"></i>#}
-                        <img src="{{ url_for('static', filename='images/CALENDER.svg') }}" alt="" class="service-icon service-icon-manage">
+                        {#                        <i class="bi bi-calendar-week fs-1"></i>#}
+                        <img src="{{ url_for('static', filename='images/CALENDER.svg') }}" alt=""
+                             class="service-icon service-icon-manage">
                         <h3 class="h5">Manage Appointments</h3>
                         <p> View your upcoming appointments and manage your bookings in one convenient place.</p>
                     </div>
@@ -46,10 +48,51 @@
                 {# CARD 03 #}
                 <div class="col-md-4">
                     <div class="card-services text-center h-100 p-4">
-{#                        <i class="bi bi-clock fs-1"></i>#}
-                        <img src="{{ url_for('static', filename='images/Doctor.svg') }}" alt="" class="service-icon service-icon-availability">
+                        {#                        <i class="bi bi-clock fs-1"></i>#}
+                        <img src="{{ url_for('static', filename='images/Doctor.svg') }}" alt=""
+                             class="service-icon service-icon-availability">
                         <h3 class="h5">Manage Availability</h3>
                         <p> Healthcare professionals can publish and manage their available appointment times.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="user-roles">
+        <div class="container">
+
+        </div>
+    </section>
+
+    <section class="about-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-md-6 col-lg-6 pe-md-4">
+                    <p class="section-header mb-2">About us</p>
+                    <h2 class="about-title mb-4">Booking a doctor <span class="d-block">shouldn't take a week</span></h2>
+
+                    <p class="about-lead">
+                        Most clinic bookings still run on phone tag - you call, they call back, that slot is gone.
+                    </p>
+
+                    <p class="about-text">
+                        CareSchedule puts the professional's real calendar in front of the
+                        patient. Healthcare professionals publish the times they are actually
+                        free, and those exact slots are what patients see and book. No waiting
+                        list, no double bookings, no "we'll get back to you."
+                    </p>
+
+                    <p class="about-text">
+                        Everything stays in one place afterwards. Patients can reschedule or
+                        cancel on their own, and both sides keep a record of past visits —
+                        so the next appointment starts with context instead of guesswork.
+                    </p>
+                </div>
+
+                <div class="col-12 col-md-6 col-lg-6 ps-md-3">
+                    <div class="img-holder">
+
                     </div>
                 </div>
             </div>

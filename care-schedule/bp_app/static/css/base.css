@@ -9,4 +9,6 @@
     --app-border: #d3e0e4;
     --app-muted: #5c6b73;
 
+    --app-teal-light: #4fa8c4;   /*accent on dark background*/
+    --app-muted-dark: #b9c5cc; /* body text on dark backgrounds*/
 }

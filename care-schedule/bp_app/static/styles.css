@@ -22,10 +22,10 @@ header {
     background-image:
         linear-gradient(
             90deg,
-            rgba(12, 25, 41, 0.75) 0%,
-            rgba(12, 25, 41, 0.55) 30%,
-            rgba(12, 25, 41, 0.60) 70%,
-            rgba(12, 25, 41, 0.65) 100%
+            rgba(12, 25, 41, 0.55) 0%,
+            rgba(12, 25, 41, 0.10) 30%,
+            rgba(12, 25, 41, 0.05) 70%,
+            rgba(12, 25, 41, 0.55) 100%
         ),
         url("images/banner-img.png");
 
@@ -33,7 +33,6 @@ header {
     background-position: center;
     background-repeat: no-repeat;
 }
-
 
 h1 {
   color:white;
@@ -95,6 +94,39 @@ h1 {
   height: 140px;
 }
 
+/*ABOUT SECTION */
+.about-section {
+    background-color: var(--app-navy);
+    padding: 4rem 0;
+}
+
+.about-section p {
+    color: var(--app-muted-dark);
+    line-height: 1.5;
+    font-size: 1.2rem;
+}
+.about-section .section-header {
+    font-size: .75rem;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--app-teal);
+}
+
+.about-title {
+    font-size: clamp(1.9rem, 3.5vw, 2.5rem);
+    color: var(--app-offwhite);
+}
+
+.about-section .img-holder{
+    background-image: url("images/doctor-online.svg");;
+    background-size: cover;
+    background-position: center;
+    height: 450px;
+    width: 100%;
+    display: block;
+    object-fit:cover;
+}
+
 .auth-card {
   max-width: 400px;
   margin: 2rem auto;
@@ -104,6 +136,7 @@ h1 {
   background-color: #ffffff;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
+
 
 .auth-card h2 {
   margin-bottom: 1.5rem;
