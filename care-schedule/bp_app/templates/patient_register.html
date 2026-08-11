@@ -11,32 +11,40 @@
 {% block content %}
 
     <section class="patient-registration">
-        <div class="auth-container">
-            <h2>Create an Account</h2>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-12">
+                    <div class="auth-container">
+                        <h2 class="mb-4">Create an Account</h2>
+                        <form action="{{ url_for('patients.register') }}" method="POST">
+                            <div class="form-group">
+                                <label for="username">Username</label>
+                                <input type="text" id="username" name="username"
+                                       value="{{ username if username else '' }}"
+                                       maxlength="50"
+                                       required>
+                            </div>
 
-            <form action="{{ url_for('patients.register') }}" method="POST">
-                <div class="form-group">
-                    <label for="username">Username</label>
-                    <input type="text" id="username" name="username" value="{{ username if username else '' }}"
-                           maxlength="50"
-                           required>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" name="email" value="{{ email if email else '' }}"
+                                       required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="password">password</label>
+                                <input type="password" id="password" name="password" required>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Register</button>
+
+                            <p class="auth-alt">Already have an account? <a href="{{ url_for('patients.login') }}">Log
+                                in here</a>
+                            </p>
+                        </form>
+                    </div>
                 </div>
-
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" value="{{ email if email else '' }}" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="password">password</label>
-                    <input type="password" id="password" name="password" required>
-                </div>
-
-                <button type="submit" class="btn btn-primary">Register</button>
-
-                <p class="auth-alt">Already have an account? <a href="{{ url_for('patients.login') }}">Log in here</a>
-                </p>
-            </form>
+            </div>
         </div>
     </section>
 {% endblock %}

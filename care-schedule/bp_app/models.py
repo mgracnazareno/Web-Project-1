@@ -17,15 +17,15 @@ class Patient(UserMixin, db.Model):
 
     password_hash = db.Column(db.String(255), nullable = False)
 
-    firstname = db.Column(db.String(150), nullable = True)
+    firstname = db.Column(db.String(150), nullable = False)
 
-    lastname = db.Column(db.String(150), nullable = True)
+    lastname = db.Column(db.String(150), nullable = False)
 
-    phone = db.Column(db.String(15), nullable = True)
+    phone = db.Column(db.String(20), nullable = False)
 
-    dob = db.Column(db.Date)
+    dob = db.Column(db.Date, nullable = False)
 
-    appointments = db.relationship("Appointment", back_populates="patient")
+    appointments = db.relationship("Appointment", back_populates="patient", cascade="all, delete-orphan")
 
     # methods
     # Flask-login can tell a Patient apart from a Professional with the same numeric id
