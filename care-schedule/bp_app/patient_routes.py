@@ -16,21 +16,20 @@ def register():
         return redirect(url_for("patients.dashboard"))
 
     if request.method == "POST":
-        username = request.form['username'].strip()
         email = request.form['email'].strip()
         password = request.form['password']
 
-        errors = validate_registration(username, email, password)
+        errors = validate_registration(email, password)
 
         if errors:
             for error in errors:
                 flash(error, "error")
             return render_template(
-                "patient_register.html", username=username, email=email
+                "patient_register.html", email=email
             )
 
         # create patient
-        patient = Patient(username=username, email=email)
+        patient = Patient(email=email)
         patient.set_password(password)
 
         # add it to the table
@@ -55,7 +54,7 @@ def login():
         patient = Patient.query.filter_by(email=email).first()
 
         if patient is None or not patient.check_password(password):
-            flash("Invalid username or password", "error")
+            flash("Invalid email or password", "error")
             return render_template("patient_login.html", email=email)
 
         login_user(patient)

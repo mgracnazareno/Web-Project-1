@@ -13,8 +13,6 @@ class Patient(UserMixin, db.Model):
 
     email = db.Column(db.String(255), nullable = False, unique=True)
 
-    username = db.Column(db.String(100), nullable = False, unique= True)
-
     password_hash = db.Column(db.String(255), nullable = False)
 
     firstname = db.Column(db.String(150), nullable = False)

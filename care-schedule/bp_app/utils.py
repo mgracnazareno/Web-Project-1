@@ -30,21 +30,12 @@ def validate_email(email):
 
     return None
 
-def validate_registration(username, email, password):
+def validate_registration(email, password):
     errors = []
 
-    if not username:
-        errors.append("Username is required")
-    elif len(username) > 50:
-        errors.append("Username may contain at most 50 characters.")
-    elif any(character.isspace() for character in username):
-        errors.append("Username may not contain whitespace")
-
-
-    if Patient.query.filter_by(username=username).first():
-        errors.append("That username is already in use!")
-
-    if Patient.query.filter_by(email=email).first():
+    if not email:
+        errors.append("Email is required.")
+    elif Patient.query.filter_by(email=email).first():
         errors.append("That email is already registered.")
 
     # Password validation
