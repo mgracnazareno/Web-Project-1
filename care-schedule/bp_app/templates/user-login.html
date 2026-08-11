@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/user-login.css') }}"/>
+{% endblock %}
+
+{% block header %}{% endblock %}
+{% block footer %}{% endblock %}
+
+{% block content %}
+{% if action == "login" %}
+    {% set patient_url = url_for('patients.login') %}
+    {% set pro_url = url_for('professional.login') %}
+{% else %}
+    {% set patient_url = url_for('patients.register') %}
+    {% set pro_url = url_for('professional.register') %}
+{% endif %}
+
+<section class="role-page min-vh-100 d-flex align-items-center">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-12 col-lg-8 col-xl-7">
+
+        <a href="{{ url_for('main.home') }}"
+           class="d-inline-flex align-items-center gap-2 mb-5 text-decoration-none">
+          <span class="brand-mark">
+            <i class="bi bi-activity"></i>
+          </span>
+          <span class="brand-name">CareSchedule</span>
+        </a>
+
+        <div class="text-center mb-5">
+          <h1 class="display-4 fw-bold mb-2">Who are you?</h1>
+          <p class="text-secondary mb-0">Choose your role to get started.</p>
+        </div>
+
+        <div class="row g-4">
+          <div class="col-12 col-md-6">
+            <a href="{{ patient_url }}" class="role-card card h-100 p-4 text-decoration-none">
+              <span class="role-icon mb-4">
+                <i class="bi bi-person"></i>
+              </span>
+              <h4 class="fw-bold mb-2">Patient</h4>
+              <p class="text-secondary mb-0">Book appointments with healthcare professionals</p>
+            </a>
+          </div>
+
+          <div class="col-12 col-md-6">
+            <a href="{{ pro_url }}" class="role-card card h-100 p-4 text-decoration-none">
+              <span class="role-icon mb-4">
+                <i class="bi bi-person-badge"></i>
+              </span>
+              <h4 class="fw-bold mb-2">Healthcare Professional</h4>
+              <p class="text-secondary mb-0">Manage your schedule and patient bookings</p>
+            </a>
+          </div>
+        </div>
+
+        {% if action == "register" %}
+        <p class="text-center text-secondary mt-5 mb-0">
+          Already have an account?
+          <a href="{{ url_for('main.get_started', action='login') }}" class="sign-in-link">Sign in</a>
+        </p>
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,62 @@
+.role-page {
+  background-color: var(--app-bg);
+}
+
+/* teal rounded square na may icon */
+.brand-mark {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background-color: var(--app-teal);
+  color: var(--app-offwhite);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.brand-name {
+
+  font-weight: 700;
+  color: var(--app-navy);
+}
+
+/* light tile sa loob ng card */
+.role-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  background-color: var(--app-bg);
+  color: var(--app-navy);
+  font-size: 1.35rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.role-card {
+  background-color: var(--app-offwhite);
+  border: 1px solid var(--app-border);
+  border-radius: 14px;
+  color: inherit;
+  transition: border-color .15s ease, box-shadow .15s ease, transform .15s ease;
+}
+
+.role-card:hover {
+  border-color: var(--app-teal);
+  box-shadow: 0 8px 24px rgba(12, 25, 41, .10);
+  transform: translateY(-2px);
+}
+
+.role-card h4 { color: var(--app-navy); }
+.role-card p  { color: var(--app-muted); }
+
+.role-page h1 { color: var(--app-navy); }
+.role-page .lead-sub { color: var(--app-muted); }
+
+.sign-in-link {
+  color: var(--app-teal);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.sign-in-link:hover { text-decoration: underline; }
