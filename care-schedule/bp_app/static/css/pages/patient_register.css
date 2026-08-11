@@ -1,0 +1,15 @@
+.patient-registration {
+    background: var(--app-bg);
+}
+
+.registration-sidebar {
+    background-color: var(--app-navy);
+}
+
+.registration-sidebar .brand-name {
+    color: var(--app-offwhite);
+}
+
+.registration-description {
+    color: var(--app-muted);
+}

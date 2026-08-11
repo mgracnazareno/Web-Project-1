@@ -11,13 +11,39 @@
 {% block content %}
 
     <section class="patient-registration">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-12">
-                    <div class="auth-container">
-                        <h2 class="mb-4">Create an Account</h2>
+        <div class="container-fluid">
+            <div class="row min-vh-100">
 
-                        {% with messages = get_flashed_messages('with_categories=true') %}
+            {# LEFT SIDE #}
+            <div class="col-lg-5 d-none d-lg-flex registration-sidebar p-5">
+                <div class="d-flex flex-column w-100">
+
+                    {# BRAND #}
+                    <a href="{{ url_for('main.home') }}" class="d-flex align-items-center gap-2 text-decoration-none fw-bold fs-4">
+                        <span class="brand-mark d-flex align-items-center justify-content-center">
+                            <i class="bi bi-activity"></i>
+                        </span>
+
+                        <span class="brand-name">  CareSchedule</span>
+
+                    </a>
+
+                    <div class="my-auto">
+                        <h1 class="display-5 fw-bold mb-4 text-white" >Patient Registration</h1>
+
+                        <p class="lead registration-description">Fill in your details to create your account</p>
+                    </div>
+
+                </div>
+            </div>
+
+
+                {# RIGHT SIDE #}
+                <div class="col-12 col-lg-7 d-flex align-items-center justify-content-center py-5 px-3 px-md-5">
+                    <div class="auth-container w-100">
+                        <h2 class="mb-4">Your Details</h2>
+
+                        {% with messages = get_flashed_messages(with_categories=true) %}
                             {% for category, message in messages %}
                                 <div  class="alert alert-{{ 'danger' if category == 'error' else category }}">{{ message }}</div>
                             {% endfor %}
@@ -57,7 +83,7 @@
                             </div>
 
                             <div class="col-12 d-grid  mt-3">
-                                <button type="submit" class="btn btn-primary btn-lg">Register</button>
+                                <button type="submit" class="btn btn-primary btn-lg">Create an Account</button>
                             </div>
 
                             <p class="auth-alt text-center mt-4 mb-0">Already have an account? <a href="{{ url_for('patients.login') }}" class="text-decoration-none">Log

@@ -12,3 +12,21 @@
     --app-teal-light: #4fa8c4;   /*accent on dark background*/
     --app-muted-dark: #b9c5cc; /* body text on dark backgrounds*/
 }
+
+/* teal rounded square na may icon */
+.brand-mark {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background-color: var(--app-teal);
+  color: var(--app-offwhite);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.brand-name {
+
+  font-weight: 700;
+  color: var(--app-navy);
+}
