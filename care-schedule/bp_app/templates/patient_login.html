@@ -1,13 +1,17 @@
 {% extends "base.html" %}
+{% block styles %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/page_login.css') }}">
+{% endblock %}
+
+{% block header %}{% endblock %}
+{% block title %}Patient Login{% endblock %}
 
 {% block content %}
-
-<h2>Patient Portal Login</h2>
-
+    
 {% with messages = get_flashed_messages( with_categories= true) %}
 {% if messages %}
 <div class="flash-messages">
-    {% for category, messages in messages %}
+    {% for category, message in messages %}
     <p class="alert alert-{{ category }}">{{ message }}</p>
     {% endfor %}
 </div>
@@ -30,7 +34,4 @@
 
     <button type="submit">Login</button>
 </form>
-
-
-
 {% endblock %}
