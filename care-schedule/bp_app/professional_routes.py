@@ -122,12 +122,13 @@ def logout():
     return redirect(url_for("main.home"))
 
 
-@professional.route("/professional/availability/add", methods=["GET", "POST"])
+@professional.route("/professional/availability/add", methods=["POST"])
 @login_required
 def add_availability():
     if not isinstance(current_user, Professional):
         flash("This page is for Professionals only.", "danger")
         return redirect(url_for("main.home"))
+
 
     if request.method == "POST":
         date_str = request.form.get("date", "")
@@ -143,7 +144,7 @@ def add_availability():
             return render_template("professional/add_availability.html")
 
         if end <= start:
-            flash("End tiime must be after the start time.", "error")
+            flash("End time must be after the start time.", "error")
             return render_template("professional/add_availability.html")
 
         if start <= datetime.now():

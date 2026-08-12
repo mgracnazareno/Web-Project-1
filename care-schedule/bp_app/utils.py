@@ -1,4 +1,5 @@
-# Validation helpers
+# Validation helper
+from datetime import datetime
 from .models import Patient, Professional
 
 
@@ -84,3 +85,20 @@ def validate_professional_registration(username, email, password, firstname, las
     elif any(character.isspace() for character in firstname):
         errors.append("First name may not contain whitespace.")
     return errors
+
+def validate_slot(date_str, start_str, end_str):
+    """ Return (start, end, error). The error is None when the slot is valid."""
+    try:
+        start = datetime.strptime(f"{date_str} {start_str}", "%Y-%m-%d %H:%M")
+        end = datetime.strptime(f"{date_str}{end_str}", "%Y-%m-%d %H:%M")
+    except ValueError:
+        return None, None, "Please enter a valid date and times."
+
+    if end <= start:
+        return None, None, "End time must be after the start time."
+
+    if start <= datetime.now():
+        return None, None, "Availability must be in the future."
+
+    return start, end , None
+
