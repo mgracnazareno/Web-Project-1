@@ -15,13 +15,21 @@
 
         {# Right Side: Dynamic Page Data #}
         <div class="dashboard-main bg-app-page p-4 p-md-5">
+            {% with message = get_flashed_messages(with_categories=true) %}
+                {% for category, message in messages %}
+                    <div class="alert-alert-{{ 'danger' if category == 'error' else 'success' }} alert-dismissible fade show rounded-4 border-0"
+                         role="alert">
+                        {{ message }}
+
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endwith %}
             {% block dashboard_content %}
                 {# Data will be injected here #}
             {% endblock %}
         </div>
     </div>
- <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
-
-
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
 {% endblock %}
 

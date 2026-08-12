@@ -1,43 +1,215 @@
-{% extends "dashboard_base.html" %}
-{% block title %}Manage Availability{% endblock %}
+{% extends "components/dashboard_base.html" %}
+{% block title %}Availability{% endblock %}
 
-{% block content %}
-    <h3>Manage Availability</h3>
-    <a href="{{ url_for('professional.add_availability') }}">+ Add Availability</a>
+{% block dashboard_content %}
 
-    {% if slots %}
-    <table>
-        <tr>
-            <th>Date</th>
-            <th>Start</th>
-            <th>End</th>
-            <th>Status</th>
-            <th>Actions</th>
-        </tr>
-        {% for slot in slots %}
-        <tr>
-            <td>{{ slot.start_time.strftime("%Y-%m-%d") }}</td>
-            <td>{{ slot.start_time.strftime("%I-%M %p") }}</td>
-            <td>{{ slot.end_time.strftime("%I-%M %p" ) }}</td>
-            <td>{{ "Booked" if slot.appointment else "Open" }}</td>
-            <td>
-                {% if not slot.appointment %}
-                    <a href="{{ url_for('professional.edit_availability', slot_id=slot.id) }}">Edit</a>
+    {# Everything sits in one column so the button, rows and modal share an edge #}
+    <div class="row">
+        <div class="col-12 col-lg-10 col-xxl-8">
 
-                    <form method="POST"
-                          action="{{ url_for('professional.delete_availability', slot_id=slot.id) }}"
-                          style="display:inline;"
-                          onsubmit="return confirm('Delete this availability slot?');">
-                        <button type="submit">Delete</button>
-                    </form>
-                    {% else %}
-                        &mdash;
+            <!-- ========================================================
+                 Header
+                 ======================================================== -->
+            <div class="d-flex flex-wrap justify-content-between align-items-start gap-3 mb-4">
+                <div>
+                    <h1 class="display-6 fw-bold text-app-navy mb-1">Availability</h1>
+                    <p class="text-app-muted mb-0">Publish time slots for patients to book.</p>
+                </div>
+
+                {% if slots %}
+                    <button type="button"
+                            class="btn bg-app-teal text-app-offwhite fw-bold px-3 py-2 rounded-3"
+                            data-bs-toggle="modal" data-bs-target="#addSlotModal">
+                        <i class="bi bi-plus-lg me-1"></i> Add slot
+                    </button>
                 {% endif %}
-            </td>
-        </tr>
-    {% endfor %}
-    </table>
-    {% else %}
-        <p>You haven't added any availability yet.</p>
-    {% endif %}
+            </div>
+
+
+            <!-- ========================================================
+                 Slot rows
+                 ======================================================== -->
+            {% for date, day_slots in slots|groupby("day") %}
+
+                {% if not loop.first %}
+                    <hr class="border-app-border my-4">
+                {% endif %}
+                {% if day_slots|length > 1 %}
+                    <div class="eyebrow text-app-muted mt-4 mb-2">
+                        {{ date.strftime("%A, %B %d, %Y") }}
+                    </div>
+                {% endif %}
+
+                {% for slot in day_slots %}
+                    <div class="card border-0 shadow-sm rounded-4 bg-app-card p-3 mb-3">
+                        <div class="d-flex align-items-center gap-3">
+
+                            <!-- Icon tile -->
+                            <div class="slot-icon rounded-3 d-flex align-items-center justify-content-center flex-shrink-0">
+                                <i class="bi bi-calendar3 text-app-muted"></i>
+                            </div>
+
+                            <!-- Date + time. flex-grow pushes everything else to the right. -->
+                            <div class="flex-grow-1 min-w-0">
+                                <div class="fw-bold text-app-navy">
+                                    {{ slot.start_time.strftime("%A, %B %d, %Y") }}
+                                </div>
+                                <div class="text-app-muted text-xs">
+                                    {{ slot.start_time.strftime("%I:%M %p") }} &ndash;
+                                    {{ slot.end_time.strftime("%I:%M %p") }}
+                                </div>
+                            </div>
+
+                            <!-- Status -->
+                            {% if slot.appointment %}
+                                <span class="badge-slot badge-booked">Booked</span>
+                            {% else %}
+                                <span class="badge-slot badge-available">Available</span>
+                            {% endif %}
+
+                            <!-- Actions. Booked slots keep the icons in place but disabled,
+                                 so the rows stay lined up. -->
+                            <div class="d-flex align-items-center gap-1 flex-shrink-0">
+                                {% if slot.appointment %}
+                                    <button class="btn btn-sm border-0 text-app-muted" disabled
+                                            title="Booked slots can't be changed">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                {% else %}
+                                    <a href="{{ url_for('professional.edit_availability', slot_id=slot.id) }}"
+                                       class="btn btn-sm border-0 text-app-muted" title="Edit slot">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+
+                                    <form method="POST"
+                                          action="{{ url_for('professional.delete_availability', slot_id=slot.id) }}"
+                                          class="d-inline"
+                                          onsubmit="return confirm('Delete this availability slot?');">
+                                        <button type="submit" class="btn btn-sm border-0 text-app-muted"
+                                                title="Delete slot">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </form>
+                                {% endif %}
+                            </div>
+
+                        </div>
+                    </div>
+                {% else %}
+
+                    <div class="card border-0 shadow-sm rounded-4 bg-app-card p-5 text-center">
+                        <div class="mb-3">
+                            <i class="bi bi-calendar-plus display-6 text-app-muted"></i>
+                        </div>
+                        <h2 class="h5 fw-bold text-app-navy">No slots yet</h2>
+                        <p class="text-app-muted mb-4">
+                            Add your first slot so patients can start booking with you.
+                        </p>
+                        <div>
+                            <button type="button"
+                                    class="btn bg-app-teal text-app-offwhite fw-bold px-3 py-2 rounded-3"
+                                    data-bs-toggle="modal" data-bs-target="#addSlotModal">
+                                <i class="bi bi-plus-lg me-1"></i> Add slot
+                            </button>
+                        </div>
+                    </div>
+                {% endfor %}
+
+            {% endfor %}
+
+
+        </div>
+    </div>
+
+
+    <!-- ============================================================
+         Add slot modal
+         ============================================================ -->
+    <div class="modal fade" id="addSlotModal" tabindex="-1" aria-labelledby="addSlotLabel">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4 border-0">
+
+                <div class="modal-header border-0 pb-1">
+                    <h2 class="modal-title h5 fw-bold text-app-navy" id="addSlotLabel">
+                        Add Availability Slot
+                    </h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                </div>
+
+                <form method="POST" action="{{ url_for('professional.add_availability') }}">
+                    <div class="modal-body">
+
+                        <!-- One date for every time range below -->
+                        <label class="w-100 mb-3">
+                        <span class="eyebrow text-app-muted d-block mb-1">
+                            Date <span class="text-danger">*</span>
+                        </span>
+                            <input type="date" name="date" class="form-control" required>
+                        </label>
+
+                        <!-- Cloned rows land here -->
+                        <div id="slotRows"></div>
+
+                        <button type="button" id="addRowBtn"
+                                class="btn btn-sm btn-link text-app-teal text-decoration-none p-0">
+                            <i class="bi bi-plus-lg me-1"></i> Add another time
+                        </button>
+                    </div>
+
+                    <div class="modal-footer border-0 justify-content-between">
+                        <button type="button" class="btn btn-link text-app-muted text-decoration-none"
+                                data-bs-dismiss="modal">
+                            Cancel
+                        </button>
+                        <button type="submit" class="btn bg-app-teal text-app-offwhite fw-bold px-4">
+                            Add slot
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ============================================================
+         Template for one time range. Inert until cloned — the inputs
+         inside are never validated or submitted while they live here.
+         The <input> sits inside its <label>, so no id is needed and
+         the clones can't collide with each other.============================================================ --><template id="slotRowTemplate"><div class="row g-2 mb-3 slot-row"><div class="col"><label class="w-100"><span class="eyebrow text-app-muted d-block mb-1">Start time <span class="text-danger">*</span></span><input type="time" name="start_time" class="form-control" required></label></div><div class="col"><label class="w-100"><span class="eyebrow text-app-muted d-block mb-1">End time <span class="text-danger">*</span></span><input type="time" name="end_time" class="form-control" required></label></div><div class="col-auto d-flex align-items-end"><button type="button" class="btn btn-outline-secondary remove-row"aria-label="Remove this time"><i class="bi bi-x-lg"></i></button></div></div></template>
+
+
+    <script>const slotRowTemplate = document.getElementById("slotRowTemplate");const slotRows = document.getElementById("slotRows");const addRowBtn = document.getElementById("addRowBtn");
+
+    // Clone the template's content and drop it into the container
+    function addSlotRow() {
+        slotRows.appendChild(slotRowTemplate.content.cloneNode(true));
+        refreshRemoveButtons();
+    }
+
+    // Disable the remove button when only one row is left,
+    // so the form can never end up with zero times
+    function refreshRemoveButtons() {
+        const rows = slotRows.querySelectorAll(".slot-row");
+        rows.forEach(function (row) {
+            row.querySelector(".remove-row").disabled = rows.length === 1;
+        });
+    }
+
+    addRowBtn.addEventListener("click", addSlotRow);
+
+    // One listener on the container handles every row, even future ones
+    slotRows.addEventListener("click", function (event) {
+        const button = event.target.closest(".remove-row");
+        if (!button) return;
+
+        button.closest(".slot-row").remove();
+        refreshRemoveButtons();
+    });
+
+    // Start the form off with one empty row
+    addSlotRow();
+    </script>
+
 {% endblock %}

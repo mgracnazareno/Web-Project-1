@@ -129,27 +129,36 @@ def add_availability():
         flash("This page is for Professionals only.", "danger")
         return redirect(url_for("main.home"))
 
+    date_str = request.form.get("date", "")
+    start_times = request.form.getlist("start_time")
+    end_str = request.form.getlist("end_time")
 
-    if request.method == "POST":
-        date_str = request.form.get("date", "")
-        start_str = request.form.get("start_time", "")
-        end_str = request.form.get("end_time", "")
+    if not date_str or not start_times:
+        flash("Please pick a data and at least one time range.", "error")
+        return redirect(url_for("professional.manage_availability"))
+
+    # Slots added
+    added = 0
+
+    for start_str, end_str in zip(start_times, end_str):
+        if not start_str or not end_str:
+            continue
 
         # datetime - local inputs
         try:
             start = datetime.strptime(f"{date_str} {start_str}", "%Y-%m-%d %H:%M")
             end = datetime.strptime(f"{date_str} {end_str}", "%Y-%m-%d %H:%M")
         except ValueError:
-            flash("Please enter a valid date and times.", "danger")
-            return render_template("professional/add_availability.html")
+            flash(f"{start_str}Please enter a valid date and times.", "danger")
+            continue
 
         if end <= start:
-            flash("End time must be after the start time.", "error")
-            return render_template("professional/add_availability.html")
+            flash(f"{start_str}End time must be after the start time.", "error")
+            continue
 
         if start <= datetime.now():
             flash("Availability must be in the future.", "error")
-            return render_template("professional/add_availability.html")
+            continue
 
         overlap = Availability.query.filter(
             Availability.professional_id == current_user.id,
@@ -157,9 +166,10 @@ def add_availability():
             Availability.end_time > start
         ).first()
 
+
         if overlap:
             flash("This time overlaps one of your existing slots", "error")
-            return render_template("professional/add_availability.html")
+            continue
 
         slot = Availability(
             professional_id=current_user.id,
@@ -167,12 +177,12 @@ def add_availability():
             end_time=end,
         )
         db.session.add(slot)
+        added+= 1
+
+    if added:
         db.session.commit()
-
-        flash("Availability added", "success")
-        return redirect(url_for("professional.manage_availability"))
-
-    return render_template("professional/add_availability.html")
+        flash(f"Added {added} slots(s).", "success")
+    return redirect(url_for("professional.manage_availability"))
 
 
 @professional.route("/professional/availability")

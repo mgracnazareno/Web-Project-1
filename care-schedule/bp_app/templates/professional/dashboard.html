@@ -1,99 +1,102 @@
 {% extends "components/dashboard_base.html" %}
 
 {% block dashboard_content %}
-<!-- Header Category & Title -->
-<div class="mb-4">
-    <div class="eyebrow text-app-teal mb-1">
-        CARDIOLOGY &bull; PROFESSIONAL DASHBOARD
-    </div>
-    <h1 class="display-5 fw-bold text-app-navy">
-        Good morning,<br>Dr. Vasquez.
-    </h1>
-</div>
-
-
-<div class="row g-4">
-    <!-- Left Column: Stat Cards, Today's Schedule, Quick Actions -->
-    <div class="col-12 col-lg-8">
-
-        <!-- Metric Cards Row -->
-        <div class="row g-3 mb-4">
-            <div class="col-12 col-md-4">
-                <div class="card border-0 shadow-sm rounded-4 p-3 bg-app-card h-100">
-                    <div class="display-4 fw-bold text-app-navy mb-1">0</div>
-                    <div class="fw-bold text-app-navy small">Today's appointments</div>
-                    <div class="text-app-muted text-xs">Wednesday, Aug 12</div>
-                </div>
-            </div>
-            <div class="col-12 col-md-4">
-                <div class="card border-0 shadow-sm rounded-4 p-3 bg-app-card h-100">
-                    <div class="display-4 fw-bold text-app-navy mb-1">1</div>
-                    <div class="fw-bold text-app-navy small">Total upcoming</div>
-                </div>
-            </div>
-            <div class="col-12 col-md-4">
-                <div class="card border-0 shadow-sm rounded-4 p-3 bg-app-card h-100">
-                    <div class="display-4 fw-bold text-app-navy mb-1">2</div>
-                    <div class="fw-bold text-app-navy small">Open slots</div>
-                </div>
-            </div>
+    <!-- Header Category & Title -->
+    <div class="mb-4">
+        <div class="eyebrow text-app-teal mb-1">
+            CARDIOLOGY &bull; PROFESSIONAL DASHBOARD
         </div>
-
-        <!-- Today's Schedule Card -->
-        <div class="card border-0 shadow-sm rounded-4 p-4 bg-app-card mb-4 card-schedule">
-            <div class="eyebrow text-app-muted mb-4">
-                Today's schedule
-            </div>
-            <div class="empty-state">
-                No appointments today.
-            </div>
-        </div>
-
-        <!-- Quick Actions -->
-        <div>
-            <div class="eyebrow text-app-muted mb-3">
-                Quick actions
-            </div>
-            <div class="row g-3">
-                <div class="col-12 col-md-4">
-                    <a href="#" class="card border-0 shadow-sm rounded-4 p-3 bg-app-navy text-app-offwhite text-decoration-none quick-action-card h-100">
-                        <i class="bi bi-calendar-plus fs-4 mb-3"></i>
-                        <div class="fw-bold small">Manage Availability</div>
-                    </a>
-                </div>
-                <div class="col-12 col-md-4">
-                    <a href="#" class="card border-0 shadow-sm rounded-4 p-3 bg-app-card text-app-navy text-decoration-none quick-action-card h-100">
-                        <i class="bi bi-clock fs-4 mb-3 text-app-navy"></i>
-                        <div class="fw-bold small">All Appointments</div>
-                    </a>
-                </div>
-                <div class="col-12 col-md-4">
-                    <a href="#" class="card border-0 shadow-sm rounded-4 p-3 bg-app-card text-app-navy text-decoration-none quick-action-card h-100">
-                        <i class="bi bi-person fs-4 mb-3 text-app-navy"></i>
-                        <div class="fw-bold small">My Profile</div>
-                    </a>
-                </div>
-            </div>
-        </div>
-
+        <h1 class="display-5 fw-bold text-app-navy">
+            Good morning,<br>Dr. Vasquez.
+        </h1>
     </div>
 
-    <!-- Right Column: Upcoming Appointments Sidebar Card -->
-    <div class="col-12 col-lg-4">
-        <div class="card border-0 shadow-sm rounded-4 p-4 bg-app-card h-100">
-            <div class="eyebrow text-app-muted mb-4">
-                Upcoming appointments
-            </div>
-            <div class="d-flex align-items-center gap-3">
-                <div class="avatar bg-light text-app-muted">
-                    JK
+
+    <div class="row g-4">
+        <!-- Left Column: Stat Cards, Today's Schedule, Quick Actions -->
+        <div class="col-12 col-lg-8">
+
+            <!-- Metric Cards Row -->
+            <div class="row g-3 mb-4">
+                <div class="col-12 col-md-4">
+                    <div class="card border-0 shadow-sm rounded-4 p-3 bg-app-card h-100">
+                        <div class="display-4 fw-bold text-app-navy mb-1">0</div>
+                        <div class="fw-bold text-app-navy small">Today's appointments</div>
+                        <div class="text-app-muted text-xs">Wednesday, Aug 12</div>
+                    </div>
                 </div>
-                <div>
-                    <div class="fw-bold text-app-navy">Jordan Kim</div>
-                    <div class="text-app-muted text-xs">Aug 4, 2026 &bull; 10:00 AM</div>
+                <div class="col-12 col-md-4">
+                    <div class="card border-0 shadow-sm rounded-4 p-3 bg-app-card h-100">
+                        <div class="display-4 fw-bold text-app-navy mb-1">1</div>
+                        <div class="fw-bold text-app-navy small">Total upcoming</div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <div class="card border-0 shadow-sm rounded-4 p-3 bg-app-card h-100">
+                        <div class="display-4 fw-bold text-app-navy mb-1">2</div>
+                        <div class="fw-bold text-app-navy small">Open slots</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Today's Schedule Card -->
+            <div class="card border-0 shadow-sm rounded-4 p-4 bg-app-card mb-4 card-schedule">
+                <div class="eyebrow text-app-muted mb-4">
+                    Today's schedule
+                </div>
+                <div class="empty-state">
+                    No appointments today.
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div>
+                <div class="eyebrow text-app-muted mb-3">
+                    Quick actions
+                </div>
+                <div class="row g-3">
+                    <div class="col-12 col-md-4">
+                        <a href="#"
+                           class="card border-0 shadow-sm rounded-4 p-3 bg-app-navy text-app-offwhite text-decoration-none quick-action-card h-100">
+                            <i class="bi bi-calendar-plus fs-4 mb-3"></i>
+                            <div class="fw-bold small">Manage Availability</div>
+                        </a>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <a href="#"
+                           class="card border-0 shadow-sm rounded-4 p-3 bg-app-card text-app-navy text-decoration-none quick-action-card h-100">
+                            <i class="bi bi-clock fs-4 mb-3 text-app-navy"></i>
+                            <div class="fw-bold small">All Appointments</div>
+                        </a>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <a href="#"
+                           class="card border-0 shadow-sm rounded-4 p-3 bg-app-card text-app-navy text-decoration-none quick-action-card h-100">
+                            <i class="bi bi-person fs-4 mb-3 text-app-navy"></i>
+                            <div class="fw-bold small">My Profile</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Right Column: Upcoming Appointments Sidebar Card -->
+        <div class="col-12 col-lg-4">
+            <div class="card border-0 shadow-sm rounded-4 p-4 bg-app-card h-100">
+                <div class="eyebrow text-app-muted mb-4">
+                    Upcoming appointments
+                </div>
+                <div class="d-flex align-items-center gap-3">
+                    <div class="avatar bg-light text-app-muted">
+                        JK
+                    </div>
+                    <div>
+                        <div class="fw-bold text-app-navy">Jordan Kim</div>
+                        <div class="text-app-muted text-xs">Aug 4, 2026 &bull; 10:00 AM</div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 {% endblock %}

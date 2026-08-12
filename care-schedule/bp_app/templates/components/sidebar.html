@@ -67,7 +67,7 @@
                     <span class="sidebar-label">Dashboard</span>
                 </a>
                 {# TODO: url_for('availability.manage') #}
-                <a href="#" title="Availability"
+                <a href="{{ url_for('professional.manage_availability') }}" title="Availability"
                    class="nav-link-custom {{ 'active' if active_page == 'availability' }}">
                     <i class="bi bi-plus-lg"></i>
                     <span class="sidebar-label">Availability</span>

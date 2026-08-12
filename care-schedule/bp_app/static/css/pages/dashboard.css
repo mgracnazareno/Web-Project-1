@@ -58,6 +58,40 @@
 }
 
 
+/*AVAILABILITY PAGE */
+/* Icon tile at the left of each slot row */
+.slot-icon {
+    width: 40px;
+    height: 40px;
+    background-color: var(--app-bg);
+}
+
+/* Status pills */
+.badge-slot {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.6rem;
+    border-radius: 50rem;
+    flex-shrink: 0;
+}
+
+.badge-available {
+    color: var(--app-teal);
+    background-color: rgba(27, 122, 150, 0.1);
+    border: 1px solid var(--app-teal);
+}
+
+.badge-booked {
+    color: #a56a00;
+    background-color: rgba(165, 106, 0, 0.1);
+    border: 1px solid #a56a00;
+}
+
+.border-app-border {
+    border-color: var(--app-border);
+}
 @media (min-width: 992px) {
 
     .dashboard-layout {

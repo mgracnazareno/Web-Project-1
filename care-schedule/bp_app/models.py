@@ -119,6 +119,11 @@ class Availability(db.Model):
 
     end_time = db.Column(db.DateTime, nullable = False)
 
+    @property
+    def day(self):
+        """The calendar date of this slot, used to group rows in the UI"""
+        return self.start_time.date()
+
     is_booked = db.Column(db.Boolean, nullable = False, default = False)
 
     professional_id = db.Column(
