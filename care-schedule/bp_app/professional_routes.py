@@ -69,8 +69,8 @@ def register():
             email=email,
             firstname=firstname,
             lastname=lastname,
-            specialty=specialty,
-            biography=bio,
+            selected_specialty=specialty,
+            biography=bio
         )
 
         professional_user.set_password(password)
@@ -82,7 +82,7 @@ def register():
         return redirect(url_for("professional.login"))
 
     # GET request
-    return render_template("professional/register.html")
+    return render_template("professional/register.html", specialties=SPECIALTIES)
 
 
 @professional.route("/professional/login", methods=["GET", "POST"])

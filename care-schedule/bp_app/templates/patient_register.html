@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block styles %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/patient_register.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/register.css') }}">
 {% endblock %}
 
 {% block header %}{% endblock %}
@@ -23,20 +23,18 @@
                         <span class="brand-mark d-flex align-items-center justify-content-center">
                             <i class="bi bi-activity"></i>
                         </span>
-
                         <span class="brand-name">  CareSchedule</span>
-
                     </a>
 
                     <div class="my-auto">
                         <h1 class="display-5 fw-bold mb-4 text-white" >Patient Registration</h1>
-
                         <p class="lead registration-description">Fill in your details to create your account</p>
                     </div>
 
+                    {# CHANGE ROLE #}
+                        <a href="{{ url_for('main.home') }}" class="change-role text-decoration-none">Change Role</a>
                 </div>
             </div>
-
 
                 {# RIGHT SIDE #}
                 <div class="col-12 col-lg-7 d-flex align-items-center justify-content-center py-5 px-3 px-md-5">

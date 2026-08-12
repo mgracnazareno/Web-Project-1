@@ -1,40 +1,109 @@
 {% extends "base.html" %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/register.css') }}">
+{% endblock %}
+{% block header %}{% endblock %}
+
 {% block content %}
+    <section class="professional-registration">
+        <div class="container-fluid">
+            <div class="row g-0 min-vh-100">
+                {# LEFT SIDE #}
+                <div class="col-lg-5 d-none d-lg-flex registration-sidebar p-5">
+                    <div class="d-flex flex-column w-100">
 
-    <h3>Professional Registration</h3>
+                        {# BRAND #}
+                        <a href="{{ url_for('main.home') }}"
+                           class="d-flex align-items-center gap-2 text-decoration-none fw-bold fs-4">
+                            <span class="brand-mark d-flex align-items-center justify-content-center">
+                                <i class="bi bi-activity"></i>
+                            </span>
+                            <span class="brand-name"> CareSchedule</span>
+                        </a>
+
+                        <div class="my-auto">
+                            <h1 class="display-5 fw-bold mb-4 text-white">Professional Registration</h1>
+
+                            <p class="lead registration-description">Fill in your details to create your account</p>
+                        </div>
+
+                        {# CHANGE ROLE #}
+                        <a href="{{ url_for('main.home') }}" class="change-role text-decoration-none">Change Role</a>
+
+                    </div>
+                </div>
+
+
+                {# RIGHT SIDE #}
+                <div class="col-12 col-lg-7 d-flex align-items-center justify-content-center py-5 px-3 px-md-5">
+                    <div class="auth-container w-100">
+                        <h2 class="mb-4">Your Details</h2>
+
+                        {% with messages = get_flashed_messages(with_categories=true) %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ 'danger' if category == 'error' else category }}">{{ message }}</div>
+                            {% endfor %}
+                        {% endwith %}
+
+                        <form action="{{ url_for('professional.register') }}" method="POST" class="row g-3">
+
+                            <div class="col-12 col-md-6">
+                                <label for="username" class="form-label">Username</label>
+                                <input type="text" class="form-control" id="username" name="username" value="{{ username or '' }}" required>
+                            </div>
+
+                            <div class="col-12 col-md-6">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" name="email" value="{{ email or '' }}" required>
+
+                            </div>
+                            <div class="col-12">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="password" name="password" required>
+                            </div>
+
+                            <div class="col-12 col-md-6">
+                                <label for="firstname" class="form-label">First name</label>
+                                <input type="text" class="form-control" id="firstname" name="firstname" value="{{ firstname or '' }}">
+
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <label for="lastname" class="form-label">Last name</label>
+                                <input type="text" class="form-control" id="lastname" name="lastname" value="{{ lastname or '' }}">
+
+                            </div>
+                            <div class="col-12">
+                                <label for="specialty" class="form-label">Specialty</label>
+                                <select name="specialty"  class="form-select" id="specialty" required>
+                                    <option value="" disabled {{ 'selected' if not specialty }}>--Select a specialty--
+                                    </option>
+                                    {% for specialty in specialties %}
+                                        <option value="{{ specialty }}" {{ 'selected' if specialty ==selected_specialty }}>
+                                            {{ specialty }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label for="biography" class="form-label">Biography</label>
+                                <textarea id="biography" class="form-control" name="biography">{{ biography or '' }}</textarea>
+
+                            </div>
+                            <div class="col-12 d-grid md-block mt-2">
+                            <button type="submit" class="btn btn-primary btn-lg">Register</button>
+
+                            </div>
 
 
 
-    <form action="{{ url_for('professional.register') }}" method="POST">
-        <label for="username">Username</label>
-        <input type="text" id="username" name="username" value="{{ username or '' }}" required>
 
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" value="{{ email or '' }}" required>
 
-        <label for="password">Password</label>
-        <input type="password" id="password" name="password" required>
-
-        <label for="firstname">First name</label>
-        <input type="text" id="firstname" name="firstname" value="{{ firstname or '' }}">
-
-        <label for="lastname">Last name</label>
-        <input type="text" id="lastname" name="lastname" value="{{ lastname or '' }}">
-
-        <label for="specialty">Specialty</label>
-        <select name="specialty" id="specialty" required>
-            <option value="" disabled {{ 'selected' if not specialty }}>--Select a specialty--</option>
-            {% for specialty in specialties %}
-                <option value="{{ specialty }}" {{ 'selected' if specialty == selected_specialty }}>
-                    {{ specialty }}
-                </option>
-            {% endfor %}
-        </select>
-
-        <label for="biography">Biography</label>
-        <textarea id="biography" name="biography">{{ biography or '' }}</textarea>
-
-        <button type="submit">Register</button>
-    </form>
-
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 {% endblock %}

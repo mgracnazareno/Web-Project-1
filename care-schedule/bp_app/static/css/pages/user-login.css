@@ -2,23 +2,7 @@
   background-color: var(--app-bg);
 }
 
-/* teal rounded square na may icon */
-.brand-mark {
-  width: 34px;
-  height: 34px;
-  border-radius: 10px;
-  background-color: var(--app-teal);
-  color: var(--app-offwhite);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
 
-.brand-name {
-
-  font-weight: 700;
-  color: var(--app-navy);
-}
 
 /* light tile sa loob ng card */
 .role-icon {

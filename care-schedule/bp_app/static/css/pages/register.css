@@ -1,4 +1,5 @@
-.patient-registration {
+.patient-registration,
+.professional-registration {
     background: var(--app-bg);
 }
 
@@ -12,4 +13,12 @@
 
 .registration-description {
     color: var(--app-muted);
+}
+
+.change-role {
+    color: var(--app-muted);
+}
+
+.change-role:hover {
+    color: var(--app-offwhite);
 }
