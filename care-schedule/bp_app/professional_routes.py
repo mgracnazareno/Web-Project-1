@@ -30,7 +30,7 @@ def dashboard():
         .order_by(Availability.start_time.asc())
         .all()
     )
-    return render_template("professional/dashboard.html",slots=slots)
+    return render_template("professional/dashboard.html", slots=slots)
 
 
 @professional.route("/professional/register", methods=["GET", "POST"])
