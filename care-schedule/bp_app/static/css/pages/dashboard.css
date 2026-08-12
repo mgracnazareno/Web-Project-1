@@ -1,0 +1,117 @@
+.bg-app-navy {
+    background-color: var(--app-navy);
+}
+
+.eyebrow {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.text-xs {
+    font-size: 0.75rem;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    font-size:0.85rem;
+    font-weight: 700;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.avatar-sm {
+    width: 36px;
+    height: 36px;
+}
+
+.card-schedule {
+    min-height: 180px;
+}
+
+.empty-state {
+    min-height: 80px;
+    margin-top: auto;
+    margin-bottom: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--app-muted);
+}
+
+.text-app-teal-light {
+    color: var(--app-teal-light);
+}
+
+.brand-name {
+    font-weight: 700;
+    color: var(--app-offwhite);
+}
+
+.border-app {
+    border: 1px solid var(--app-border);
+}
+
+
+@media (min-width: 992px) {
+
+    .dashboard-layout {
+        display: flex;
+        align-items: stretch;
+        gap: 0;
+    }
+
+    .dashboard-layout > .dashboard-sidebar {
+        flex: 0 0 250px;      /* flex-basis beats width */
+        width: 250px !important;
+        max-width: 250px;
+        min-height: 100vh;
+        margin: 0;
+        transition: flex-basis 0.2s ease, width 0.2s ease;
+    }
+
+    .dashboard-layout > .dashboard-main {
+        flex: 1 1 0%;
+        min-width: 0;
+        margin: 0;
+    }
+
+    .dashboard-sidebar,
+    .dashboard-sidebar .offcanvas-body {
+        background-color: var(--app-navy) !important;
+    }
+
+    .dashboard-sidebar .offcanvas-body {
+        flex-grow: 1;
+        padding: 1rem;
+        overflow-y: auto;
+        min-height: 100vh;
+    }
+
+    /* --- Collapsed state --- */
+    .rail .dashboard-sidebar {
+        width: 84px;
+        flex: 0 0 84px;
+        max-width: 84px
+    }
+
+    .rail .sidebar-label {
+        display: none;
+    }
+
+    /* Stack the logo above the toggle so both still fit. */
+    .rail .sidebar-head {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .rail .nav-link-custom,
+    .rail .sidebar-user {
+        justify-content: center;
+    }
+}

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/dashboard.css') }}">
+{% endblock %}
+
+{% block header %}{% endblock %}
+
+{% block flash %}{% endblock %}
+{% block content %}
+    <div class="dashboard-layout" id="dashboardLayout">
+
+        {# Left Side: Sidebar component #}
+        {% include "components/sidebar.html" %}
+
+        {# Right Side: Dynamic Page Data #}
+        <div class="dashboard-main bg-app-page p-4 p-md-5">
+            {% block dashboard_content %}
+                {# Data will be injected here #}
+            {% endblock %}
+        </div>
+    </div>
+ <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+
+
+{% endblock %}
+

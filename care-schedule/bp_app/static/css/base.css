@@ -9,23 +9,91 @@
     --app-border: #d3e0e4;
     --app-muted: #5c6b73;
 
-    --app-teal-light: #4fa8c4;   /*accent on dark background*/
+    --app-teal-light: #4fa8c4; /*accent on dark background*/
     --app-muted-dark: #b9c5cc; /* body text on dark backgrounds*/
 }
 
 /* teal rounded square na may icon */
 .brand-mark {
-  width: 34px;
-  height: 34px;
-  border-radius: 10px;
-  background-color: var(--app-teal);
-  color: var(--app-offwhite);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    background-color: var(--app-teal);
+    color: var(--app-offwhite);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .brand-name {
-  font-weight: 700;
-  color: var(--app-navy);
+    font-weight: 700;
+    color: var(--app-navy);
+}
+
+.nav-link-custom {
+    color: var(--app-muted-dark);
+    border-radius: 8px;
+    padding: 10px 14px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.nav-link-custom:hover,
+.nav-link-custom.active {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--app-offwhite);
+}
+
+.quick-action-card {
+    transition: transform 0.15s ease-in-out;
+}
+
+.quick-action-card:hover {
+    transform: translateY(-2px);
+}
+
+.bg-app-navy {
+    background-color: var(--app-navy);
+}
+
+.bg-app-teal {
+    background-color: var(--app-teal);
+}
+
+.bg-app-card {
+    background-color: var(--app-offwhite);
+}
+
+.bg-app-page {
+    background-color: var(--app-bg);
+}
+
+.text-app-navy {
+    color: var(--app-navy);
+}
+
+.text-app-teal {
+    color: var(--app-teal);
+}
+
+.text-app-teal-light {
+    color: var(--app-teal-light);
+}
+
+.text-app-offwhite {
+    color: var(--app-offwhite);
+}
+
+.text-app-muted {
+    color: var(--app-muted);
+}
+
+.text-app-muted-dark {
+    color: var(--app-muted-dark);
+}
+
+.hover-white:hover {
+    color: var(--app-offwhite);
 }

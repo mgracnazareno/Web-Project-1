@@ -1,53 +1,111 @@
-<!-- components/sidebar.html -->
-<div class="d-flex flex-column flex-shrink-0 p-3 bg-dark text-white rounded-3 shadow-sm" style="min-width: 240px; min-height: 80vh;">
+{# ============================================================
+   Mobile top bar — hidden from lg up.
+   ============================================================ #}
+<div class="d-lg-none bg-app-navy d-flex align-items-center justify-content-between p-3">
+    <a href="{{ url_for('professional.dashboard') }}" class="d-flex align-items-center gap-2 text-decoration-none">
+        <div class="brand-mark">
+            <i class="bi bi-activity fs-5"></i>
+        </div>
+        <span class="brand-name fs-5">CareSchedule</span>
+    </a>
 
-    <div class="mb-4">
-        <span class="badge bg-outline-light border text-white small mb-2">PROFESSIONAL</span>
-        <h5 class="fw-bold mb-0">CareSchedule</h5>
+    <button class="btn border-0 p-0 fs-3 text-app-offwhite" type="button"
+            data-bs-toggle="offcanvas" data-bs-target="#appSidebar"
+            aria-controls="appSidebar" aria-label="Open menu">
+        <i class="bi bi-list"></i>
+    </button>
+</div>
+
+{# ============================================================
+   Sidebar.
+   Below lg  -> Bootstrap offcanvas drawer (hamburger opens it).
+   From lg up -> a column that collapses to an icon rail.
+   ============================================================ #}
+<div class="offcanvas-lg offcanvas-start bg-app-navy dashboard-sidebar" tabindex="-1"
+     id="appSidebar" aria-labelledby="appSidebarLabel">
+
+    <!-- Panel header, only while the sidebar is a drawer -->
+    <div class="offcanvas-header d-lg-none">
+        <span class="brand-name fs-5" id="appSidebarLabel">Menu</span>
+        <button type="button" class="btn-close btn-close-white"
+                data-bs-dismiss="offcanvas" data-bs-target="#appSidebar"
+                aria-label="Close"></button>
     </div>
 
-    <!-- Sidebar Links -->
-    <ul class="nav nav-pills flex-column mb-auto gap-1">
-        <li class="nav-item">
-            <a href="{{ url_for('professional.dashboard') }}" class="nav-link active bg-primary text-white d-flex align-items-center gap-2">
-                <i class="bi bi-grid-1x2"></i>
-                Dashboard
-            </a>
-        </li>
-        <li>
-            <a href="{{ url_for('professional.manage_availability') }}" class="nav-link text-white-50 d-flex align-items-center gap-2">
-                <i class="bi bi-calendar-plus"></i>
-                Availability
-            </a>
-        </li>
-        <li>
-            <a href="#" class="nav-link text-white-50 d-flex align-items-center gap-2">
-                <i class="bi bi-clock-history"></i>
-                Appointments
-            </a>
-        </li>
-        <li>
-            <a href="#" class="nav-link text-white-50 d-flex align-items-center gap-2">
-                <i class="bi bi-person"></i>
-                Profile
-            </a>
-        </li>
-    </ul>
+    <div class="offcanvas-body d-flex flex-column justify-content-between p-3">
 
-    <hr class="text-secondary">
+        <!-- Top Section: Brand & Navigation -->
+        <div>
+            <!-- Brand + rail toggle, desktop only -->
+            <div class="sidebar-head d-none d-lg-flex align-items-center justify-content-between mb-3">
+                <a href="{{ url_for('professional.dashboard') }}"
+                   class="d-flex align-items-center gap-2 text-decoration-none">
+                    <div class="brand-mark">
+                        <i class="bi bi-activity fs-5"></i>
+                    </div>
+                    <span class="brand-name fs-5 sidebar-label">CareSchedule</span>
+                </a>
 
-    <!-- User Profile Footer -->
-    <div class="d-flex align-items-center gap-2">
-        <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width: 38px; height: 38px;">
-            {{ current_user.lastname[0] if current_user.lastname else 'D' }}
-        </div>
-        <div class="lh-1 overflow-hidden">
-            <div class="fw-bold text-truncate" style="max-width: 130px;">
-                Dr. {{ current_user.lastname }}
+                <button class="btn border-0 p-0 text-app-muted-dark" type="button"
+                        id="railToggle" aria-label="Collapse sidebar" aria-expanded="true">
+                    <i class="bi bi-chevron-double-left" id="railToggleIcon"></i>
+                </button>
             </div>
-            <a href="{{ url_for('patients.logout') }}" class="text-white-50 text-decoration-none small">
-                <i class="bi bi-box-arrow-right"></i> Sign out
+
+            <!-- Role Badge -->
+            <div class="mb-4 sidebar-label">
+                <span class="badge border border-info text-app-teal-light rounded-pill px-2 py-1 fw-normal text-xs">
+                    PROFESSIONAL
+                </span>
+            </div>
+
+            <!-- Navigation Links. title="" shows the label on hover when railed. -->
+            <nav class="nav nav-pills flex-column gap-1">
+                <a href="{{ url_for('professional.dashboard') }}" title="Dashboard"
+                   class="nav-link-custom {{ 'active' if active_page == 'dashboard' }}">
+                    <i class="bi bi-calendar-event"></i>
+                    <span class="sidebar-label">Dashboard</span>
+                </a>
+                {# TODO: url_for('availability.manage') #}
+                <a href="#" title="Availability"
+                   class="nav-link-custom {{ 'active' if active_page == 'availability' }}">
+                    <i class="bi bi-plus-lg"></i>
+                    <span class="sidebar-label">Availability</span>
+                </a>
+                {# TODO: url_for('professional.appointments') #}
+                <a href="#" title="Appointments"
+                   class="nav-link-custom {{ 'active' if active_page == 'appointments' }}">
+                    <i class="bi bi-clock-history"></i>
+                    <span class="sidebar-label">Appointments</span>
+                </a>
+                {# TODO: url_for('professional.profile') #}
+                <a href="#" title="Profile"
+                   class="nav-link-custom {{ 'active' if active_page == 'profile' }}">
+                    <i class="bi bi-person"></i>
+                    <span class="sidebar-label">Profile</span>
+                </a>
+            </nav>
+        </div>
+
+        <!-- Bottom Section: User Profile & Sign Out -->
+        <div class="border-top border-secondary pt-3 mt-auto">
+            <div class="sidebar-user d-flex align-items-center gap-2 mb-3">
+                <div class="avatar avatar-sm bg-app-teal text-app-offwhite">
+                    {{ current_user.firstname[:1] }}{{ current_user.lastname[:1] }}
+                </div>
+                <div class="lh-sm sidebar-label">
+                    <div class="fw-bold text-app-offwhite small">
+                        {{ current_user.firstname }} {{ current_user.lastname }}
+                    </div>
+                    <div class="text-app-muted-dark text-xs">{{ current_user.email }}</div>
+                </div>
+            </div>
+            <a href="{{ url_for('professional.logout') }}" title="Sign out"
+               class="nav-link-custom text-app-muted-dark small hover-white">
+                <i class="bi bi-box-arrow-right"></i>
+                <span class="sidebar-label">Sign out</span>
             </a>
         </div>
+
     </div>
 </div>

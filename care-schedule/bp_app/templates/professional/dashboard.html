@@ -1,60 +1,99 @@
-{% extends "components/dashboard_layout.html" %}
+{% extends "components/dashboard_base.html" %}
 
 {% block dashboard_content %}
+<!-- Header Category & Title -->
+<div class="mb-4">
+    <div class="eyebrow text-app-teal mb-1">
+        CARDIOLOGY &bull; PROFESSIONAL DASHBOARD
+    </div>
+    <h1 class="display-5 fw-bold text-app-navy">
+        Good morning,<br>Dr. Vasquez.
+    </h1>
+</div>
+
+
+<div class="row g-4">
+    <!-- Left Column: Stat Cards, Today's Schedule, Quick Actions -->
+    <div class="col-12 col-lg-8">
+
+        <!-- Metric Cards Row -->
+        <div class="row g-3 mb-4">
+            <div class="col-12 col-md-4">
+                <div class="card border-0 shadow-sm rounded-4 p-3 bg-app-card h-100">
+                    <div class="display-4 fw-bold text-app-navy mb-1">0</div>
+                    <div class="fw-bold text-app-navy small">Today's appointments</div>
+                    <div class="text-app-muted text-xs">Wednesday, Aug 12</div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="card border-0 shadow-sm rounded-4 p-3 bg-app-card h-100">
+                    <div class="display-4 fw-bold text-app-navy mb-1">1</div>
+                    <div class="fw-bold text-app-navy small">Total upcoming</div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="card border-0 shadow-sm rounded-4 p-3 bg-app-card h-100">
+                    <div class="display-4 fw-bold text-app-navy mb-1">2</div>
+                    <div class="fw-bold text-app-navy small">Open slots</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Today's Schedule Card -->
+        <div class="card border-0 shadow-sm rounded-4 p-4 bg-app-card mb-4 card-schedule">
+            <div class="eyebrow text-app-muted mb-4">
+                Today's schedule
+            </div>
+            <div class="empty-state">
+                No appointments today.
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div>
+            <div class="eyebrow text-app-muted mb-3">
+                Quick actions
+            </div>
+            <div class="row g-3">
+                <div class="col-12 col-md-4">
+                    <a href="#" class="card border-0 shadow-sm rounded-4 p-3 bg-app-navy text-app-offwhite text-decoration-none quick-action-card h-100">
+                        <i class="bi bi-calendar-plus fs-4 mb-3"></i>
+                        <div class="fw-bold small">Manage Availability</div>
+                    </a>
+                </div>
+                <div class="col-12 col-md-4">
+                    <a href="#" class="card border-0 shadow-sm rounded-4 p-3 bg-app-card text-app-navy text-decoration-none quick-action-card h-100">
+                        <i class="bi bi-clock fs-4 mb-3 text-app-navy"></i>
+                        <div class="fw-bold small">All Appointments</div>
+                    </a>
+                </div>
+                <div class="col-12 col-md-4">
+                    <a href="#" class="card border-0 shadow-sm rounded-4 p-3 bg-app-card text-app-navy text-decoration-none quick-action-card h-100">
+                        <i class="bi bi-person fs-4 mb-3 text-app-navy"></i>
+                        <div class="fw-bold small">My Profile</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Right Column: Upcoming Appointments Sidebar Card -->
+    <div class="col-12 col-lg-4">
+        <div class="card border-0 shadow-sm rounded-4 p-4 bg-app-card h-100">
+            <div class="eyebrow text-app-muted mb-4">
+                Upcoming appointments
+            </div>
+            <div class="d-flex align-items-center gap-3">
+                <div class="avatar bg-light text-app-muted">
+                    JK
+                </div>
+                <div>
+                    <div class="fw-bold text-app-navy">Jordan Kim</div>
+                    <div class="text-app-muted text-xs">Aug 4, 2026 &bull; 10:00 AM</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
-
-
-{#{% extends "base.html" %}#}
-{##}
-{#{% block content %}#}
-{##}
-{##}
-{#<div style="max-width: 800px; margin: 30px auto; font-family: sans-serif;">#}
-{#    <h2>Welcome, Dr. {{ current_user.lastname }}</h2>#}
-{##}
-{#    <!-- Actions Bar -->#}
-{#    <div style="display: flex; gap: 10px; margin-bottom: 20px;">#}
-{#        <a href="{{ url_for('professional.add_availability') }}" style="text-decoration: none; padding: 8px 16px; background-color: #007bff; color: white; border-radius: 4px;">#}
-{#            + Add Availability#}
-{#        </a>#}
-{#        <a href="{{ url_for('professional.manage_availability') }}" style="text-decoration: none; padding: 8px 16px; border: 1px solid #ccc; color: #333; border-radius: 4px;">#}
-{#            Manage Slots#}
-{#        </a>#}
-{#    </div>#}
-{##}
-{#    <h3>Your Upcoming Availability</h3>#}
-{##}
-{#    {% if slots %}#}
-{#        <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">#}
-{#            <thead>#}
-{#                <tr style="background-color: #f8f9fa; border-bottom: 2px solid #dee2e6; text-align: left;">#}
-{#                    <th style="padding: 10px;">Date</th>#}
-{#                    <th style="padding: 10px;">Start Time</th>#}
-{#                    <th style="padding: 10px;">End Time</th>#}
-{#                    <th style="padding: 10px;">Status</th>#}
-{#                </tr>#}
-{#            </thead>#}
-{#            <tbody>#}
-{#                {% for slot in slots %}#}
-{#                    <tr style="border-bottom: 1px solid #dee2e6;">#}
-{#                        <td style="padding: 10px;">{{ slot.start_time.strftime('%b %d, %Y') }}</td>#}
-{#                        <td style="padding: 10px;">{{ slot.start_time.strftime('%I:%M %p') }}</td>#}
-{#                        <td style="padding: 10px;">{{ slot.end_time.strftime('%I:%M %p') }}</td>#}
-{#                        <td style="padding: 10px;">#}
-{#                            {% if slot.appointment %}#}
-{#                                <span style="color: #dc3545; font-weight: bold;">Booked</span>#}
-{#                            {% else %}#}
-{#                                <span style="color: #28a745; font-weight: bold;">Available</span>#}
-{#                            {% endif %}#}
-{#                        </td>#}
-{#                    </tr>#}
-{#                {% endfor %}#}
-{#            </tbody>#}
-{#        </table>#}
-{#    {% else %}#}
-{#        <p style="color: #6c757d; margin-top: 15px;">#}
-{#            You have no availability slots created yet. Click "+ Add Availability" to get started.#}
-{#        </p>#}
-{#    {% endif %}#}
-{#</div>#}
-{#{% endblock %}#}

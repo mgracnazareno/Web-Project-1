@@ -190,3 +190,25 @@ h1 {
 }
 
 
+.nav-link-custom {
+    color: var(--app-muted-dark);
+    border-radius: 8px;
+    padding: 10px 14px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.nav-link-custom:hover,
+.nav-link-custom.active {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--app-offwhite);
+}
+
+.quick-action-card {
+    transition: transform 0.15s ease-in-out;
+}
+.quick-action-card:hover {
+    transform: translateY(-2px);
+}
