@@ -37,7 +37,7 @@ class Patient(UserMixin, db.Model):
         return check_password_hash(self.password_hash, password)
 
     def __repr__(self):
-        return f"<Patient{self.id}: {self.username}>"
+        return f"<Patient{self.id}: {self.email}>"
 
 class AppointmentStatus(enum.Enum):
     CONFIRMED = "confirmed"

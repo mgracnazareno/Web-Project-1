@@ -76,11 +76,11 @@
                             <div class="col-12">
                                 <label for="specialty" class="form-label">Specialty</label>
                                 <select name="specialty"  class="form-select" id="specialty" required>
-                                    <option value="" disabled {{ 'selected' if not specialty }}>--Select a specialty--
+                                    <option value="" disabled {%  if not specialty %}selected{% endif %}>--Select a specialty--
                                     </option>
-                                    {% for specialty in specialties %}
-                                        <option value="{{ specialty }}" {{ 'selected' if specialty ==selected_specialty }}>
-                                            {{ specialty }}
+                                    {% for specialty_option in specialties %}
+                                        <option value="{% if specialty_option == specialty %}selected{% endif %}">
+                                            {{ specialty_option }}
                                         </option>
                                     {% endfor %}
                                 </select>

@@ -55,21 +55,23 @@ def register():
                 # re-render the form, keeping what the user typed (except password)
             return render_template(
                 "professional/register.html",
+                specialties=SPECIALTIES,
                 username=username,
                 email=email,
                 firstname=firstname,
                 lastname=lastname,
                 specialty=specialty,
-                bio=bio,
+                biography=bio,
             )
 
             # No errors - create and save the Professional
         professional_user = Professional(
+
             username=username,
             email=email,
             firstname=firstname,
             lastname=lastname,
-            selected_specialty=specialty,
+            specialty=specialty,
             biography=bio
         )
 
