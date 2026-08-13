@@ -328,3 +328,51 @@ def complete_appointments(appointment_id):
 
 
 
+@professional.route("/professional/profile", methods=["GET", "POST"])
+@login_required
+def profile():
+    if not isinstance(current_user, Professional):
+        flash("This page is for professionals only.", "error")
+        return redirect(url_for("main.home"))
+
+    if request.method == "POST":
+        firstname = request.form.get("firstname", "").strip()
+        lastname = request.form.get("lastname", "").strip()
+        email = request.form.get("email", "").strip()
+        phone = request.form.get("phone", "").strip()
+        specialty = request.form.get("specialty", "").strip()
+        biography = request.form.get("biography", "").strip()
+
+        if not firstname or not lastname or not email or not phone:
+            flash("First name, last name, and email and phone are required.", "error")
+            return redirect(url_for("professional.profile"))
+
+        if specialty not in SPECIALTIES:
+            flash("Please choose a specialty from the list.", "error")
+            return redirect(url_for("professional.profile"))
+
+        token = Professional.query.filter(
+            Professional.email ==email,
+            Professional.id != current_user.id
+        ).first()
+
+        if token is not None:
+            flash("That email is already in use.", "error")
+            return redirect(url_for("professional.profile"))
+
+        current_user.firstname = firstname
+        current_user.lastname = lastname
+        current_user.email = email
+        current_user.phone = phone or None
+        current_user.specialty = specialty
+        current_user.biography = biography
+        db.session.commit()
+
+        flash("Profile updated.", "success")
+        return redirect(url_for("professional.profile"))
+
+    return render_template(
+        "professional/profile.html",
+        specialties=SPECIALTIES,
+        active_page="profile",
+    )

@@ -1,0 +1,106 @@
+{% extends "components/dashboard_base.html" %}
+{% block title %}Profile{% endblock %}
+
+{% block dashboard_content %}
+
+    <div class="row">
+        <div class="col-12 col-lg-8 col-xxl-6">
+
+            <!-- =======
+                 Header
+                 ======= -->
+            <div class="mb-4">
+                <h1 class="display-6 fw-bold text-app-navy mb-1">Professional Profile</h1>
+                <p class="text-app-muted mb-0">Your public professional information.</p>
+            </div>
+
+
+            <div class="card border-0 shadow-sm rounded-4 bg-app-card p-4">
+
+                <!-- Identity block, not editable here -->
+                <div class="d-flex align-items-center gap-3 pb-3 mb-4 border-bottom">
+                    <div class="avatar avatar-lg bg-app-navy text-app-offwhite">
+                        {{ current_user.firstname[:1] }}{{ current_user.lastname[:1] }}
+                    </div>
+                    <div class="lh-sm">
+                        <div class="h5 fw-bold text-app-navy mb-1">
+                            Dr. {{ current_user.firstname }} {{ current_user.lastname }}
+                        </div>
+                        <div class="text-app-teal small">{{ current_user.specialty }}</div>
+                        <div class="text-app-muted text-xs">{{ current_user.email }}</div>
+                    </div>
+                </div>
+
+                <form method="POST" action="{{ url_for('professional.profile') }}">
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-12 col-md-6">
+                            <label class="w-100">
+                                <span class="eyebrow text-app-muted d-block mb-1">
+                                    First name <span class="text-danger">*</span>
+                                </span>
+                                <input type="text" name="firstname" class="form-control"
+                                       value="{{ current_user.firstname }}" required>
+                            </label>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label class="w-100">
+                                <span class="eyebrow text-app-muted d-block mb-1">
+                                    Last name <span class="text-danger">*</span>
+                                </span>
+                                <input type="text" name="lastname" class="form-control"
+                                       value="{{ current_user.lastname }}" required>
+                            </label>
+                        </div>
+                    </div>
+
+                    <label class="w-100 mb-3">
+                        <span class="eyebrow text-app-muted d-block mb-1">
+                            Email <span class="text-danger">*</span>
+                        </span>
+                        <input type="email" name="email" class="form-control"
+                               value="{{ current_user.email }}" required>
+                    </label>
+
+                    <label class="w-100 mb-3">
+                        <span class="eyebrow text-app-muted d-block mb-1">Phone <span class="text-danger">*</span> </span>
+                        <input type="tel" name="phone" class="form-control"
+                               value="{{ current_user.phone }}"
+                               placeholder="514-555-0123" required>
+                    </label>
+
+                    <label class="w-100 mb-3">
+                        <span class="eyebrow text-app-muted d-block mb-1">
+                            Specialty <span class="text-danger">*</span>
+                        </span>
+                        <select name="specialty" class="form-select" required>
+                            {% for option in specialties %}
+                                <option value="{{ option }}"
+                                        {{ 'selected' if option == current_user.specialty }}>
+                                    {{ option }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </label>
+
+                    <label class="w-100 mb-4">
+                        <span class="eyebrow text-app-muted d-block mb-1">Biography</span>
+                        <textarea name="biography" class="form-control" rows="4"
+                                  placeholder="A short introduction patients will see when booking."
+                        >{{ current_user.biography or '' }}</textarea>
+                    </label>
+
+                    <div class="d-flex justify-content-end">
+                        <button type="submit"
+                                class="btn bg-app-teal text-app-offwhite fw-bold px-4 py-2 rounded-3">
+                            Save changes
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}
