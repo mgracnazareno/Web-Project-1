@@ -7,7 +7,7 @@
     const slotRows = document.getElementById("slotRows");
     const addRowBtn = document.getElementById("addRowBtn");
 
-    if (!slowRowTemplate) return;
+    if (!slotRowTemplate) return;
 
     // Disable the remove button when only one row is left,
     // so the form can never end up with zero times
@@ -37,7 +37,7 @@
 
     // Start the add form off with one empty row
     addSlotRow();
-})
+})();
 
 
 

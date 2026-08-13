@@ -125,7 +125,7 @@ def dashboard():
 
     )
 
-@patients.route("/logout")
+@patients.route("/logout", methods=["POST"])
 @login_required
 def logout():
     logout_user()

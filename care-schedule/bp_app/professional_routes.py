@@ -305,7 +305,7 @@ def appointment():
 
 @professional.route("/professional/appointments/<int:appointment_id>/complete", methods=["POST"])
 @login_required
-def complete_appointments(appointment_id):
+def complete_appointment(appointment_id):
     if not isinstance(current_user, Professional):
         flash("This page is for professionals only.", "error")
         return redirect(url_for("main.home"))
