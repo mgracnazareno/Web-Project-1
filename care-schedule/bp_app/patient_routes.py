@@ -16,8 +16,12 @@ def register():
         return redirect(url_for("patients.dashboard"))
 
     if request.method == "POST":
-        email = request.form['email'].strip()
-        password = request.form['password']
+        firstname = request.form.get("firstname", "").strip()
+        lastname =request.form.get("lastname", "").strip()
+        email = request.form.get('email', "").strip()
+        password = request.form.get("password", "")
+        dob_str = request.form.get("dob", "").strip()
+        phone=request.form.get("phone", "").strip()
 
         errors = validate_registration(email, password)
 
@@ -28,8 +32,20 @@ def register():
                 "patient_register.html", email=email
             )
 
+        dob = None
+        try:
+            dob = datetime.strptime(dob_str, "%Y-%m-%d").date()
+        except ValueError:
+            errors.append("Please enter a valid date of birth.")
+
         # create patient
-        patient = Patient(email=email)
+        patient = Patient(
+            email=email,
+            firstname=firstname,
+            lastname=lastname,
+            phone=phone,
+            dob=dob,
+        )
         patient.set_password(password)
 
         # add it to the table
