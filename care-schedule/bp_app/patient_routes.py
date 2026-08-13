@@ -1,9 +1,9 @@
 from datetime import datetime, date, timedelta
 from flask import (Blueprint, render_template, request, redirect, url_for, flash, abort)
-from flask_login import (LoginManager, current_user, login_required, login_user, logout_user)
+from flask_login import (current_user, login_required, login_user, logout_user)
 
-from .models import db, Patient, Availability, Appointment, AppointmentStatus
-from .utils import validate_password, validate_registration
+from .models import db, Patient, Availability, Appointment, AppointmentStatus, Professional
+from .utils import validate_registration
 
 from sqlalchemy.exc import IntegrityError
 
@@ -140,14 +140,34 @@ def book():
         flash("Only patients can book appointments.", "warning")
         return redirect(url_for("main.home"))
 
-    slots = (
+    now = datetime.now()
+    professionals = Professional.query.order_by(Professional.lastname).all()
+
+    open_slots = (
         Availability.query
         .filter(Availability.is_booked == False,
                    Availability.start_time > datetime.now())
         .order_by(Availability.start_time)
         .all()
     )
-    return render_template("patients/book.html", slots=slots)
+
+    # How many open slots each professional has,
+    slot_counts= {}
+    for slot in open_slots:
+        slot_counts[slot.professional_id] = slot_counts.get(slot.professional_id, 0) + 1
+
+    selected_id = request.args.get("professional_id", type=int)
+    selected = db.session.get(Professional, selected_id) if selected_id else None
+
+    slots = [slot for slot in open_slots if selected and slot.professional_id == selected_id]
+    return render_template(
+        "patients/book.html",
+        professionals=professionals,
+        slot_counts=slot_counts,
+        selected=selected,
+        slots=slots,
+        active_page="book",
+    )
 
 @patients.route("/appointments")
 @login_required
