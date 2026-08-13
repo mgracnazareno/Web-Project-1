@@ -63,11 +63,6 @@
                                 <input type="password" class="form-control" id="password" name="password" required>
                             </div>
 
-                            <div class="col-12 col-md-6">
-                                <label for="phone" class="form-label">Phone</label>
-                                <input type="tel" class="form-control" id="phone" name="phone"
-                                       value="{{ phone or '' }}" placeholder="514-555-0123" required>
-                            </div>
 
                             <div class="col-12 col-md-6">
                                 <label for="firstname" class="form-label">First name</label>
@@ -79,7 +74,13 @@
                                 <input type="text" class="form-control" id="lastname" name="lastname" value="{{ lastname or '' }}">
 
                             </div>
-                            <div class="col-12">
+
+                            <div class="col-12 col-md-6">
+                                <label for="phone" class="form-label">Phone</label>
+                                <input type="tel" class="form-control" id="phone" name="phone"
+                                       value="{{ phone or '' }}" placeholder="514-555-0123" required>
+                            </div>
+                            <div class="col-12 col-md-6">
                                 <label for="specialty" class="form-label">Specialty</label>
                                 <select name="specialty"  class="form-select" id="specialty" required>
                                     <option value="" disabled {%  if not specialty %}selected{% endif %}>--Select a specialty--
