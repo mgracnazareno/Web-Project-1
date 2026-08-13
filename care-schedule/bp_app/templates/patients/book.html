@@ -1,28 +1,114 @@
-{% extends "base.html" %}
+{% extends "components/patient_dashboard_base.html" %}
+{% block title %}Book an Appointment{% endblock %}
 
-{% block content %}
-<div>
-  <h2>Book an Appointment</h2>
+{% block dashboard_content %}
 
-  {% if slots %}
-    {% for professional, prof_slots in slots|groupby("professional.username") %}
-      <div>
-        <div>
-          <strong>Dr. {{ professional }}</strong>
-          <span>({{ prof_slots[0].professional.specialty or 'General' }})</span>
+    <!-- ===========
+         Header
+         =========== -->
+    <div class="mb-4">
+        <h1 class="display-6 fw-bold text-app-navy mb-1">Book an Appointment</h1>
+        <p class="text-app-muted mb-0">Select a professional and choose an available time slot.</p>
+    </div>
+
+
+    <div class="row g-4">
+
+        <!-- ===========================
+             Step 1: the professionals
+             =========================== -->
+        <div class="col-12 col-lg-6">
+            <div class="eyebrow text-app-muted mb-3">1 &mdash; Choose a professional</div>
+
+            {% for pro in professionals %}
+                {# Selecting a professional reloads the page with their id in the
+                   query string, so the URL can be shared or bookmarked. #}
+                <a href="{{ url_for('patients.book', professional_id=pro.id) }}"
+                   class="card border-0 shadow-sm rounded-4 p-3 mb-3 bg-app-card text-decoration-none d-block
+                          {{ 'booking-card' if selected and selected.id == pro.id }}">
+                    <div class="d-flex align-items-center gap-3">
+
+                        <div class="avatar bg-light text-app-muted">
+                            {{ pro.firstname[:1] }}{{ pro.lastname[:1] }}
+                        </div>
+
+                        <div class="min-w-0">
+                            <div class="fw-bold text-app-navy">
+                                Dr. {{ pro.firstname }} {{ pro.lastname }}
+                            </div>
+                            <div class="text-app-teal small">{{ pro.specialty }}</div>
+                            <div class="text-app-muted text-xs">
+                                {{ slot_counts.get(pro.id, 0) }} slot(s) available
+                            </div>
+                        </div>
+
+                    </div>
+                </a>
+            {% else %}
+                <div class="card border-0 shadow-sm rounded-4 bg-app-card p-4 text-center">
+                    <p class="text-app-muted mb-0">No professionals are registered yet.</p>
+                </div>
+            {% endfor %}
         </div>
-        <div>
-          {% for slot in prof_slots %}
-            <a href="{{ url_for('patients.confirm_booking', availability_id=slot.id) }}">
-              {{ slot.start_time.strftime("%a, %b %d — %I:%M %p") }}
-            </a>
-          {% endfor %}
+
+
+        <!-- ==========================
+             Step 2: their open slots
+             ========================== -->
+        <div class="col-12 col-lg-6">
+
+            {% if selected %}
+                <div class="eyebrow text-app-muted mb-3">
+                    2 &mdash; Choose a time with Dr. {{ selected.lastname }}
+                </div>
+
+                {% for date, day_slots in slots|groupby("day") %}
+                    <div class="eyebrow text-app-muted mt-3 mb-2">
+                        {{ date.strftime("%A, %B %d") }}
+                    </div>
+
+                    {% for slot in day_slots %}
+                        <a href="{{ url_for('patients.confirm_booking', availability_id=slot.id) }}"
+                           class="card border-0 shadow-sm rounded-4 p-3 mb-2 bg-app-card text-decoration-none d-block">
+                            <div class="d-flex align-items-center justify-content-between gap-3">
+                                <span class="fw-bold text-app-navy">
+                                    {{ slot.start_time.strftime("%I:%M %p") }} &ndash;
+                                    {{ slot.end_time.strftime("%I:%M %p") }}
+                                </span>
+                                <span class="text-app-teal small fw-bold">
+                                    Book <i class="bi bi-arrow-right ms-1"></i>
+                                </span>
+                            </div>
+                        </a>
+                    {% endfor %}
+
+                {% else %}
+                    <div class="card border-0 shadow-sm rounded-4 bg-app-card p-5 text-center">
+                        <div class="mb-3">
+                            <i class="bi bi-calendar-x display-6 text-app-muted"></i>
+                        </div>
+                        <h2 class="h6 fw-bold text-app-navy">No open slots</h2>
+                        <p class="text-app-muted text-xs mb-0">
+                            Dr. {{ selected.lastname }} has no available times right now.
+                            Try another professional.
+                        </p>
+                    </div>
+                {% endfor %}
+
+            {% else %}
+                <!-- Nothing picked yet -->
+                <div class="card border-0 shadow-sm rounded-4 bg-app-card p-5 text-center h-100
+                            d-flex align-items-center justify-content-center">
+                    <div>
+                        <i class="bi bi-person display-6 text-app-muted d-block mb-3"></i>
+                        <p class="text-app-muted mb-0">
+                            Select a professional to see available slots.
+                        </p>
+                    </div>
+                </div>
+            {% endif %}
+
         </div>
-      </div>
-      <hr>
-    {% endfor %}
-  {% else %}
-    <p>No available slots right now. Please check back later.</p>
-  {% endif %}
-</div>
+    </div>
+
 {% endblock %}
