@@ -97,7 +97,7 @@ def dashboard():
     )
 
     upcoming = [apt for apt in appointments
-                if apt.status == AppointmentStatus.CONFIRMED and apt.schedules_at > now]
+                if apt.status == AppointmentStatus.CONFIRMED and apt.scheduled_at > now]
     completed = [apt for apt in appointments if apt.status == AppointmentStatus.COMPLETED]
     cancelled = [apt for apt in appointments if apt.status == AppointmentStatus.CANCELLED]
 
@@ -113,13 +113,14 @@ def dashboard():
         greeting = "Good evening"
 
     return render_template(
-        "dashboard.html",
+        "patients/dashboard.html",
         upcoming=upcoming,
         completed=completed,
         cancelled=cancelled,
         next_appointment=upcoming[0] if upcoming else None,
         week=week,
         booked_days=booked_days,
+        greeting=greeting,
         active_page="dashboard",
 
     )
