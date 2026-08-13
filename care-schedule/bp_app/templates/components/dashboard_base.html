@@ -11,13 +11,15 @@
     <div class="dashboard-layout" id="dashboardLayout">
 
         {# Left Side: Sidebar component #}
-        {% include "components/sidebar.html" %}
+        {% block sidebar %}
+            {% include "components/sidebar.html" %}
+        {% endblock %}
 
         {# Right Side: Dynamic Page Data #}
         <div class="dashboard-main bg-app-page p-4 p-md-5">
-            {% with message = get_flashed_messages(with_categories=true) %}
+            {% with messages = get_flashed_messages(with_categories=true) %}
                 {% for category, message in messages %}
-                    <div class="alert-alert-{{ 'danger' if category == 'error' else 'success' }} alert-dismissible fade show rounded-4 border-0"
+                    <div class="alert alert-{{ 'danger' if category == 'error' else 'success' }} alert-dismissible fade show rounded-4 border-0"
                          role="alert">
                         {{ message }}
 
