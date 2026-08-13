@@ -1,0 +1,121 @@
+{# ============================================================
+   Mobile top bar — hidden from lg up.
+   ============================================================ #}
+<div class="d-lg-none bg-app-navy d-flex align-items-center justify-content-between p-3">
+    <a href="{{ url_for('patients.dashboard') }}" class="d-flex align-items-center gap-2 text-decoration-none">
+        <div class="brand-mark">
+            <i class="bi bi-activity fs-5"></i>
+        </div>
+        <span class="brand-name fs-5">CareSchedule</span>
+    </a>
+
+    <button class="btn border-0 p-0 fs-3 text-app-offwhite" type="button"
+            data-bs-toggle="offcanvas" data-bs-target="#appSidebar"
+            aria-controls="appSidebar" aria-label="Open menu">
+        <i class="bi bi-list"></i>
+    </button>
+</div>
+
+{# ==========
+   Sidebar
+   ========== #}
+<div class="offcanvas-lg offcanvas-start bg-app-navy dashboard-sidebar" tabindex="-1"
+     id="appSidebar" aria-labelledby="appSidebarLabel">
+
+    <!-- Panel header, only while the sidebar is a drawer -->
+    <div class="offcanvas-header d-lg-none">
+        <span class="brand-name fs-5" id="appSidebarLabel">Menu</span>
+        <button type="button" class="btn-close btn-close-white"
+                data-bs-dismiss="offcanvas" data-bs-target="#appSidebar"
+                aria-label="Close"></button>
+    </div>
+
+    <div class="offcanvas-body d-flex flex-column justify-content-between p-3">
+
+        <!-- Top Section: Brand & Navigation -->
+        <div>
+            <!-- Brand + rail toggle, desktop only -->
+            <div class="sidebar-head d-none d-lg-flex align-items-center justify-content-between mb-3">
+                <a href="{{ url_for('patients.dashboard') }}"
+                   class="d-flex align-items-center gap-2 text-decoration-none">
+                    <div class="brand-mark">
+                        <i class="bi bi-activity fs-5"></i>
+                    </div>
+                    <span class="brand-name fs-5 sidebar-label">CareSchedule</span>
+                </a>
+
+                <button class="btn border-0 p-0 text-app-muted-dark" type="button"
+                        id="railToggle" aria-label="Collapse sidebar" aria-expanded="true">
+                    <i class="bi bi-chevron-double-left" id="railToggleIcon"></i>
+                </button>
+            </div>
+
+            <!-- Role Badge -->
+            <div class="mb-4 sidebar-label">
+                <span class="badge border border-info text-app-teal-light rounded-pill px-2 py-1 fw-normal text-xs">
+                    PATIENT
+                </span>
+            </div>
+
+            <!-- Navigation Links. title="" shows the label on hover when railed. -->
+            <nav class="nav nav-pills flex-column gap-1">
+                <a href="{{ url_for('patients.dashboard') }}" title="Dashboard"
+                   class="nav-link-custom {{ 'active' if active_page == 'dashboard' }}">
+                    <i class="bi bi-calendar-event"></i>
+                    <span class="sidebar-label">Dashboard</span>
+                </a>
+
+                <a href="{{ url_for('patients.book') }}" title="Book Appointment"
+                   class="nav-link-custom {{ 'active' if active_page == 'book' }}">
+                    <i class="bi bi-plus-lg"></i>
+                    <span class="sidebar-label">Book Appointment</span>
+                </a>
+
+                <a href="{{ url_for('patients.my_appointments') }}" title="My Appointments"
+                   class="nav-link-custom {{ 'active' if active_page == 'appointments' }}">
+                    <i class="bi bi-clock-history"></i>
+                    <span class="sidebar-label">My Appointments</span>
+                </a>
+
+                {# TODO: url_for('patients.history') #}
+                <a href="#" title="History"
+                   class="nav-link-custom {{ 'active' if active_page == 'history' }}">
+                    <i class="bi bi-arrow-counterclockwise"></i>
+                    <span class="sidebar-label">History</span>
+                </a>
+
+                {# TODO: url_for('patients.profile') #}
+                <a href="#" title="Profile"
+                   class="nav-link-custom {{ 'active' if active_page == 'profile' }}">
+                    <i class="bi bi-person"></i>
+                    <span class="sidebar-label">Profile</span>
+                </a>
+            </nav>
+        </div>
+
+        <!-- Bottom Section: User Profile & Sign Out -->
+        <div class="border-top border-secondary pt-3 mt-auto">
+            <div class="sidebar-user d-flex align-items-center gap-2 mb-3">
+                <div class="avatar avatar-sm bg-app-teal text-app-offwhite">
+                    {{ current_user.firstname[:1] }}{{ current_user.lastname[:1] }}
+                </div>
+                <div class="lh-sm sidebar-label">
+                    <div class="fw-bold text-app-offwhite small">
+                        {{ current_user.firstname }} {{ current_user.lastname }}
+                    </div>
+                    <div class="text-app-muted-dark text-xs">{{ current_user.email }}</div>
+                </div>
+            </div>
+
+            {# POST, so the browser can't sign the patient out by prefetching a link #}
+            <form method="POST" action="{{ url_for('patients.logout') }}" class="m-0">
+                <button type="submit" title="Sign out"
+                        class="nav-link-custom text-app-muted-dark small hover-white btn border-0 bg-transparent p-0 w-100 text-start text-decoration-none shadow-none">
+                    <i class="bi bi-box-arrow-right"></i>
+                    <span class="sidebar-label">Sign out</span>
+                </button>
+            </form>
+        </div>
+
+    </div>
+</div>
