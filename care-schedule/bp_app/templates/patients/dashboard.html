@@ -1,0 +1,199 @@
+
+{% extends "components/patient_dashboard_base.html" %}
+{% block title %}Dashboard{% endblock %}
+
+{% block dashboard_content %}
+
+    <!-- ========================================================
+         Header
+         ======================================================== -->
+    <div class="mb-4">
+        <div class="eyebrow text-app-teal mb-1">Patient dashboard</div>
+        <h1 class="display-5 fw-bold text-app-navy mb-0">
+            {{ greeting }},<br>{{ current_user.firstname }}.
+        </h1>
+    </div>
+
+
+    <div class="row g-4">
+
+        <!-- ====================================================
+             Left column
+             ==================================================== -->
+        <div class="col-12 col-lg-8">
+
+            <!-- Counts -->
+            <div class="row g-3 mb-4">
+                <div class="col-12 col-md-4">
+                    <div class="card border-0 shadow-sm rounded-4 p-3 bg-app-card h-100">
+                        <div class="display-5 fw-bold text-app-navy mb-1">{{ upcoming|length }}</div>
+                        <div class="text-app-muted small">Upcoming appointments</div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <div class="card border-0 shadow-sm rounded-4 p-3 bg-app-card h-100">
+                        <div class="display-5 fw-bold text-app-navy mb-1">{{ completed|length }}</div>
+                        <div class="text-app-muted small">Completed visits</div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <div class="card border-0 shadow-sm rounded-4 p-3 bg-app-card h-100">
+                        <div class="display-5 fw-bold text-app-navy mb-1">{{ cancelled|length }}</div>
+                        <div class="text-app-muted small">Cancelled</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Next appointment -->
+            {% if next_appointment %}
+                <div class="card border-0 shadow-sm rounded-4 p-4 bg-app-card mb-4 booking-card">
+                    <div class="eyebrow text-app-muted mb-2">Next appointment</div>
+
+                    <div class="h5 fw-bold text-app-navy mb-1">
+                        Dr. {{ next_appointment.availability.professional.firstname }}
+                        {{ next_appointment.availability.professional.lastname }}
+                    </div>
+                    <div class="text-app-teal small mb-3">
+                        {{ next_appointment.availability.professional.specialty }}
+                    </div>
+
+                    <div class="text-app-muted text-xs mb-1">
+                        <i class="bi bi-calendar3 me-1"></i>
+                        {{ next_appointment.scheduled_at.strftime("%A, %B %d, %Y") }}
+                        <i class="bi bi-clock ms-3 me-1"></i>
+                        {{ next_appointment.availability.start_time.strftime("%I:%M %p") }} &ndash;
+                        {{ next_appointment.availability.end_time.strftime("%I:%M %p") }}
+                    </div>
+
+                    {% if next_appointment.reason %}
+                        <div class="text-app-muted text-xs fst-italic mb-3">
+                            &ldquo;{{ next_appointment.reason }}&rdquo;
+                        </div>
+                    {% endif %}
+
+                    <div class="d-flex flex-wrap gap-2 mt-2">
+                        <a href="{{ url_for('patients.my_appointments') }}"
+                           class="btn btn-sm bg-app-teal text-app-offwhite fw-bold px-3 rounded-3">
+                            View all
+                        </a>
+                        <a href="{{ url_for('patients.book') }}"
+                           class="btn btn-sm btn-outline-secondary px-3 rounded-3">
+                            Book another
+                        </a>
+                    </div>
+                </div>
+            {% else %}
+                <div class="card border-0 shadow-sm rounded-4 p-5 bg-app-card mb-4 text-center">
+                    <div class="mb-3">
+                        <i class="bi bi-calendar-plus display-6 text-app-muted"></i>
+                    </div>
+                    <h2 class="h5 fw-bold text-app-navy">No upcoming appointments</h2>
+                    <p class="text-app-muted mb-4">
+                        Find a time that works and book your first visit.
+                    </p>
+                    <div>
+                        <a href="{{ url_for('patients.book') }}"
+                           class="btn bg-app-teal text-app-offwhite fw-bold px-4 py-2 rounded-3">
+                            <i class="bi bi-plus-lg me-1"></i> Book appointment
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
+
+            <!-- Quick actions -->
+            <div class="eyebrow text-app-muted mb-3">Quick actions</div>
+            <div class="row g-3">
+                <div class="col-6 col-md-3">
+                    <a href="{{ url_for('patients.book') }}"
+                       class="card border-0 shadow-sm rounded-4 p-3 bg-app-navy text-app-offwhite text-decoration-none quick-action-card h-100">
+                        <i class="bi bi-plus-lg fs-4 mb-3"></i>
+                        <div class="fw-bold small">Book Appointment</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-3">
+                    <a href="{{ url_for('patients.my_appointments') }}"
+                       class="card border-0 shadow-sm rounded-4 p-3 bg-app-card text-app-navy text-decoration-none quick-action-card h-100">
+                        <i class="bi bi-clock fs-4 mb-3"></i>
+                        <div class="fw-bold small">My Appointments</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-3">
+                    {# TODO: url_for('patients.history') #}
+                    <a href="#"
+                       class="card border-0 shadow-sm rounded-4 p-3 bg-app-card text-app-navy text-decoration-none quick-action-card h-100">
+                        <i class="bi bi-arrow-counterclockwise fs-4 mb-3"></i>
+                        <div class="fw-bold small">History</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-3">
+                    {# TODO: url_for('patients.profile') #}
+                    <a href="#"
+                       class="card border-0 shadow-sm rounded-4 p-3 bg-app-card text-app-navy text-decoration-none quick-action-card h-100">
+                        <i class="bi bi-person fs-4 mb-3"></i>
+                        <div class="fw-bold small">Profile</div>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ====================================================
+             Right column: the week ahead
+             ==================================================== -->
+        <div class="col-12 col-lg-4">
+            <div class="card border-0 shadow-sm rounded-4 p-4 bg-app-card h-100">
+                <div class="eyebrow text-app-muted mb-3">This week</div>
+
+                {% for day in week %}
+                    {# A day is highlighted when the patient has a booking on it #}
+                    <div class="d-flex justify-content-between align-items-center px-3 py-2 mb-1 rounded-3
+                                {{ 'bg-app-navy text-app-offwhite' if day in booked_days }}">
+                        <span class="text-xs {{ '' if day in booked_days else 'text-app-muted' }}">
+                            {{ day.strftime("%a") }}
+                        </span>
+                        <span class="fw-bold small">{{ day.day }}</span>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
