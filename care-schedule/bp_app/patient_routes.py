@@ -1,5 +1,4 @@
-from datetime import datetime
-
+from datetime import datetime, date, timedelta
 from flask import (Blueprint, render_template, request, redirect, url_for, flash, abort)
 from flask_login import (LoginManager, current_user, login_required, login_user, logout_user)
 
@@ -87,9 +86,43 @@ def dashboard():
         flash("This page is for patients only.", "error")
         return redirect(url_for("main.home"))
 
-    # Fetch patient's upcoming booked appointments
+    # Fetch patient's upcoming booked
+    now = datetime.now()
 
-    return render_template("dashboard.html")
+    appointments = (
+        Appointment.query
+        .filter_by(patient_id=current_user.id)
+        .order_by(Appointment.scheduled_at)
+        .all()
+    )
+
+    upcoming = [apt for apt in appointments
+                if apt.status == AppointmentStatus.CONFIRMED and apt.schedules_at > now]
+    completed = [apt for apt in appointments if apt.status == AppointmentStatus.COMPLETED]
+    cancelled = [apt for apt in appointments if apt.status == AppointmentStatus.CANCELLED]
+
+    # Seven days starting today, for the strip on the right
+    week = [date.today() + timedelta(days=offset) for offset in range(7)]
+    booked_days = {a.scheduled_at.date() for a in upcoming}
+
+    if now.hour < 12:
+        greeting = "Good morning"
+    elif now.hour < 18:
+        greeting = "Good afternoon"
+    else:
+        greeting = "Good evening"
+
+    return render_template(
+        "dashboard.html",
+        upcoming=upcoming,
+        completed=completed,
+        cancelled=cancelled,
+        next_appointment=upcoming[0] if upcoming else None,
+        week=week,
+        booked_days=booked_days,
+        active_page="dashboard",
+
+    )
 
 @patients.route("/logout")
 @login_required
@@ -188,7 +221,6 @@ def cancel_appointment(appointment_id):
     db.session.commit()
     flash('Appointment cancelled.', 'success')
     return redirect(url_for('patients.my_appointments'))
-
 
 @patients.route('/appointments/<int:appointment_id>/reschedule', methods=['GET', 'POST'])
 @login_required
