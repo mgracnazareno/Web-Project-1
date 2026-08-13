@@ -46,6 +46,11 @@ Today, I reviewed the project requirements to ensure that my application meets e
 
 I also designed the initial database structure. At this stage, I am keeping it relatively simple since the application only needs to demonstrate the required functionality. In a real-world medical appointment scheduling system, the database would typically be much more complex, with multiple related tables for patients, healthcare professionals, appointments, availability, medical records, and other supporting data. For this project, however, I am focusing on a clean and manageable database design that meets the course requirements while leaving room for future enhancements.
 
+## August 3, 2026
+Figma Design
+I started working on my Figma design. The layout is mostly identical to other pages so it is easier to create. The only page that differs is the home page and the rest are alike. My design is minimalistic, straight forward and user-friendly.
+The only reason that blocks me from completing this task is that I have a wedding party to attend today which means I’ll be away for the whole day..
+
 ## August 4, 2026
 After the demo class today, I continued working on my Figma design. Then, I reviewed  the  materials from our Python & JavaScript class to refresh my understanding of how to implement CRUD and the DOM. I redid some of the labs we had to recall the techniques before I began working on my backend.
 
