@@ -72,14 +72,14 @@
                     <i class="bi bi-plus-lg"></i>
                     <span class="sidebar-label">Availability</span>
                 </a>
-                {# TODO: url_for('professional.appointments') #}
-                <a href="#" title="Appointments"
+
+                <a href="{{ url_for('professional.appointment') }}" title="Appointments"
                    class="nav-link-custom {{ 'active' if active_page == 'appointments' }}">
                     <i class="bi bi-clock-history"></i>
                     <span class="sidebar-label">Appointments</span>
                 </a>
-                {# TODO: url_for('professional.profile') #}
-                <a href="#" title="Profile"
+
+                <a href="{{ url_for('professional.profile') }}" title="Profile"
                    class="nav-link-custom {{ 'active' if active_page == 'profile' }}">
                     <i class="bi bi-person"></i>
                     <span class="sidebar-label">Profile</span>
@@ -100,11 +100,13 @@
                     <div class="text-app-muted-dark text-xs">{{ current_user.email }}</div>
                 </div>
             </div>
-            <a href="{{ url_for('professional.logout') }}" title="Sign out"
-               class="nav-link-custom text-app-muted-dark small hover-white">
-                <i class="bi bi-box-arrow-right"></i>
-                <span class="sidebar-label">Sign out</span>
-            </a>
+
+            <form action="{{ url_for('professional.logout') }}" method="POST"></form>
+                <button type="submit" title="Sign out"
+                   class="nav-link-custom text-app-muted-dark small hover-white">
+                    <i class="bi bi-box-arrow-right"></i>
+                    <span class="sidebar-label">Sign out</span>
+                </button>
         </div>
 
     </div>
