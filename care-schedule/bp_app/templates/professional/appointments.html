@@ -1,0 +1,145 @@
+{% extends "components/dashboard_base.html" %}
+{% block title %}Appointments{% endblock %}
+
+{% block dashboard_content %}
+
+    <div class="row">
+        <div class="col-12 col-lg-10 col-xxl-8">
+
+            <!-- ========
+                 Header
+                 ======== -->
+            <div class="mb-4">
+                <h1 class="display-6 fw-bold text-app-navy mb-1">Appointments</h1>
+                <p class="text-app-muted mb-0">All patient bookings, upcoming and past.</p>
+            </div>
+
+
+            <!-- ===========
+                 Upcoming
+                 =========== -->
+            <div class="eyebrow text-app-muted mb-2">
+                Upcoming &mdash; {{ upcoming|length }}
+            </div>
+
+            {% for booking in upcoming %}
+                <div class="card border-0 shadow-sm rounded-4 bg-app-card p-3 mb-3 booking-card">
+                    <div class="d-flex align-items-center gap-3">
+
+                        <!-- Patient initials -->
+                        <div class="avatar bg-light text-app-muted">
+                            {{ booking.patient.firstname[:1] }}{{ booking.patient.lastname[:1] }}
+                        </div>
+
+                        <div class="flex-grow-1 min-w-0">
+                            <div class="fw-bold text-app-navy">
+                                {{ booking.patient.firstname }} {{ booking.patient.lastname }}
+                            </div>
+                            <div class="text-app-muted text-xs">
+                                {{ booking.availability.start_time.strftime("%b %d, %Y") }} &nbsp;
+                                {{ booking.availability.start_time.strftime("%I:%M %p") }} &ndash;
+                                {{ booking.availability.end_time.strftime("%I:%M %p") }}
+                            </div>
+                            {% if booking.reason %}
+                                <div class="text-app-muted text-xs fst-italic mt-1">
+                                    &ldquo;{{ booking.reason }}&rdquo;
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Status -->
+                        {% if booking.status.value == "confirmed" %}
+                            <span class="badge-slot badge-booked">Booked</span>
+                        {% elif booking.status.value == "cancelled" %}
+                            <span class="badge-slot badge-cancelled">Cancelled</span>
+                        {% endif %}
+
+                        <!-- Only a confirmed booking can be completed -->
+                        {% if booking.status.value == "confirmed" %}
+                            <form method="POST"
+                                  action="{{ url_for('professional.complete_appointment', appointment_id=booking.id) }}"
+                                  class="d-inline flex-shrink-0">
+                                <button type="submit"
+                                        class="btn btn-sm bg-app-teal text-app-offwhite fw-bold px-3 rounded-pill">
+                                    <i class="bi bi-check-lg me-1"></i> Complete
+                                </button>
+                            </form>
+                        {% endif %}
+
+                    </div>
+                </div>
+            {% else %}
+                <div class="card border-0 shadow-sm rounded-4 bg-app-card p-5 text-center mb-4">
+                    <div class="mb-3">
+                        <i class="bi bi-calendar-check display-6 text-app-muted"></i>
+                    </div>
+                    <h2 class="h5 fw-bold text-app-navy">No upcoming appointments</h2>
+                    <p class="text-app-muted mb-0">
+                        Bookings appear here once patients reserve one of your slots.
+                    </p>
+                </div>
+            {% endfor %}
+
+
+            <!-- ========================================================
+                 Past. Hidden entirely when there's nothing to show, so
+                 a new professional doesn't see two empty sections.
+                 ======================================================== -->
+            {% if past %}
+                <div class="eyebrow text-app-muted mt-5 mb-2">
+                    Past &mdash; {{ past|length }}
+                </div>
+
+                {% for booking in past %}
+                    <div class="card border-0 shadow-sm rounded-4 bg-app-card p-3 mb-3 booking-card booking-card-past">
+                        <div class="d-flex align-items-center gap-3">
+
+                            <div class="avatar bg-light text-app-muted">
+                                {{ booking.patient.firstname[:1] }}{{ booking.patient.lastname[:1] }}
+                            </div>
+
+                            <div class="flex-grow-1 min-w-0">
+                                <div class="fw-bold text-app-navy">
+                                    {{ booking.patient.firstname }} {{ booking.patient.lastname }}
+                                </div>
+                                <div class="text-app-muted text-xs">
+                                    {{ booking.availability.start_time.strftime("%b %d, %Y") }} &nbsp;
+                                    {{ booking.availability.start_time.strftime("%I:%M %p") }} &ndash;
+                                    {{ booking.availability.end_time.strftime("%I:%M %p") }}
+                                </div>
+                                {% if booking.reason %}
+                                    <div class="text-app-muted text-xs fst-italic mt-1">
+                                        &ldquo;{{ booking.reason }}&rdquo;
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            {% if booking.status.value == "completed" %}
+                                <span class="badge-slot badge-completed">Completed</span>
+                            {% elif booking.status.value == "cancelled" %}
+                                <span class="badge-slot badge-cancelled">Cancelled</span>
+                            {% elif booking.status.value == "no_show" %}
+                                <span class="badge-slot badge-cancelled">No show</span>
+                            {% else %}
+                                {# Confirmed but the time has passed — still completable #}
+                                <span class="badge-slot badge-booked">Booked</span>
+
+                                <form method="POST"
+                                      action="{{ url_for('professional.complete_appointment', appointment_id=booking.id) }}"
+                                      class="d-inline flex-shrink-0">
+                                    <button type="submit"
+                                            class="btn btn-sm bg-app-teal text-app-offwhite fw-bold px-3 rounded-pill">
+                                        <i class="bi bi-check-lg me-1"></i> Complete
+                                    </button>
+                                </form>
+                            {% endif %}
+
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+        </div>
+    </div>
+
+{% endblock %}

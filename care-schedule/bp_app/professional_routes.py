@@ -297,7 +297,7 @@ def appointment():
     past = [book for book in bookings if book.availability.start_time <= now]
 
     return render_template(
-    "professional/appointment.html",
+    "professional/appointments.html",
                        upcoming=upcoming,
                        past=past,
                        active_page="appointments")
