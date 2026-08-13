@@ -1,5 +1,5 @@
 from datetime import datetime
-from bp_app.models import db, Professional, Availability
+from bp_app.models import db, Professional, Availability, Appointment, AppointmentStatus
 from .utils import validate_registration, validate_professional_registration
 from flask_login import (LoginManager, current_user, login_user, login_required, logout_user)
 from flask import Blueprint, flash, render_template, redirect, url_for, request
@@ -21,7 +21,7 @@ SPECIALTIES = [
 @login_required
 def dashboard():
     if not isinstance(current_user, Professional):
-        flash("This page is for professionals only.","error")
+        flash("This page is for professionals only.", "error")
         return redirect(url_for("main.home"))
 
     slots = (
@@ -166,7 +166,6 @@ def add_availability():
             Availability.end_time > start
         ).first()
 
-
         if overlap:
             flash("This time overlaps one of your existing slots", "error")
             continue
@@ -177,7 +176,7 @@ def add_availability():
             end_time=end,
         )
         db.session.add(slot)
-        added+= 1
+        added += 1
 
     if added:
         db.session.commit()
@@ -199,6 +198,7 @@ def manage_availability():
         .all()
     )
     return render_template("professional/manage_availability.html", slots=slots)
+
 
 @professional.route("/professional/availability/<int:slot_id>/edit", methods=["POST"])
 @login_required
@@ -226,15 +226,15 @@ def edit_availability(slot_id):
         end_dt = datetime.strptime(f"{date_str} {end_str}", "%Y-%m-%d %H:%M")
     except ValueError:
         flash("Please provide a valid date, start time, and end time.", "error")
-        return redirect(url_for("/professional.manage_availability"))
+        return redirect(url_for("professional.manage_availability"))
 
     if end_dt <= start_dt:
         flash("End time must be after the start time.", "error")
-        return redirect(url_for("/professional.manage_availability"))
+        return redirect(url_for("professional.manage_availability"))
 
     if start_dt < datetime.now():
         flash("Availability can't be set in the past.", "error")
-        return render_template("professional/edit_availability.html", slot=slot)
+        return redirect(url_for("professional.manage_availability"))
 
     overlap = Availability.query.filter(
         Availability.professional_id == current_user.id,
@@ -245,7 +245,7 @@ def edit_availability(slot_id):
 
     if overlap is not None:
         flash("This time overlaps with another one of your slots.", "error")
-        return redirect(url_for("/professional.manage_availability"))
+        return redirect(url_for("professional.manage_availability"))
 
     slot.start_time = start_dt
     slot.end_time = end_dt
@@ -275,3 +275,56 @@ def delete_availability(slot_id):
     db.session.commit()
     flash("Availability removed.", "success")
     return redirect(url_for("professional.manage_availability"))
+
+
+@professional.route("/professional/appointments")
+@login_required
+def appointment():
+    if not isinstance(current_user, Professional):
+        flash("This page is for professionals only", "error")
+        return redirect(url_for("main.home"))
+
+    bookings = (
+        Appointment.query
+        .join(Availability)
+        .filter(Availability.professional_id == current_user.id)
+        .order_by(Availability.start_time)
+        .all()
+    )
+
+    now = datetime.now()
+    upcoming = [book for book in bookings if book.availability.start_time >= now]
+    past = [book for book in bookings if book.availability.start_time <= now]
+
+    return render_template(
+    "professional/appointment.html",
+                       upcoming=upcoming,
+                       past=past,
+                       active_page="appointments")
+
+
+@professional.route("/professional/appointments/<int:appointment_id>/complete", methods=["POST"])
+@login_required
+def complete_appointments(appointment_id):
+    if not isinstance(current_user, Professional):
+        flash("This page is for professionals only.", "error")
+        return redirect(url_for("main.home"))
+
+    booking = db.session.get(Appointment, appointment_id)
+
+    if booking is None or booking.availability.professional_id != current_user.id:
+        flash("Appointment not found.", "error")
+        return redirect(url_for("professional.appointments"))
+
+    if booking.status != AppointmentStatus.CONFIRMED:
+        flash("Only confirmed appointments can be marked complete.", "error")
+        return redirect(url_for("professional.appointments"))
+
+    booking.status = AppointmentStatus.COMPLETED
+    db.session.commit()
+
+    flash("Appointment marked complete.", "success")
+    return redirect(url_for("professional.appointment"))
+
+
+
