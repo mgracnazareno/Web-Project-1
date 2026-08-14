@@ -45,3 +45,21 @@ Here is the link of the case study where I based my project. Although I am not b
 Today, I reviewed the project requirements to ensure that my application meets each one. The most challenging part so far has been the Figma design. I don't think three days is enough to create a complete low-fidelity wireframe, so for now I am focusing on planning the application's structure instead. I identified the main pages that the system will need, including the Home page, Login page, Patient Portal, and Medical Professional dashboard. Although I have not created the wireframes yet, having these pages planned gives me a clear direction for the next stage of the project.
 
 I also designed the initial database structure. At this stage, I am keeping it relatively simple since the application only needs to demonstrate the required functionality. In a real-world medical appointment scheduling system, the database would typically be much more complex, with multiple related tables for patients, healthcare professionals, appointments, availability, medical records, and other supporting data. For this project, however, I am focusing on a clean and manageable database design that meets the course requirements while leaving room for future enhancements.
+
+## August 3, 2026
+Figma Design
+I started working on my Figma design. The layout is mostly identical to other pages so it is easier to create. The only page that differs is the home page and the rest are alike. My design is minimalistic, straight forward and user-friendly.
+The only reason that blocks me from completing this task is that I have a wedding party to attend today which means I’ll be away for the whole day..
+
+## August 4, 2026
+After the demo class today, I continued working on my Figma design. Then, I reviewed  the  materials from our Python & JavaScript class to refresh my understanding of how to implement CRUD and the DOM. I redid some of the labs we had to recall the techniques before I began working on my backend.
+
+
+## August 5, 2026
+I began working on the core structure of the backend. I did the full patient authentication, added the login route, organized the project by registering the main blueprint and organized the app into a cleaner layout. I created the models needed for my application. I added the necessary relationships.
+
+
+## August 6, 2026
+I am always looking forward to our presentation day because I learn a lot from other students. The ideas are impressive.
+
+
