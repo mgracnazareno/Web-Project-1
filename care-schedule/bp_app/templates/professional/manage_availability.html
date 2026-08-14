@@ -98,6 +98,7 @@
 
                         </div>
                     </div>
+                    {% endfor %}
                 {% else %}
 
                     <div class="card border-0 shadow-sm rounded-4 bg-app-card p-5 text-center">
@@ -116,7 +117,7 @@
                             </button>
                         </div>
                     </div>
-                {% endfor %}
+
 
             {% endfor %}
 
@@ -278,13 +279,6 @@
             </div>
         </div>
     </div>
-
-    <!-- ============================================================
-         Template for one time range. Inert until cloned — the inputs
-         inside are never validated or submitted while they live here.
-         The <input> sits inside its <label>, so no id is needed and
-         the clones can't collide with each other.
-         ============================================================ -->
 
     <template id="slotRowTemplate">
         <div class="row g-2 mb-3 slot-row">
