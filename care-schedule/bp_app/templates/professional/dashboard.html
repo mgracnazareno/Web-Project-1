@@ -4,10 +4,10 @@
     <!-- Header Category & Title -->
     <div class="mb-4">
         <div class="eyebrow text-app-teal mb-1">
-            CARDIOLOGY &bull; PROFESSIONAL DASHBOARD
+            {{ current_user.specialty|upper }} &bull; PROFESSIONAL DASHBOARD
         </div>
         <h1 class="display-5 fw-bold text-app-navy">
-            Good morning,<br>Dr. Vasquez.
+            {{ greeting }}<br>Dr. {{ current_user.lastname }}.
         </h1>
     </div>
 
@@ -20,20 +20,20 @@
             <div class="row g-3 mb-4">
                 <div class="col-12 col-md-4">
                     <div class="card border-0 shadow-sm rounded-4 p-3 bg-app-card h-100">
-                        <div class="display-4 fw-bold text-app-navy mb-1">0</div>
+                        <div class="display-4 fw-bold text-app-navy mb-1">{{ today|length }}</div>
                         <div class="fw-bold text-app-navy small">Today's appointments</div>
-                        <div class="text-app-muted text-xs">Wednesday, Aug 12</div>
+                        <div class="text-app-muted text-xs">{{ today_label }}</div>
                     </div>
                 </div>
                 <div class="col-12 col-md-4">
                     <div class="card border-0 shadow-sm rounded-4 p-3 bg-app-card h-100">
-                        <div class="display-4 fw-bold text-app-navy mb-1">1</div>
+                        <div class="display-4 fw-bold text-app-navy mb-1">{{ upcoming|length }}</div>
                         <div class="fw-bold text-app-navy small">Total upcoming</div>
                     </div>
                 </div>
                 <div class="col-12 col-md-4">
                     <div class="card border-0 shadow-sm rounded-4 p-3 bg-app-card h-100">
-                        <div class="display-4 fw-bold text-app-navy mb-1">2</div>
+                        <div class="display-4 fw-bold text-app-navy mb-1">{{ open_slots|length }}</div>
                         <div class="fw-bold text-app-navy small">Open slots</div>
                     </div>
                 </div>
@@ -44,9 +44,32 @@
                 <div class="eyebrow text-app-muted mb-4">
                     Today's schedule
                 </div>
-                <div class="empty-state">
-                    No appointments today.
-                </div>
+
+                {% for booking in today %}
+                    <div class="d-flex align-items-center gap-3 {{ 'mb-3' if not loop.last }}">
+
+                        <div class="text-app-muted text-cs flex-shrink-0">
+                            {{ booking.availability.start_time.strftime("%I:%M %p") }} &ndash;
+                            {{ booking.availability.end_time.strftime("%I:%M %p") }}
+                        </div>
+
+                        <div class="flex-grow-1 min-w-0">
+                            <div class="fw-bold text-app-navy">
+                                {{ booking.patient.firstname }} {{ booking.patient.lastname }}
+                            </div>
+                            {% if booking.reason %}
+                                <div class="text-app-muted text-xs fst-italic">
+                                    &ldquo;{{ booking.reason }}&rdquo;
+                                </div>
+                            {% endif %}
+                        </div>
+                        <span class="badge-slot badge-booked flex-shrink-0">Booked</span>
+                    </div>
+                    {% else %}
+                    <div class="empty-state">
+                        No appointments today.
+                    </div>
+                {% endfor %}
             </div>
 
             <!-- Quick Actions -->
@@ -56,21 +79,21 @@
                 </div>
                 <div class="row g-3">
                     <div class="col-12 col-md-4">
-                        <a href="#"
+                        <a href="{{ url_for('professional.manage_availability') }}"
                            class="card border-0 shadow-sm rounded-4 p-3 bg-app-navy text-app-offwhite text-decoration-none quick-action-card h-100">
                             <i class="bi bi-calendar-plus fs-4 mb-3"></i>
                             <div class="fw-bold small">Manage Availability</div>
                         </a>
                     </div>
                     <div class="col-12 col-md-4">
-                        <a href="#"
+                        <a href="{{ url_for('professional.appointment') }}"
                            class="card border-0 shadow-sm rounded-4 p-3 bg-app-card text-app-navy text-decoration-none quick-action-card h-100">
                             <i class="bi bi-clock fs-4 mb-3 text-app-navy"></i>
                             <div class="fw-bold small">All Appointments</div>
                         </a>
                     </div>
                     <div class="col-12 col-md-4">
-                        <a href="#"
+                        <a href="{{ url_for('professional.profile') }}"
                            class="card border-0 shadow-sm rounded-4 p-3 bg-app-card text-app-navy text-decoration-none quick-action-card h-100">
                             <i class="bi bi-person fs-4 mb-3 text-app-navy"></i>
                             <div class="fw-bold small">My Profile</div>
@@ -87,15 +110,36 @@
                 <div class="eyebrow text-app-muted mb-4">
                     Upcoming appointments
                 </div>
-                <div class="d-flex align-items-center gap-3">
-                    <div class="avatar bg-light text-app-muted">
-                        JK
+
+                     {# Only the next few — the full list lives on the Appointments page #}
+                {% for booking in upcoming[:5] %}
+                    <div class="d-flex align-items-center gap-3 {{ 'mb-3' if not loop.last }}">
+                        <div class="avatar bg-light text-app-muted">
+                            {{ booking.patient.firstname[:1] }}{{ booking.patient.lastname[:1] }}
+                        </div>
+                        <div class="min-w-0">
+                            <div class="fw-bold text-app-navy">
+                                {{ booking.patient.firstname }} {{ booking.patient.lastname }}
+                            </div>
+                            <div class="text-app-muted text-xs">
+                                {{ booking.availability.start_time.strftime("%b %d, %Y") }} &bull;
+                                {{ booking.availability.start_time.strftime("%I:%M %p") }}
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <div class="fw-bold text-app-navy">Jordan Kim</div>
-                        <div class="text-app-muted text-xs">Aug 4, 2026 &bull; 10:00 AM</div>
+                {% else %}
+                    <div class="empty-state">
+                        No upcoming appointments yet.
                     </div>
-                </div>
+                {% endfor %}
+
+                  {% if upcoming|length > 5 %}
+                    <a href="{{ url_for('professional.appointment') }}"
+                       class="text-app-teal text-decoration-none small fw-bold mt-3">
+                        View all {{ upcoming|length }}
+                        <i class="bi bi-arrow-right ms-1"></i>
+                    </a>
+                {% endif %}
             </div>
         </div>
     </div>
