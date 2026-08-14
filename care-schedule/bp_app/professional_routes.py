@@ -24,13 +24,49 @@ def dashboard():
         flash("This page is for professionals only.", "error")
         return redirect(url_for("main.home"))
 
+    now = datetime.now()
+
     slots = (
         Availability.query
         .filter_by(professional_id=current_user.id)
         .order_by(Availability.start_time.asc())
         .all()
     )
-    return render_template("professional/dashboard.html", slots=slots)
+
+    open_slots = [
+        slot for slot in slots
+        if slot.start_time >= now and not slot.appointment
+    ]
+
+    bookings = (
+        Appointment.query
+        .join(Availability, Appointment.availability_id == Availability.id)
+        .filter(Availability.professional_id == current_user.id)
+        .order_by(Availability.start_time.asc())
+        .all()
+    )
+
+    confirmed = [b for b in bookings if b.status.value == "confirmed"]
+
+    today = [b for b in confirmed if b.availability.start_time.date() == now.date()]
+    upcoming = [b for b in confirmed if b.availability.start_time >= now]
+
+    if now.hour < 12:
+        greeting = "Good morning"
+    elif now.hour < 18:
+        greeting = "Good afternoon"
+    else:
+        greeting = "Good evening"
+
+    return render_template("professional/dashboard.html",
+                           active_page="dashboard",
+                           greeting=greeting,
+                           today_label=now.strftime("%A, %b %d"),
+                           today=today,
+                           upcoming=upcoming,
+                           open_slots=open_slots,
+                           slots=slots)
+
 
 
 @professional.route("/professional/register", methods=["GET", "POST"])
