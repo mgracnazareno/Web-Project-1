@@ -57,7 +57,7 @@
                 </span>
             </div>
 
-            <!-- Navigation Links. title="" shows the label on hover when railed. -->
+            <!-- Navigation Links. -->
             <nav class="nav nav-pills flex-column gap-1">
                 <a href="{{ url_for('patients.dashboard') }}" title="Dashboard"
                    class="nav-link-custom {{ 'active' if active_page == 'dashboard' }}">
@@ -84,8 +84,8 @@
                     <span class="sidebar-label">History</span>
                 </a>
 
-                {# TODO: url_for('patients.profile') #}
-                <a href="#" title="Profile"
+
+                <a href="{{ url_for('patients.profile') }}" title="Profile"
                    class="nav-link-custom {{ 'active' if active_page == 'profile' }}">
                     <i class="bi bi-person"></i>
                     <span class="sidebar-label">Profile</span>
