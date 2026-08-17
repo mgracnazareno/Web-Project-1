@@ -1,5 +1,8 @@
 # Validation helper
 from datetime import datetime
+
+from sqlalchemy import func
+
 from .models import Patient, Professional
 
 
@@ -157,3 +160,21 @@ def validate_profile(firstname, lastname,email, phone, dob_str, patient):
             if dob > datetime.now().date():
                 errors.append("Date of birth cannot be in the future.")
     return errors, dob
+
+
+def find_user_by_email(email):
+   """Return the Patient or Professional with this email, or None."""
+   email = (email or "").strip().lower()
+   if not email:
+       return None
+   return (
+       Patient.query
+       .filter(func.lower(Patient.email)==email).first()
+       or Professional.query.filter(func.lower(Professional.email) ==email).first()
+   )
+
+def dashboard_for(user):
+    """Endpoint name of the dashboard belonging to this user type"""
+    if isinstance(user, Professional):
+        return "professional.dashboard"
+    return "patients.dashboard"

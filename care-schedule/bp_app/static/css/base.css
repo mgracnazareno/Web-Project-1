@@ -11,7 +11,12 @@
 
     --app-teal-light: #4fa8c4; /*accent on dark background*/
     --app-muted-dark: #b9c5cc; /* body text on dark backgrounds*/
+
+    --app-font-serif: "Fraunces", Georgia, serif;
+    --app-font-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --app-font-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
 }
+
 
 /* teal rounded square na may icon */
 .brand-mark {
@@ -96,4 +101,65 @@
 
 .hover-white:hover {
     color: var(--app-offwhite);
+}
+
+/* Homepage — closing call to action */
+
+.cta-section {
+  background-color: var(--app-teal);
+  color: var(--app-offwhite);
+  padding: 4rem 0;
+}
+
+.cta-rule {
+  width: 40px;
+  border-top: 2px solid var(--app-offwhite);
+}
+
+.cta-lede {
+  color: rgba(255, 255, 255, 0.85);
+}
+.cta-inner {
+  max-width: 540px;
+  margin-inline: auto;
+}
+
+.cta-rule {
+  width: 40px;
+  border-top: 2px solid var(--app-teal-light);
+}
+
+.cta-title {
+  font-family: var(--app-font-serif);
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.cta-lede {
+  color: var(--app-muted-dark);
+  font-size: 1.05rem;
+}
+
+@media (max-width: 767.98px) {
+    .cta-section {
+        padding: 3.5rem 0;
+    }
+
+    .cta-title {
+        font-size: 1.9rem;
+    }
+}
+.btn-app {
+  background-color: var(--app-teal);
+  border: 1px solid var(--app-teal);
+  color: var(--app-offwhite);
+  font-weight: 600;
+}
+
+.btn-app:hover,
+.btn-app:focus {
+  background-color: var(--app-teal-light);
+  border-color: var(--app-teal-light);
+  color: var(--app-navy);
 }

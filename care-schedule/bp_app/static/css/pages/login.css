@@ -1,0 +1,73 @@
+/* Login page — split screen layout */
+
+.login-brand {
+  background-color: var(--app-navy);
+}
+
+.login-panel {
+  background-color: var(--app-offwhite);
+}
+
+.login-form-wrap {
+  max-width: 380px;
+}
+
+/* Brand panel */
+.login-logo {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background-color: var(--app-teal-light);
+  color: var(--app-navy);
+}
+
+.login-wordmark {
+  font-family: var(--app-font-serif);
+  font-weight: 700;
+}
+
+.login-rule {
+  width: 40px;
+  border-top: 2px solid var(--app-muted-dark);
+}
+
+.login-display {
+  font-family: var(--app-font-serif);
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.login-lede {
+  color: var(--app-muted-dark);
+  font-size: 0.95rem;
+}
+
+/* Form panel */
+.login-title {
+  font-family: var(--app-font-serif);
+  font-weight: 700;
+}
+
+.login-label,
+.login-eyebrow {
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--app-muted);
+}
+
+.login-eyebrow {
+  font-family: var(--app-font-mono);
+}
+
+.login-demo {
+  border: 1px solid var(--app-border);
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+
+.login-demo code {
+  font-family: var(--app-font-mono);
+  color: var(--app-navy);
+}

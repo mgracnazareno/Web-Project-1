@@ -8,14 +8,8 @@
 {% block footer %}{% endblock %}
 
 {% block content %}
-{% if action == "login" %}
-    {% set patient_url = url_for('patients.login') %}
-    {% set pro_url = url_for('professional.login') %}
-{% else %}
-    {% set patient_url = url_for('patients.register') %}
-    {% set pro_url = url_for('professional.register') %}
-{% endif %}
-
+{% set patient_url =  url_for('patients.register') %}
+{% set pro_url =  url_for('professional.register') %}
 <section class="role-page min-vh-100 d-flex align-items-center">
   <div class="container">
     <div class="row justify-content-center">
@@ -59,7 +53,7 @@
         {% if action == "register" %}
         <p class="text-center text-secondary mt-5 mb-0">
           Already have an account?
-          <a href="{{ url_for('main.get_started', action='login') }}" class="sign-in-link">Sign in</a>
+          <a href="{{ url_for('auth.login', action='sign-in-link') }}">Sign in</a>
         </p>
         {% endif %}
 

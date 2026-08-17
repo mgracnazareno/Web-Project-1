@@ -1,7 +1,7 @@
 from datetime import datetime
 from bp_app.models import db, Professional, Availability, Appointment, AppointmentStatus
 from .utils import validate_professional_registration
-from flask_login import (LoginManager, current_user, login_user, login_required, logout_user)
+from flask_login import (current_user, login_user, login_required, logout_user)
 from flask import Blueprint, flash, render_template, redirect, url_for, request
 
 professional = Blueprint("professional", __name__)
@@ -117,37 +117,37 @@ def register():
         db.session.commit()
 
         flash("Your account has been created!!!", "success")
-        return redirect(url_for("professional.login"))
+        return redirect(url_for("auth.login"))
 
     # GET request
     return render_template("professional/register.html", specialties=SPECIALTIES)
 
 
-@professional.route("/professional/login", methods=["GET", "POST"])
-def login():
-    if current_user.is_authenticated and isinstance(current_user, Professional):
-        return redirect(url_for("professional.dashboard"))
-
-    if request.method == "POST":
-        email = request.form["email"].strip()
-        password = request.form["password"]
-
-        professional_user = Professional.query.filter_by(email=email).first()
-
-        if professional_user is None:
-            flash("No account found with that email. Please register.", "error")
-            return redirect(url_for("professional.register"))
-
-        if professional_user is None or not professional_user.check_password(password):
-            flash("Invalid email or password", "error")
-            return render_template("professional/login.html", email=email)
-
-        login_user(professional_user)
-
-        flash("You are now logged in.", "success")
-        return redirect(url_for("professional.dashboard"))
-
-    return render_template("professional/login.html")
+# @professional.route("/professional/login", methods=["GET", "POST"])
+# def login():
+#     if current_user.is_authenticated and isinstance(current_user, Professional):
+#         return redirect(url_for("professional.dashboard"))
+#
+#     if request.method == "POST":
+#         email = request.form["email"].strip()
+#         password = request.form["password"]
+#
+#         professional_user = Professional.query.filter_by(email=email).first()
+#
+#         if professional_user is None:
+#             flash("No account found with that email. Please register.", "error")
+#             return redirect(url_for("professional.register"))
+#
+#         if professional_user is None or not professional_user.check_password(password):
+#             flash("Invalid email or password", "error")
+#             return render_template("professional/login.html", email=email)
+#
+#         login_user(professional_user)
+#
+#         flash("You are now logged in.", "success")
+#         return redirect(url_for("professional.dashboard"))
+#
+#     return render_template("professional/login.html")
 
 
 @professional.route("/professional/logout", methods=["POST"])

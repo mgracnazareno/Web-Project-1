@@ -52,32 +52,32 @@ def register():
         db.session.commit()
 
         flash("Your account has been created!!!", "success")
-        return redirect(url_for("patients.login"))
+        return redirect(url_for("auth.login"))
 
     return render_template("patient_register.html")
 
 
-@patients.route("/login", methods=["GET", "POST"])
-def login():
-    if current_user.is_authenticated:
-        return redirect(url_for("patients.dashboard"))
-
-    if request.method == "POST":
-        email = request.form["email"].strip()
-        password = request.form["password"]
-
-        patient = Patient.query.filter_by(email=email).first()
-
-        if patient is None or not patient.check_password(password):
-            flash("Invalid email or password", "error")
-            return render_template("patient_login.html", email=email)
-
-        login_user(patient)
-        flash("You are now logged in.", "success")
-
-        return redirect(url_for("patients.dashboard"))
-
-    return render_template("patient_login.html")
+# @patients.route("/login", methods=["GET", "POST"])
+# def login():
+#     if current_user.is_authenticated:
+#         return redirect(url_for("patients.dashboard"))
+#
+#     if request.method == "POST":
+#         email = request.form["email"].strip()
+#         password = request.form["password"]
+#
+#         patient = Patient.query.filter_by(email=email).first()
+#
+#         if patient is None or not patient.check_password(password):
+#             flash("Invalid email or password", "error")
+#             return render_template("patient_login.html", email=email)
+#
+#         login_user(patient)
+#         flash("You are now logged in.", "success")
+#
+#         return redirect(url_for("patients.dashboard"))
+#
+#     return render_template("patient_login.html")
 
 @patients.route("/dashboard")
 @login_required
