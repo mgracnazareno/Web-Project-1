@@ -101,6 +101,10 @@ def dashboard():
     completed = [apt for apt in appointments if apt.status == AppointmentStatus.COMPLETED]
     cancelled = [apt for apt in appointments if apt.status == AppointmentStatus.CANCELLED]
 
+    # Split upcoming into the hearo card and the list below it
+    next_appointment = upcoming[0] if upcoming else None
+    later_appointments = upcoming[1:]
+
     # Seven days starting today, for the strip on the right
     week = [date.today() + timedelta(days=offset) for offset in range(7)]
     booked_days = {a.scheduled_at.date() for a in upcoming}
@@ -112,12 +116,14 @@ def dashboard():
     else:
         greeting = "Good evening"
 
+
     return render_template(
         "patients/dashboard.html",
         upcoming=upcoming,
         completed=completed,
         cancelled=cancelled,
-        next_appointment=upcoming[0] if upcoming else None,
+        next_appointment=next_appointment,
+        later_appointments=later_appointments,
         week=week,
         booked_days=booked_days,
         greeting=greeting,
@@ -284,3 +290,18 @@ def reschedule_appointment(appointment_id):
                            appointment=appointment,
                            professional=professional,
                            slots=open_slots)
+
+@patients.route("/history")
+@login_required
+def history():
+    if not isinstance(current_user, Patient):
+        abort(403)
+
+    past = (
+        Appointment.query
+        .filter(Appointment.patient_id==current_user.id)
+        .filter(Appointment.status!=AppointmentStatus.CONFIRMED)
+        .order_by(Appointment.scheduled_at.desc())
+        .all()
+    )
+    return render_template("patients/history.html", past=past, active_page="history")
