@@ -25,6 +25,14 @@ class Patient(UserMixin, db.Model):
 
     appointments = db.relationship("Appointment", back_populates="patient", cascade="all, delete-orphan")
 
+    @property
+    def full_name(self):
+        return f"Dr. {self.firstname} {self.lastname}"
+
+    @property
+    def initials(self):
+        return f"{self.firstname[0]}{self.lastname[0]}"
+
     # methods
     # Flask-login can tell a Patient apart from a Professional with the same numeric id
     def get_id(self):
