@@ -77,8 +77,8 @@
                     <span class="sidebar-label">My Appointments</span>
                 </a>
 
-                {# TODO: url_for('patients.history') #}
-                <a href="#" title="History"
+
+                <a href="{{ url_for('patients.history') }}" title="History"
                    class="nav-link-custom {{ 'active' if active_page == 'history' }}">
                     <i class="bi bi-arrow-counterclockwise"></i>
                     <span class="sidebar-label">History</span>
