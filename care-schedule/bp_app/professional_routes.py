@@ -1,6 +1,6 @@
 from datetime import datetime
 from bp_app.models import db, Professional, Availability, Appointment, AppointmentStatus
-from .utils import validate_registration, validate_professional_registration
+from .utils import validate_professional_registration
 from flask_login import (LoginManager, current_user, login_user, login_required, logout_user)
 from flask import Blueprint, flash, render_template, redirect, url_for, request
 

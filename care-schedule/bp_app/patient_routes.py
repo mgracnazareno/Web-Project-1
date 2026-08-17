@@ -3,7 +3,7 @@ from flask import (Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import (current_user, login_required, login_user, logout_user)
 
 from .models import db, Patient, Availability, Appointment, AppointmentStatus, Professional
-from .utils import validate_registration
+from .utils import validate_patient_registration, validate_profile
 
 from sqlalchemy.exc import IntegrityError
 
@@ -22,7 +22,7 @@ def register():
         dob_str = request.form.get("dob", "").strip()
         phone=request.form.get("phone", "").strip()
 
-        errors = validate_registration(email, password)
+        errors = validate_patient_registration(email, password)
 
         if errors:
             for error in errors:
@@ -305,3 +305,54 @@ def history():
         .all()
     )
     return render_template("patients/history.html", past=past, active_page="history")
+
+@patients.route("/patients/profile", methods=["GET", "POST"])
+@login_required
+def profile():
+    if not isinstance(current_user,Patient):
+        abort(403)
+
+    form = {
+        "firstname": current_user.firstname,
+        "lastname": current_user.lastname,
+        "email": current_user.email,
+        "phone": current_user.phone,
+        "dob": current_user.dob.isoformat(),
+    }
+
+    if request.method == "POST":
+        # Keep what the user typed so a failed save doesn't wipe the form
+        form= {key: request.form.get(key, "").strip() for key in form}
+        form["email"] = form["email"].lower()
+
+        errors, dob = validate_profile(
+            form["firstname"], form["lastname"], form["email"],
+            form["phone"], form["dob"], current_user,
+        )
+
+        if errors:
+            for message in errors:
+                flash(message, "danger")
+            return render_template(
+                "patients/profile.html",
+                form=form,
+                today=datetime.now().date().isoformat(),
+                active_page="profile"
+            ), 400
+
+        current_user.firstname = form["firstname"]
+        current_user.lastname = form["lastname"]
+        current_user.email = form["email"]
+        current_user.phone = form["phone"]
+        current_user.dob = dob
+        db.session.commit()
+
+        flash("Your profile has been updated.", "success")
+        return redirect(url_for("patients.profile"))
+
+    return render_template(
+        "patients/profile.html",
+        form=form,
+        today=datetime.now().date().isoformat(),
+        active_page="profile",
+    )
