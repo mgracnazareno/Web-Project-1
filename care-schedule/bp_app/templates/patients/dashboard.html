@@ -82,6 +82,46 @@
                         </a>
                     </div>
                 </div>
+
+               <!-- Remaining upcoming appointments -->
+                {% if later_appointments %}
+                    <div class="eyebrow text-app-muted mb-2">Also coming up</div>
+
+                    <div class="card border-0 shadow-sm rounded-4 bg-app-card mb-4 overflow-hidden">
+                        {% for appt in later_appointments[:3] %}
+                            <a href="{{ url_for('patients.my_appointments') }}"
+                               class="d-flex align-items-center gap-3 p-3 text-decoration-none appt-row
+                                      {{ 'border-bottom' if not loop.last }}">
+
+                                <div class="date-tile text-center flex-shrink-0">
+                                    <span class="date-day">{{ appt.scheduled_at.strftime("%a")|upper }}</span>
+                                    <span class="date-num">{{ appt.scheduled_at.strftime("%d") }}</span>
+                                </div>
+
+                                <div class="flex-grow-1 min-w-0">
+                                    <div class="fw-bold text-app-navy small">
+                                        Dr. {{ appt.availability.professional.firstname }}
+                                        {{ appt.availability.professional.lastname }}
+                                    </div>
+                                    <div class="text-app-muted text-xs">
+                                        {{ appt.availability.professional.specialty }} &middot;
+                                        {{ appt.availability.start_time.strftime("%I:%M %p") }}
+                                    </div>
+                                </div>
+
+                                <i class="bi bi-chevron-right text-app-muted row-chevron"></i>
+                            </a>
+                        {% endfor %}
+                    </div>
+
+                    {% if later_appointments|length > 3 %}
+                        <a href="{{ url_for('patients.my_appointments') }}"
+                           class="text-app-teal text-decoration-none small fw-bold d-inline-block mb-4">
+                            View all {{ upcoming|length }} appointments
+                            <i class="bi bi-arrow-right ms-1"></i>
+                        </a>
+                    {% endif %}
+                {% endif %}
             {% else %}
                 <div class="card border-0 shadow-sm rounded-4 p-5 bg-app-card mb-4 text-center">
                     <div class="mb-3">
