@@ -86,7 +86,8 @@
                                     <option value="" disabled {%  if not specialty %}selected{% endif %}>--Select a specialty--
                                     </option>
                                     {% for specialty_option in specialties %}
-                                        <option value="{% if specialty_option == specialty %}selected{% endif %}">
+                                        <option value="{{ specialty_option }}"
+                                            {% if specialty_option == specialty %}selected{% endif %}>
                                             {{ specialty_option }}
                                         </option>
                                     {% endfor %}
