@@ -1,0 +1,43 @@
+/* My Appointments — upcoming booking cards */
+
+.appointment-card {
+  border-left: 4px solid var(--app-teal) !important;
+  border-radius: 0 12px 12px 0 !important;
+    max-width: 760px;
+}
+
+.status-booked {
+  background-color: var(--app-teal-light);
+  color: var(--app-navy);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.btn-reschedule {
+  border: 1px solid var(--app-teal);
+  color: var(--app-teal);
+  background-color: transparent;
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 0.3rem 0.9rem;
+  border-radius: 6px;
+}
+
+.btn-reschedule:hover,
+.btn-reschedule:focus {
+  background-color: var(--app-teal);
+  color: var(--app-offwhite);
+  border-color: var(--app-teal);
+}
+
+.cancel-link {
+  font-size: 0.85rem;
+}
+
+.cancel-link:hover,
+.cancel-link:focus {
+  color: var(--app-danger, #b42318) !important;
+  text-decoration: underline !important;
+}

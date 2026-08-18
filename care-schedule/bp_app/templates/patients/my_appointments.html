@@ -1,44 +1,75 @@
-{% extends "base.html" %}
+{% extends "components/patient_dashboard_base.html" %}
 
-{% block content %}
-    <h2>My Appointments</h2>
+{% block styles %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/my_appointment.css') }}">
+{% endblock %}
+{% block title %}My Appointments{% endblock %}
 
-    {% if appointments %}
-        <table border="1" cellpadding="8">
-            <thead>
-            <tr>
-                <th>Date & Time</th>
-                <th>Professional</th>
-                <th>Specialty</th>
-                <th>Reason</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for appointment in appointments %}
-                <tr>
-                    <td>{{ appointment.scheduled_at.strftime('%a, %b %d, %Y — %I:%M %p') }}</td>
-                    <td>{{ appointment.availability.professional.username if appointment.availability else '—' }}</td>
-                    <td>{{ appointment.availability.professional.specialty if appointment.availability else '—' }}</td>
-                    <td>{{ appointment.reason }}</td>
-                    <td>{{ appointment.status.value }}</td>
-                    <td>
-                        {% if appointment.status.value == 'confirmed' %}
-                            <a href="{{ url_for('patients.reschedule_appointment', appointment_id=appointment.id) }}">Reschedule</a>
-                            <form action="{{ url_for('patients.cancel_appointment', appointment_id=appointment.id) }}"
-                                  method="post" style="display:inline">
-                                <button type="submit">Cancel</button>
-                            </form>
+{% block dashboard_content %}
+    <div class="mb-4">
+        <h1 class="display-6 fw-bold text-app-navy mb-1">My Appointments</h1>
+        <p class="text-app-muted mb-0">Your upcoming schedule appointments</p>
+    </div>
+     {% for appointment in appointments %}
+        {% set pro = appointment.availability.professional if appointment.availability else None %}
+        <div class="card border-0 shadow-sm rounded-4 bg-app-card p-4 mb-3 appointment-card">
+            <div class="d-flex align-items-start gap-3">
+                <div class="avatar bg-light text-app-muted flex-shrink-0">
+                    {% if pro %}{{ pro.firstname[:1] }}{{ pro.lastname[:1] }}
+                    {% else %}?{% endif %}
+                </div>
+
+                <div class="flex-grow-1 min-w-0">
+                    <div class="d-flex align-items-center gap-2 flex-wrap mb-1">
+                        <span class="fw-bold text-app-navy">
+                            {% if pro %}Dr. {{ pro.firstname }} {{ pro.lastname }}
+                            {% else %}
+                                Professional unavailable
+                            {% endif %}
+                        </span>
+                        <span class="badge rounded-pill status-booked">Booked</span>
+                    </div>
+                    <div class="text-app-teal small mb-2">
+                        {{ pro.specialty if pro else '-' }}
+                    </div>
+                    <div class="text-app-muted font-mono small mb-2">
+                        {{ appointment.scheduled_at.strftime('%b %#d, %Y') }}
+                        &nbsp;{{ appointment.scheduled_at.strftime('%#I:%M %p') }}
+                        {% if appointment.availability %}
+                            &ndash; {{ appointment.availability.end_time.strftime('%#I:%M %p') }}
                         {% endif %}
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    {% else %}
-        <p>You have no appointments yet.
-            <a href="{{ url_for('patients.book') }}">Book one now</a>.
-        </p>
-    {% endif %}
+                    </div>
+                    <p class="fst-italic text-app-muted small mb-0">"{{ appointment.reason }}"</p>
+                </div>
+
+
+                <div class="d-flex flex-column align-items-end gap-2 flex-shrink-0">
+                    <a href="{{ url_for('patients.reschedule_appointment', appointment_id=appointment.id) }}"
+                        class="btn btn-reschedule btn-sm">
+                        <i class="bi bi-calendar-event me-1"> Reschedule</i>
+
+                    </a>
+                    <form action="{{ url_for('patients.cancel_appointment', appointment_id=appointment.id) }}"
+                          method="POST" class="m-0">
+                        <button type="submit" class="btn btn-link p-0 small text-app-muted text-decoration-none cancel-link">Cancel</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+     {% else %}
+        <div class="card border-0 shadow-sm rounded-4 bg-app-card p-5 text-center">
+            <div class="mb-3">
+                <i class="bi bi-calendar-x display-6 text-app-muted"></i>
+            </div>
+            <h2 class="h6 fw-bold text-app-navy">No upcoming appointments</h2>
+            <p class="text-app-muted text-xs mb-3">
+                You haven't booked anything yet.
+            </p>
+            <div>
+                <a href="{{ url_for('patients.book') }}" class="btn btn-app">Book an appointment</a>
+            </div>
+        </div>
+    {% endfor %}
 {% endblock %}
