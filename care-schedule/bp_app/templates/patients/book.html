@@ -26,8 +26,8 @@
                         <i class="bi bi-search text-secondary"></i>
                     </span>
                     <input type="search" class="form-control border-start-0 ps-0"
-                        id="query" name="query" value="{{ query or '' }}"
-                        placeholder="Search by name or specialty">
+                           id="query" name="query" value="{{ query or '' }}"
+                           placeholder="Search by name or specialty">
                 </div>
             </div>
 
@@ -36,7 +36,8 @@
                 <select name="specialty" id="specialty" class="form-select">
                     <option value="">All specialties</option>
                     {% for specialty in specialties %}
-                        <option value="{{ specialty }}" {% if specialty == selected_specialty %}selected{% endif %}>{{ specialty }}</option>
+                        <option value="{{ specialty }}"
+                                {% if specialty == selected_specialty %}selected{% endif %}>{{ specialty }}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -49,7 +50,8 @@
         <div class="form-check mt-2">
             <input type="checkbox" class="form-check-input" id="available" name="available" value="1"
                    {% if available_only %}checked{% endif %}>
-            <label for="available" class="form-check-label small text-secondary">Only show professionals with open slots</label>
+            <label for="available" class="form-check-label small text-secondary">Only show professionals with open
+                slots</label>
         </div>
     </form>
 
@@ -108,61 +110,62 @@
              Step 2: their open slots
              ========================== -->
         <div class="col-12 col-lg-6">
-
-            {% if selected %}
-                <div class="eyebrow text-app-muted mb-3">
-                    2 &mdash; Choose a time with Dr. {{ selected.lastname }}
-                </div>
-
-                {% for date, day_slots in slots|groupby("day") %}
-                    <div class="eyebrow text-app-muted mt-3 mb-2">
-                        {{ date.strftime("%A, %B %d") }}
+            <div class="slots-scroll">
+                {% if selected %}
+                    <div class="slots-panel">
+                    <div class="eyebrow text-app-muted mb-3">
+                        2 &mdash; Choose a time with Dr. {{ selected.lastname }}
                     </div>
 
-                    {% for slot in day_slots %}
-                        <a href="{{ url_for('patients.confirm_booking', availability_id=slot.id) }}"
-                           class="card border-0 shadow-sm rounded-4 p-3 mb-2 bg-app-card text-decoration-none d-block">
-                            <div class="d-flex align-items-center justify-content-between gap-3">
-                                <span class="fw-bold text-app-navy">
-                                    {{ slot.start_time.strftime("%I:%M %p") }} &ndash;
-                                    {{ slot.end_time.strftime("%I:%M %p") }}
-                                </span>
-                                <span class="text-app-teal small fw-bold">
-                                    Book <i class="bi bi-arrow-right ms-1"></i>
-                                </span>
+                    <div class="slots-scroll">
+                        {% for date, day_slots in slots|groupby("day") %}
+                            <div class="eyebrow text-app-muted mt-3 mb-2 day-heading">
+                                {{ date.strftime("%A, %B %d") }}
                             </div>
-                        </a>
-                    {% endfor %}
 
+                            {% for slot in day_slots %}
+                                <a href="{{ url_for('patients.confirm_booking', availability_id=slot.id) }}"
+                                   class="card border-0 shadow-sm rounded-4 p-3 mb-2 bg-app-card text-decoration-none d-block">
+                                    <div class="d-flex align-items-center justify-content-between gap-3">
+                                    <span class="fw-bold text-app-navy">
+                                        {{ slot.start_time.strftime("%I:%M %p") }} &ndash;
+                                        {{ slot.end_time.strftime("%I:%M %p") }}
+                                    </span>
+                                        <span class="text-app-teal small fw-bold">
+                                        Book <i class="bi bi-arrow-right ms-1"></i>
+                                    </span>
+                                    </div>
+                                </a>
+                            {% endfor %}
+
+                        {% else %}
+                            <div class="card border-0 shadow-sm rounded-4 bg-app-card p-5 text-center">
+                                <div class="mb-3">
+                                    <i class="bi bi-calendar-x display-6 text-app-muted"></i>
+                                </div>
+                                <h2 class="h6 fw-bold text-app-navy">No open slots</h2>
+                                <p class="text-app-muted text-xs mb-0">
+                                    Dr. {{ selected.lastname }} has no available times right now.
+                                    Try another professional.
+                                </p>
+                            </div>
+                        {% endfor %}
+                    </div>
                 {% else %}
-                    <div class="card border-0 shadow-sm rounded-4 bg-app-card p-5 text-center">
-                        <div class="mb-3">
-                            <i class="bi bi-calendar-x display-6 text-app-muted"></i>
-                        </div>
-                        <h2 class="h6 fw-bold text-app-navy">No open slots</h2>
-                        <p class="text-app-muted text-xs mb-0">
-                            Dr. {{ selected.lastname }} has no available times right now.
-                            Try another professional.
-                        </p>
-                    </div>
-                {% endfor %}
-
-            {% else %}
-                <!-- Nothing picked yet -->
-                <div class="card border-0 shadow-sm rounded-4 bg-app-card p-5 text-center h-100
+                    <!-- Nothing picked yet -->
+                    <div class="card border-0 shadow-sm rounded-4 bg-app-card p-5 text-center h-100
                             d-flex align-items-center justify-content-center">
-                    <div>
-                        <i class="bi bi-person display-6 text-app-muted d-block mb-3"></i>
-                        <p class="text-app-muted mb-0">
-                            Select a professional to see available slots.
-                        </p>
+                        <div>
+                            <i class="bi bi-person display-6 text-app-muted d-block mb-3"></i>
+                            <p class="text-app-muted mb-0">
+                                Select a professional to see available slots.
+                            </p>
+                        </div>
                     </div>
+                {% endif %}
                 </div>
-            {% endif %}
 
-        </div>
-    </div>
-
-     <script src="{{ url_for('static', filename='js/book.js') }}"></script>
+            </div>
+            <script src="{{ url_for('static', filename='js/book.js') }}"></script>
 
 {% endblock %}

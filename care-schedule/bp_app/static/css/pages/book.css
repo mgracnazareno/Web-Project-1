@@ -13,3 +13,41 @@
   border: 1px dashed var(--app-border);
   border-radius: 10px;
 }
+
+.slots-panel {
+  position: sticky;
+  top: 1.5rem;
+  align-self: start;
+}
+
+.slots-scroll {
+  max-height: calc(100vh - 12rem);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-right: .5rem;
+}
+
+.slots-scroll .day-heading {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  margin: 0;
+  padding: .75rem 0 .5rem;
+  background: var(--app-bg);
+  font-family: var(--app-font-mono, monospace);
+  font-size: .75rem;
+  letter-spacing: .08em;
+  color: var(--app-muted);
+}
+
+/* thinner scrollbar so it doesn't fight the card edges */
+.slots-scroll::-webkit-scrollbar { width: 6px; }
+.slots-scroll::-webkit-scrollbar-thumb {
+  background: var(--app-border);
+  border-radius: 3px;
+}
+
+@media (max-width: 768px) {
+  .slots-panel { position: static; }
+  .slots-scroll { max-height: none; overflow: visible; }
+}
