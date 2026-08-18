@@ -99,6 +99,7 @@ class Professional(UserMixin, db.Model):
     firstname = db.Column(db.String(150), nullable = True)
 
     lastname = db.Column(db.String(150), nullable = True)
+    phone = db.Column(db.String(20), nullable=True)
 
     specialty = db.Column(db.String(150), nullable = True)
 

@@ -83,7 +83,6 @@ def register():
         specialty = request.form['specialty'].strip()
         bio = request.form['biography'].strip()
 
-        print("SPECIALTY:", repr(specialty))
         errors = validate_professional_registration(username, email, password, firstname, lastname, specialty, bio)
 
         if errors:
