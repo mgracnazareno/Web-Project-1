@@ -1,0 +1,15 @@
+.search-bar .form-control:focus,
+.search-bar .form-select:focus {
+  border-color: var(--app-teal);
+  box-shadow: 0 0 0 3px rgba(27, 122, 150, 0.15);
+}
+
+.search-filters {
+  margin-bottom: 2rem;
+}
+
+.empty-state {
+  background-color: var(--app-surface);
+  border: 1px dashed var(--app-border);
+  border-radius: 10px;
+}

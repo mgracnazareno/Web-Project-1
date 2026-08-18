@@ -1,5 +1,11 @@
 {% extends "components/patient_dashboard_base.html" %}
+
+{% block styles %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/book.css') }}">
+{% endblock %}
 {% block title %}Book an Appointment{% endblock %}
+
 
 {% block dashboard_content %}
 
@@ -11,6 +17,42 @@
         <p class="text-app-muted mb-0">Select a professional and choose an available time slot.</p>
     </div>
 
+    <form action="{{ url_for('patients.book') }}" method="GET" class="search-filters">
+        <div class="row g-2">
+            <div class="col-12 col-md-6">
+                <label for="query" class="visually-hidden">Search Professional</label>
+                <div class="input-group">
+                    <span class="input-group-text bg-white border-end-0">
+                        <i class="bi bi-search text-secondary"></i>
+                    </span>
+                    <input type="search" class="form-control border-start-0 ps-0"
+                        id="query" name="query" value="{{ query or '' }}"
+                        placeholder="Search by name or specialty">
+                </div>
+            </div>
+
+            <div class="col-8 col-md-4">
+                <label for="specialty" class="visually-hidden">Specialty</label>
+                <select name="specialty" id="specialty" class="form-select">
+                    <option value="">All specialties</option>
+                    {% for specialty in specialties %}
+                        <option value="{{ specialty }}" {% if specialty == selected_specialty %}selected{% endif %}>{{ specialty }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="col-4 col-md-2">
+                <button type="submit" class="btn btn-app w-100">Search</button>
+            </div>
+
+        </div>
+        <div class="form-check mt-2">
+            <input type="checkbox" class="form-check-input" id="available" name="available" value="1"
+                   {% if available_only %}checked{% endif %}>
+            <label for="available" class="form-check-label small text-secondary">Only show professionals with open slots</label>
+        </div>
+    </form>
+
 
     <div class="row g-4">
 
@@ -18,7 +60,12 @@
              Step 1: the professionals
              =========================== -->
         <div class="col-12 col-lg-6">
-            <div class="eyebrow text-app-muted mb-3">1 &mdash; Choose a professional</div>
+            <div class="eyebrow text-app-muted mb-3">1 &mdash; Choose a professional
+                {% if query or selected_specialty or available_only %}
+                    <span class="ms-2">({{ professionals|length }} found)</span>
+                    <a href="{{ url_for('patients.book') }}" class="ms-2 text-app-teal text-decoration-none">Clear</a>
+                {% endif %}
+            </div>
 
             {% for pro in professionals %}
                 {# Selecting a professional reloads the page with their id in the
@@ -46,7 +93,12 @@
                 </a>
             {% else %}
                 <div class="card border-0 shadow-sm rounded-4 bg-app-card p-4 text-center">
-                    <p class="text-app-muted mb-0">No professionals are registered yet.</p>
+                    {% if query or selected_specialty or available_only %}
+                        <i class="bi bi-search fs-4 text-app-muted d-block mb-2"></i>
+                        <p class="text-app-muted mb-0">No professionals match your search.</p>
+                    {% else %}
+                        <p class="text-app-muted mb-0">No professionals are registered yet.</p>
+                    {% endif %}
                 </div>
             {% endfor %}
         </div>
@@ -110,5 +162,7 @@
 
         </div>
     </div>
+
+     <script src="{{ url_for('static', filename='js/book.js') }}"></script>
 
 {% endblock %}

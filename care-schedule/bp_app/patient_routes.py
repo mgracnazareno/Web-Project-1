@@ -9,6 +9,7 @@ from sqlalchemy.exc import IntegrityError
 
 patients = Blueprint("patients", __name__)
 
+
 @patients.route("/register", methods=["GET", "POST"])
 def register():
     if current_user.is_authenticated:
@@ -16,11 +17,11 @@ def register():
 
     if request.method == "POST":
         firstname = request.form.get("firstname", "").strip()
-        lastname =request.form.get("lastname", "").strip()
+        lastname = request.form.get("lastname", "").strip()
         email = request.form.get('email', "").strip()
         password = request.form.get("password", "")
         dob_str = request.form.get("dob", "").strip()
-        phone=request.form.get("phone", "").strip()
+        phone = request.form.get("phone", "").strip()
 
         errors = validate_patient_registration(email, password)
 
@@ -116,7 +117,6 @@ def dashboard():
     else:
         greeting = "Good evening"
 
-
     return render_template(
         "patients/dashboard.html",
         upcoming=upcoming,
@@ -131,6 +131,7 @@ def dashboard():
 
     )
 
+
 @patients.route("/logout", methods=["POST"])
 @login_required
 def logout():
@@ -142,26 +143,61 @@ def logout():
 @patients.route("/book")
 @login_required
 def book():
+
     if not isinstance(current_user, Patient):
         flash("Only patients can book appointments.", "warning")
         return redirect(url_for("main.home"))
 
-    now = datetime.now()
-    professionals = Professional.query.order_by(Professional.lastname).all()
+    # Read the search filters from the URL
+    query = request.args.get("query", "").strip()
+    selected_specialty = request.args.get("specialty", "").strip()
+    available_only = request.args.get("available")=="1"
 
+    now = datetime.now()
+
+
+    # How many open slots each professional has
     open_slots = (
         Availability.query
         .filter(Availability.is_booked == False,
-                   Availability.start_time > datetime.now())
+                Availability.start_time > datetime.now())
         .order_by(Availability.start_time)
         .all()
     )
 
     # How many open slots each professional has,
-    slot_counts= {}
+    slot_counts = {}
     for slot in open_slots:
         slot_counts[slot.professional_id] = slot_counts.get(slot.professional_id, 0) + 1
 
+    # Build the professional list, narrowing it by whatever filters were given
+    professional_query = Professional.query
+
+    if query:
+        like = f"%{query}%"
+        professional_query = professional_query.filter(
+            db.or_(
+                Professional.firstname.ilike(like),
+                Professional.lastname.ilike(like),
+                Professional.specialty.ilike(like),
+            )
+        )
+    if selected_specialty:
+        professional_query = professional_query.filter(
+            Professional.specialty == selected_specialty
+        )
+    professionals = professional_query.order_by(Professional.lastname).all()
+
+    if available_only:
+        professionals = [p for p in professionals if slot_counts.get(p.id, 0) > 0]
+
+    # Every specialty currently in use, for the dropdown
+    specialties = [
+        row[0] for row in
+        db.session.query(Professional.specialty).distinct()
+        .order_by(Professional.specialty).all()
+        if row[0]
+    ]
     selected_id = request.args.get("professional_id", type=int)
     selected = db.session.get(Professional, selected_id) if selected_id else None
 
@@ -172,8 +208,13 @@ def book():
         slot_counts=slot_counts,
         selected=selected,
         slots=slots,
+        query=query,
+        selected_specialty=selected_specialty,
+        available_only=available_only,
+        specialties=specialties,
         active_page="book",
     )
+
 
 @patients.route("/appointments")
 @login_required
@@ -183,6 +224,7 @@ def my_appointments():
                     .order_by(Appointment.scheduled_at)
                     .all())
     return render_template("patients/my_appointments.html", appointments=appointments)
+
 
 @patients.route("/book/<int:availability_id>", methods=["GET", "POST"])
 @login_required
@@ -226,7 +268,7 @@ def confirm_booking(availability_id):
         flash("Your appointment is confirmed!", "success")
         return redirect(url_for("patients.my_appointments"))
 
-    return render_template("patients/confirm_booking.html",slot=slot)
+    return render_template("patients/confirm_booking.html", slot=slot)
 
 
 @patients.route('/appointments/<int:appointment_id>/cancel', methods=['POST'])
@@ -248,6 +290,7 @@ def cancel_appointment(appointment_id):
     db.session.commit()
     flash('Appointment cancelled.', 'success')
     return redirect(url_for('patients.my_appointments'))
+
 
 @patients.route('/appointments/<int:appointment_id>/reschedule', methods=['GET', 'POST'])
 @login_required
@@ -291,6 +334,7 @@ def reschedule_appointment(appointment_id):
                            professional=professional,
                            slots=open_slots)
 
+
 @patients.route("/history")
 @login_required
 def history():
@@ -299,17 +343,18 @@ def history():
 
     past = (
         Appointment.query
-        .filter(Appointment.patient_id==current_user.id)
-        .filter(Appointment.status!=AppointmentStatus.CONFIRMED)
+        .filter(Appointment.patient_id == current_user.id)
+        .filter(Appointment.status != AppointmentStatus.CONFIRMED)
         .order_by(Appointment.scheduled_at.desc())
         .all()
     )
     return render_template("patients/history.html", past=past, active_page="history")
 
+
 @patients.route("/patients/profile", methods=["GET", "POST"])
 @login_required
 def profile():
-    if not isinstance(current_user,Patient):
+    if not isinstance(current_user, Patient):
         abort(403)
 
     form = {
@@ -322,7 +367,7 @@ def profile():
 
     if request.method == "POST":
         # Keep what the user typed so a failed save doesn't wipe the form
-        form= {key: request.form.get(key, "").strip() for key in form}
+        form = {key: request.form.get(key, "").strip() for key in form}
         form["email"] = form["email"].lower()
 
         errors, dob = validate_profile(
