@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 
 {% block styles %}
+    {{ super() }}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/dashboard.css') }}">
+
 {% endblock %}
 
 {% block header %}{% endblock %}
