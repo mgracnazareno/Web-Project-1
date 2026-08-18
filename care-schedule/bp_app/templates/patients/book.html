@@ -109,8 +109,8 @@
         <!-- ==========================
              Step 2: their open slots
              ========================== -->
-        <div class="col-12 col-lg-6">
-            <div class="slots-scroll">
+        <div class="col-12 col-lg-6 slots-panel">
+
                 {% if selected %}
                     <div class="slots-panel">
                     <div class="eyebrow text-app-muted mb-3">
@@ -124,18 +124,22 @@
                             </div>
 
                             {% for slot in day_slots %}
-                                <a href="{{ url_for('patients.confirm_booking', availability_id=slot.id) }}"
-                                   class="card border-0 shadow-sm rounded-4 p-3 mb-2 bg-app-card text-decoration-none d-block">
+                                <button type="button"
+                                        class="card border-0 shadow-sm rounded-4 p-3 mb-2 bg-app-card w-100 d-block text-start"
+                                        data-bs-toggle="modal" data-bs-target="#bookModal"
+                                        data-slot-url="{{ url_for('patients.confirm_booking', availability_id=slot.id) }}"
+                                        data-slot-id="{{ slot.id }}"
+                                        data-slot-when="{{ slot.start_time.strftime('%A, %B %d') }} — {{ slot.start_time.strftime('%I:%M %p') }} to {{ slot.end_time.strftime('%I:%M %p') }}">
                                     <div class="d-flex align-items-center justify-content-between gap-3">
-                                    <span class="fw-bold text-app-navy">
-                                        {{ slot.start_time.strftime("%I:%M %p") }} &ndash;
-                                        {{ slot.end_time.strftime("%I:%M %p") }}
-                                    </span>
+                                        <span class="fw-bold text-app-navy">
+                                            {{ slot.start_time.strftime("%I:%M %p") }} &ndash;
+                                            {{ slot.end_time.strftime("%I:%M %p") }}
+                                        </span>
                                         <span class="text-app-teal small fw-bold">
                                         Book <i class="bi bi-arrow-right ms-1"></i>
-                                    </span>
+                                        </span>
                                     </div>
-                                </a>
+                                 </button>
                             {% endfor %}
 
                         {% else %}
@@ -164,8 +168,38 @@
                     </div>
                 {% endif %}
                 </div>
-
             </div>
+
+        {% if selected %}
+        <div class="modal fade" id="bookModal" tabindex="-1" aria-labelledby="bookModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content rounded-4 border-0">
+                    <form method="POST" id="bookForm">
+                        <div class="modal-header border-0">
+                            <h2 class="modal-title h5 fw-bold text-app-navy" id="bookModalLabel">Confirm your appointment</h2>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+
+                        <div class="modal-body">
+                            <p class="fw-bold text-app-navy mb-1">
+                                Dr. {{ selected.firstname }} {{ selected.lastname }}
+                                <span class="fw-normal text-app-teal">({{ selected.specialty }})</span>
+                            </p>
+                            <p class="text-app-muted" id="modalWhen"></p>
+
+                            <label for="reason" class="form-label">Reason for visit</label>
+                            <textarea class="form-control" id="reason" name="reason" rows="3" required></textarea>
+                        </div>
+
+                        <div class="modal-footer border-0">
+                            <button type="button" class="btn btn-link text-app-muted" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-app">Confirm booking</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    {% endif %}
             <script src="{{ url_for('static', filename='js/book.js') }}"></script>
 
 {% endblock %}

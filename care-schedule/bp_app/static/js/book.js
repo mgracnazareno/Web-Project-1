@@ -5,3 +5,13 @@ filterControls.forEach(function (control) {
         this.form.submit();
     })
 })
+
+const bookModal = document.getElementById("bookModal");
+
+if (bookModal) {
+  bookModal.addEventListener("show.bs.modal", (event) => {
+    const trigger = event.relatedTarget;
+    document.getElementById("modalWhen").textContent = trigger.dataset.slotWhen;
+    document.getElementById("bookForm").action = trigger.dataset.slotUrl;
+  });
+}
