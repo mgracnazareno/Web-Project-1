@@ -11,6 +11,14 @@
         <h1 class="display-6 fw-bold text-app-navy mb-1">My Appointments</h1>
         <p class="text-app-muted mb-0">Your upcoming schedule appointments</p>
     </div>
+
+    {% set badge_styles = {
+    "confirmed": "status-booked",
+    "completed": "text-success-emphasis bg-success-subtle",
+    "cancelled": "text-danger-emphasis bg-danger-subtle",
+    "no_show": "text-warning-emphasis bg-warning-subtle"
+} %}
+
      {% for appointment in appointments %}
         {% set pro = appointment.availability.professional if appointment.availability else None %}
         <div class="card border-0 shadow-sm rounded-4 bg-app-card p-4 mb-3 appointment-card">
@@ -28,7 +36,11 @@
                                 Professional unavailable
                             {% endif %}
                         </span>
-                        <span class="badge rounded-pill status-booked">Booked</span>
+                        {% set status = appointment.status.value %}
+                        <span class="badge rounded-pill status-booked text-uppercase
+                             {{ badge_styles.get(status, 'text-secondary-emphasis bg-secondary-subtle')}}">
+                                {{ status|replace("_", "") }}
+                        </span>
                     </div>
                     <div class="text-app-teal small mb-2">
                         {{ pro.specialty if pro else '-' }}

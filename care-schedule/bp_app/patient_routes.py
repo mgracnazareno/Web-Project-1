@@ -220,7 +220,9 @@ def book():
 @login_required
 def my_appointments():
     appointments = (Appointment.query
-                    .filter_by(patient_id=current_user.id)
+                    .filter(Appointment.patient_id==current_user.id,
+                            Appointment.status == AppointmentStatus.CONFIRMED,
+                            Appointment.scheduled_at > datetime.now())
                     .order_by(Appointment.scheduled_at)
                     .all())
     return render_template("patients/my_appointments.html", appointments=appointments)
