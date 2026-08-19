@@ -62,7 +62,6 @@ I began working on the core structure of the backend. I did the full patient aut
 ## August 6, 2026
 I am always looking forward to our presentation day because I learn a lot from other students. The ideas are impressive.
 
-## Development Progress Summary
 
 ### August 13, 2026
 Focused on building the patient dashboard and appointment booking workflow.
