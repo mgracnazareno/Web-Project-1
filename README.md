@@ -1,12 +1,12 @@
 # CareSchedule
 
-CareSchedule is a responsive medical appointment scheduling application developed as part of a five-week academic web development project. The application enables patients to schedule medical appointments while allowing healthcare professionals to manage their availability and appointments through a secure web interface.
+CareSchedule is a responsive medical appointment scheduling application developed as a full-stack web project. The application enables patients to schedule medical appointments while allowing healthcare professionals to manage their availability and appointments through a secure web interface.
 
-> **Disclaimer:** This is a simulated academic application. All users, appointments, and medical information are fictional and are intended for educational purposes only.
+> **Disclaimer:** This is a simulated academic application. All users, appointments, and medical information are fictional and intended for educational purposes only.
 
 ---
 
-# Client Need
+## Client Need
 
 The client requires a reliable appointment scheduling system that simplifies appointment management for both patients and healthcare professionals. Managing appointments manually often leads to scheduling conflicts, unavailable time slots, and missed appointments.
 
@@ -14,401 +14,161 @@ CareSchedule solves this problem by providing a centralized, database-driven sch
 
 ---
 
-# Target Users
+## Target Users
 
-## Patient
-
+### Patient
 Patients can:
-
-- Register for an account
-- Log in securely
+- Register for an account and log in securely
 - View available appointment slots
-- Book appointments
-- Provide a reason for the consultation
-- View upcoming appointments
-- View appointment history
+- Book appointments and specify consultation reasons
+- View upcoming appointments and historical bookings
 - Cancel future appointments
-- Manage their personal profile
+- Manage personal profile details
 
 ---
 
-## Healthcare Professional
-
+### Healthcare Professional
 Healthcare professionals can:
-
-- Register for an account
-- Log in securely
-- Manage their professional profile
-- Publish available appointment times
-- Edit or remove availability
-- View scheduled appointments
-- Manage patient bookings
+- Register for an account and log in securely
+- Manage professional profile details (specialty, office location, bio)
+- Publish, edit, or remove available appointment time slots
+- View scheduled patient appointments and update booking status
+- Manage patient interactions securely
 
 ---
 
-# Main Workflow
+## Main Workflow
 
 1. A healthcare professional registers and publishes available appointment slots.
-2. A patient registers or logs in.
-3. The patient browses available appointment times.
-4. The patient selects an appointment and submits a booking request.
-5. The application validates that the selected appointment is still available.
-6. The appointment is stored in the database.
-7. The patient and healthcare professional dashboards are automatically updated.
+2. A patient registers or logs in to access their dashboard.
+3. The patient searches or browses available appointment slots.
+4. The patient selects a slot and submits a booking request with a consultation reason.
+5. The application validates availability server-side to prevent double booking.
+6. The database stores the appointment record and marks the slot as booked.
+7. Both patient and healthcare professional dashboards update immediately.
 
 ---
 
-# Project Scope
+## Project Scope & Feature Status (Feature Freeze)
 
-## Must-Have Features
+> **Note:** Scope is currently frozen for Deliverable 4 (Feature-Complete Beta). No new major features will be added prior to final submission.
 
-- User registration
-- Login and logout
-- Role-based authentication
-- Patient dashboard
-- Healthcare professional dashboard
-- Profile management
-- Appointment booking
-- Appointment cancellation
-- Appointment history
-- Availability management
-- Server-side validation
-- Authorization and ownership checks
-- Responsive design
-- Accessibility considerations
+### Must-Have Features (Implemented)
+- [x] User registration & authentication (Flask-Login, hashed passwords)
+- [x] Role-based authorization & access control (Patient vs. Healthcare Professional)
+- [x] Patient Dashboard & Profile Management
+- [x] Healthcare Professional Dashboard & Profile Management
+- [x] Availability management (Create/Edit/Delete slots)
+- [x] Appointment booking & cancellation workflows
+- [x] Appointment history tracking
+- [x] Server-side data validation & CSRF protection
+- [x] Authorization and resource ownership checks
+- [x] Fully responsive layout (Bootstrap 5)
+- [x] Basic accessibility considerations (semantic HTML, proper form labelling, ARIA attributes)
+- [x] Major error handling (404, 500, dynamic flash messages)
 
----
-
-## Optional Features
-
-The following features may be implemented if time permits:
-
-- Search appointments by specialty
-- Search appointments by date
-- Appointment filtering
-- English and French localization
-- Profile image uploads
+### Optional Features
+- [ ] Search appointments by specialty / date (Deferred)
+- [ ] Profile image uploads (Deferred)
+- [ ] English and French localization (Deferred)
 
 ---
 
-## Out of Scope
+## Technical Architecture
 
-The academic version will **not** include:
+### Backend
+- **Language:** Python
+- **Framework:** Flask
+- **ORM / Database:** Flask-SQLAlchemy / SQLite
+- **Authentication:** Flask-Login, Werkzeug Security
 
-- Multiple clinics
-- Administrator dashboard
-- Medical records
-- File uploads
-- Online payments
-- Insurance processing
-- Email reminders
-- SMS notifications
-- Video consultations
-- AI chatbot
+### Frontend
+- **Structure / Style:** HTML5, CSS3, Bootstrap 5
+- **Templating:** Jinja2 Templates
+- **Scripting:** JavaScript (ES6+)
 
----
-
-# Planned Technology
-
-## Backend
-
-- Python
-- Flask
-- Flask-SQLAlchemy
-- Flask-Login
-- SQLite
+### Development Tools
+- **IDEs:** Visual Studio Code / PyCharm
+- **Version Control:** Git & GitHub
+- **Project Management:** Trello
 
 ---
 
-## Frontend
+# Database Schema & Relationships
 
-- HTML5
-- CSS3
-- Bootstrap 5
-- JavaScript
-- Jinja Templates
+## Database Models
 
----
+### Patient
+Stores authentication details and profile information for patient accounts.
 
-## Development Tools
-
-- Figma
-- Trello
-- Git
-- GitHub
-- Visual Studio Code
+#### Fields
+- `id` (`INTEGER`, Primary Key)
+- `email` (`VARCHAR(255)`, Unique, Not Null)
+- `password_hash` (`VARCHAR(255)`, Not Null)
+- `firstname` (`VARCHAR(150)`, Not Null)
+- `lastname` (`VARCHAR(150)`, Not Null)
+- `phone` (`VARCHAR(20)`, Not Null)
+- `dob` (`DATE`, Not Null)
 
 ---
 
-# Proposed Database Models
+### Professional
+Stores authentication details and professional profiles for healthcare providers.
 
-## User
-
-Stores authentication information for every account.
-
-### Fields
-
-- id
-- email
-- password_hash
-- role *(patient or healthcare_professional)*
-- created_at
-
----
-
-## Patient
-
-Stores patient information.
-
-### Fields
-
-- id
-- user_id *(FK → User.id)*
-- first_name
-- last_name
-- phone
-- date_of_birth
+#### Fields
+- `id` (`INTEGER`, Primary Key)
+- `email` (`VARCHAR(255)`, Unique, Not Null)
+- `username` (`VARCHAR(255)`, Unique, Not Null)
+- `password_hash` (`VARCHAR(255)`, Not Null)
+- `firstname` (`VARCHAR(150)`, Nullable)
+- `lastname` (`VARCHAR(150)`, Nullable)
+- `phone` (`VARCHAR(20)`, Nullable)
+- `specialty` (`VARCHAR(150)`, Nullable)
+- `biography` (`TEXT`, Nullable)
 
 ---
 
-## HealthcareProfessional
+### Availability
+Represents available appointment slots published by healthcare professionals.
 
-Stores healthcare professional information.
-
-### Fields
-
-- id
-- user_id *(FK → User.id)*
-- first_name
-- last_name
-- specialty
-- phone
-- office_location
-- biography
+#### Fields
+- `id` (`INTEGER`, Primary Key)
+- `professional_id` (`INTEGER`, Foreign Key → `professional.id`, Not Null)
+- `start_time` (`DATETIME`, Not Null)
+- `end_time` (`DATETIME`, Not Null)
+- `is_booked` (`BOOLEAN`, Default: `False`, Not Null)
 
 ---
 
-## Availability
+### Appointment
+Represents scheduled consultations booked by patients.
 
-Represents appointment slots created by healthcare professionals.
-
-### Fields
-
-- id
-- healthcare_professional_id *(FK → HealthcareProfessional.id)*
-- start_time
-- end_time
-- is_booked
-
----
-
-## Appointment
-
-Represents appointments booked by patients.
-
-### Fields
-
-- id
-- patient_id *(FK → Patient.id)*
-- availability_id *(FK → Availability.id)*
-- reason
-- description
-- status
-- created_at
+#### Fields
+- `id` (`INTEGER`, Primary Key)
+- `patient_id` (`INTEGER`, Foreign Key → `patient.id`, Not Null)
+- `availability_id` (`INTEGER`, Foreign Key → `availability.id`, Unique, Nullable)
+- `reason` (`TEXT`, Not Null)
+- `status` (`ENUM`: `'confirmed'`, `'cancelled'`, `'completed'`, `'no_show'`, Default: `'confirmed'`, Not Null)
+- `scheduled_at` (`DATETIME`, Not Null)
 
 ---
 
-# Proposed Relationships
+## Entity Relationships
 
-- One User has one Patient profile or one Healthcare Professional profile.
-- One Healthcare Professional can create many Availability records.
-- One Healthcare Professional can receive many Appointments through their Availability records.
-- One Patient can book many Appointments.
-- One Availability record can be associated with zero or one Appointment.
-
+- **Patient → Appointment:** One-to-Many (`Patient.appointments` ↔ `Appointment.patient`) with deletion cascade (`all, delete-orphan`).
+- **Professional → Availability:** One-to-Many (`Professional.availabilities` ↔ `Availability.professional`).
+- **Availability → Appointment:** One-to-One (`Availability.appointment` ↔ `Appointment.availability`).
 ---
 
-# Planned Pages
+## Installation & Local Setup
 
-## Public Pages
+Follow these steps to run the application locally:
 
-- Home
-- Login
-- Register
+### Prerequisites
+- Python 3.9+ installed
+- Git installed
 
----
-
-## Patient Pages
-
-- Dashboard
-- Book Appointment
-- My Appointments
-- Appointment History
-- Patient Profile
-
----
-
-## Healthcare Professional Pages
-
-- Dashboard
-- Manage Availability
-- Manage Appointments
-- Healthcare Professional Profile
-
----
-
-# UI Design
-
-The user interface is being designed in **Figma** following a user-centered design process.
-
-### Ready
-
-- Information architecture
-- Low-fidelity wireframes
-- High-fidelity mockups
-- User flow planning
-- Desktop layouts
-
-### Upcoming
-
-- Interactive prototype
-- Mobile responsive layouts
-- Component library
-
----
-
-# Project Documentation
-
-```text
-docs/
-├── diagrams/
-│   ├── use-case-diagram.pdf
-│   ├── class-diagram.pdf
-│   
-│
-├── figma/
-│   ├── low-fidelity/
-│   ├── high-fidelity/
-│   └── prototype-link.md
-│
-├── journal/
-│   ├── journal.md
-│   └── project-design-journal.pdf
-│
-├── presentations/
-│
-├── trello/
-│
-└── weeks/
-    ├── week-1/
-    ├── week-2/
-    ├── week-3/
-    ├── week-4/
-    └── week-5/
-```
-
----
-
-# Project Links
-
-- **Figma Prototype:** Coming Soon
-- **Trello Board:** https://trello.com/invite/b/6a697834197cdd9d1ce1bf92/ATTI49527a5f964be3d9250d3331b7491f8d6918B42E/web-project-1
-- **GitHub Repository:** https://github.com/mgracnazareno/Web-Project-1
-
----
-
-# Installation
-
-Installation instructions will be completed during the implementation phase.
-
-The final guide will explain how to:
-
-1. Clone the repository.
-2. Create and activate a virtual environment.
-3. Install project dependencies.
-4. Configure environment variables.
-5. Initialize the database.
-6. Run the Flask application locally.
-
----
-
-# Project Status
-
-## Current Phase
-
-**Week 1 — Definition & Design**
-
-### Completed
-
-- Client requirements analysis
-- Target audience definition
-- Project scope planning
-- Primary workflow design
-- Initial database design
-- Entity relationship planning
-- Use Case Diagram
-- Class Diagram
-- High-fidelity mockups
-- GitHub repository
-- Trello board
-- Project journal
-- README documentation
-
-### In Progress
-
-- Interactive Figma prototype
-- Flask project setup
-- SQLAlchemy models
-- Authentication system
-- Initial page templates
-- Low-fidelity wireframes
-
-### Upcoming
-
-- CRUD functionality
-- Appointment booking
-- Availability management
-- Responsive implementation
-- Testing
-- Deployment
-- Final presentation
-
----
-
-# Future Improvements
-
-Possible future enhancements include:
-
-- Email appointment reminders
-- SMS notifications
-- Google Calendar integration
-- Doctor profile pictures
-- Medical history management
-- Online consultations
-- Mobile application
-- Administrator dashboard
-- Clinic management
-- Analytics dashboard
-
----
-
-# Privacy and Security
-
-- Only fictional demonstration data will be used.
-- Passwords will be securely hashed.
-- Sensitive configuration values will be stored in environment variables.
-- The `.env` file and SQLite database will be excluded using `.gitignore`.
-- Authorization checks will ensure users can only access or modify records they own.
-- User authentication will be implemented using Flask-Login.
-
----
-
-# Author
-
-**Mary Grace Nazareno**
-
-**Course:** 582-32W-VA — Web Project 1
-
-**Institution:** Vanier College
-
-**Semester:** Summer 2026
+### 1. Clone the Repository
+```bash
+git clone [https://github.com/mgracnazareno/Web-Project-1.git](https://github.com/mgracnazareno/Web-Project-1.git)
+cd Web-Project-1
