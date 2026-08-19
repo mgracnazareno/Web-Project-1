@@ -1,4 +1,24 @@
-.rs-page { max-width: 900px; }
+.rs-page {
+  max-width: 900px;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  flex: 1 1 auto;
+}
+
+.rs-form {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  flex: 1 1 auto;
+}
+
+.rs-form > .card {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  flex: 1 1 auto;
+}
 
 .rs-eyebrow {
   font-family: var(--app-font-mono);
@@ -60,7 +80,7 @@
 .rs-slot-panel {
   max-height: 420px;
   overflow-y: auto;
-    overflow-x:hidden;
+  overflow-x:hidden;
   border-top: 1px solid var(--app-border);
 }
 
@@ -113,8 +133,6 @@
 
 /* Pinned confirm bar */
 .rs-footer {
-  position: sticky;
-  bottom: 0;
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
@@ -123,6 +141,7 @@
   padding: 1rem;
   background: #fff;
   border-top: 1px solid var(--app-border);
+  border-radius: 0 0 0.375rem 0.375rem;
 }
 
 .rs-change {
@@ -142,4 +161,12 @@
   font-family: var(--app-font-serif);
   font-size: 1.25rem;
   color: var(--app-navy);
+}
+
+@media (min-width: 992px) {
+  .rs-slot-panel {
+    flex: 1 1 auto;
+    min-height: 240px;
+    max-height: none;
+  }
 }

@@ -10,7 +10,7 @@
 
 {% block flash %}{% endblock %}
 {% block content %}
-    <div class="dashboard-layout" id="dashboardLayout">
+    <div class="dashboard-layout {% block layout_class %}{% endblock %}" id="dashboardLayout">
 
         {# Left Side: Sidebar component #}
         {% block sidebar %}

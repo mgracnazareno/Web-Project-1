@@ -16,6 +16,10 @@
     --app-font-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
     --app-font-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
 }
+html, body {
+    min-height: 100%;
+    background-color: var(--app-bg);
+}
 
 
 /* teal rounded square na may icon */

@@ -92,19 +92,31 @@
 .border-app-border {
     border-color: var(--app-border);
 }
+
+.dashboard-main {
+    min-height: 100vh;
+}
+
 @media (min-width: 992px) {
 
     .dashboard-layout {
         display: flex;
         align-items: stretch;
         gap: 0;
+        min-height: 100%;
     }
 
     .dashboard-layout > .dashboard-sidebar {
+        position: sticky;
+        top: 0;
+        align-self: flex-start;
+        height: 100vh;
+        display: flex;
+        flex-direction:column;
+
         flex: 0 0 250px;      /* flex-basis beats width */
         width: 250px;
         max-width: 250px;
-        min-height: 100vh;
         margin: 0;
         transition: flex-basis 0.2s ease, width 0.2s ease;
     }
@@ -121,12 +133,23 @@
     }
 
     .dashboard-sidebar .offcanvas-body {
-        flex-grow: 1;
+        flex: 1 1 auto;
         padding: 1rem;
         overflow-y: auto;
-        min-height: 100vh;
+        /*min-height: 100vh;*/
     }
 
+        .dashboard-layout.layout-fixed {
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    .layout-fixed > .dashboard-main {
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+        overflow: hidden;
+    }
     /* --- Collapsed state --- */
     .rail .dashboard-sidebar {
         width: 84px;

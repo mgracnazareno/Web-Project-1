@@ -1,4 +1,5 @@
 {% extends "components/patient_dashboard_base.html" %}
+{% block layout_class %}layout-fixed{% endblock %}
 
 {% block styles %}
   {{ super() }}
@@ -27,7 +28,7 @@
   </div>
 
   {% if slots %}
-    <form method="post" id="rescheduleForm">
+    <form method="post" id="rescheduleForm" class="rs-form">
       <div class="card">
         <div class="card-body pb-0">
           <h2 class="rs-subtitle mb-1">Choose a new time slot</h2>
