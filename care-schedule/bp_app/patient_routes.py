@@ -110,6 +110,11 @@ def dashboard():
     week = [date.today() + timedelta(days=offset) for offset in range(7)]
     booked_days = {a.scheduled_at.date() for a in upcoming}
 
+    if week[0].month == week[-1].month:
+        week_label = week[0].strftime("%B %Y")
+    else:
+        week_label = f"{week[0].strftime('%b')} - {week[-1].strftime('%b %Y')}"
+
     if now.hour < 12:
         greeting = "Good morning"
     elif now.hour < 18:
@@ -125,6 +130,8 @@ def dashboard():
         next_appointment=next_appointment,
         later_appointments=later_appointments,
         week=week,
+        week_label=week_label,
+        today=date.today(),
         booked_days=booked_days,
         greeting=greeting,
         active_page="dashboard",

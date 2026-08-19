@@ -97,6 +97,34 @@
     min-height: 100vh;
 }
 
+
+.appt-row {
+    color: inherit;
+}
+
+.date-tile {
+    font-family: var(--app-font-mono);
+    color: var(--app-teal);
+}
+
+.date-day {
+    display: block;
+    font-size: 0.7rem;
+    letter-spacing: 0.05em;
+}
+
+.date-num {
+    display: block;
+    font-weight: 700;
+}
+
+.week-label {
+    font-family: var(--app-font-mono);
+    font-size: 0.8rem;
+    color: var(--app-navy);
+    margin-bottom: 0.5rem;
+}
+
 @media (min-width: 992px) {
 
     .dashboard-layout {

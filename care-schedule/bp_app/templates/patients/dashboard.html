@@ -67,7 +67,7 @@
 
                     {% if next_appointment.reason %}
                         <div class="text-app-muted text-xs fst-italic mb-3">
-                            &ldquo;{{ next_appointment.reason }}&rdquo;
+                            &ldquo;{{ next_appointment.reason }} &rdquo;
                         </div>
                     {% endif %}
 
@@ -145,7 +145,7 @@
             <div class="row g-3">
                 <div class="col-6 col-md-3">
                     <a href="{{ url_for('patients.book') }}"
-                       class="card border-0 shadow-sm rounded-4 p-3 bg-app-navy text-app-offwhite text-decoration-none quick-action-card h-100">
+                       class="card border-0 shadow-sm rounded-4 p-3 bg-app-card text-app-navy text-decoration-none quick-action-card h-100">
                         <i class="bi bi-plus-lg fs-4 mb-3"></i>
                         <div class="fw-bold small">Book Appointment</div>
                     </a>
@@ -159,7 +159,7 @@
                 </div>
                 <div class="col-6 col-md-3">
                     {# TODO: url_for('patients.history') #}
-                    <a href="#"
+                    <a href="{{ url_for('patients.history') }}"
                        class="card border-0 shadow-sm rounded-4 p-3 bg-app-card text-app-navy text-decoration-none quick-action-card h-100">
                         <i class="bi bi-arrow-counterclockwise fs-4 mb-3"></i>
                         <div class="fw-bold small">History</div>
@@ -167,7 +167,7 @@
                 </div>
                 <div class="col-6 col-md-3">
                     {# TODO: url_for('patients.profile') #}
-                    <a href="#"
+                    <a href="{{ url_for('patients.profile') }}"
                        class="card border-0 shadow-sm rounded-4 p-3 bg-app-card text-app-navy text-decoration-none quick-action-card h-100">
                         <i class="bi bi-person fs-4 mb-3"></i>
                         <div class="fw-bold small">Profile</div>
@@ -183,6 +183,7 @@
         <div class="col-12 col-lg-4">
             <div class="card border-0 shadow-sm rounded-4 p-4 bg-app-card h-100">
                 <div class="eyebrow text-app-muted mb-3">This week</div>
+                <div class="week-label">{{ week_label }}</div>
 
                 {% for day in week %}
                     {# A day is highlighted when the patient has a booking on it #}

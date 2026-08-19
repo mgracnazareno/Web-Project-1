@@ -56,11 +56,17 @@ html, body {
 }
 
 .quick-action-card {
-    transition: transform 0.15s ease-in-out;
+    transition: transform 0.15s ease-in-out,
+    background-color 0.15s ease-in-out,
+    color 0.15s ease-in-out;
+
 }
 
-.quick-action-card:hover {
+.quick-action-card:hover,
+.quick-action-card:focus-visible {
     transform: translateY(-2px);
+    background-color: var(--app-navy);
+    color: var(--app-offwhite);
 }
 
 .bg-app-navy {
