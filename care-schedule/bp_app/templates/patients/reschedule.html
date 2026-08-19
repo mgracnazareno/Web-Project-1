@@ -1,31 +1,99 @@
-{% extends "base.html" %}
+{% extends "components/patient_dashboard_base.html" %}
 
-{% block content %}
-<h1>Reschedule Appointment</h1>
+{% block styles %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/reschedule.css') }}">
+{% endblock %}
 
-<p>
-    Current appointment with <strong>{{ professional.username }}</strong>
-    ({{ professional.specialty }}) —
-    {{ appointment.scheduled_at.strftime('%a, %b %d, %Y — %I:%M %p') }}
-</p>
+{% block dashboard_content %}
+<div class="rs-page">
 
-{% if slots %}
-    <form method="post">
-        <p>Choose a new time slot:</p>
-        {% for slot in slots %}
-            <div>
-                <input type="radio" name="availability_id" value="{{ slot.id }}"
-                       id="slot-{{ slot.id }}" required>
-                <label for="slot-{{ slot.id }}">
-                    {{ slot.start_time.strftime('%a, %b %d, %Y — %I:%M %p') }}
-                </label>
+  <p class="rs-eyebrow">Reschedule</p>
+  <h1 class="rs-title">Pick a new time</h1>
+
+  <!-- Current appointment summary -->
+  <div class="card rs-current-card mb-4">
+    <div class="card-body d-flex align-items-center gap-3">
+      <div class="rs-avatar">{{ professional.username[0]|upper }}</div>
+      <div>
+        <p class="rs-label mb-1">Current appointment</p>
+        <p class="rs-pro mb-1">{{ professional.username }}</p>
+        <p class="rs-specialty mb-2">{{ professional.specialty }}</p>
+        <p class="rs-current-time mb-0">
+          {{ appointment.scheduled_at.strftime('%a, %b %d, %Y — %I:%M %p') }}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  {% if slots %}
+    <form method="post" id="rescheduleForm">
+      <div class="card">
+        <div class="card-body pb-0">
+          <h2 class="rs-subtitle mb-1">Choose a new time slot</h2>
+          <p class="rs-help">
+            Showing every open slot with {{ professional.username }}. Scroll for later dates.
+          </p>
+        </div>
+
+        <!-- Scrollable slot panel with sticky day headings -->
+        <div class="rs-slot-panel">
+          {% set ns = namespace(current_day=None) %}
+          {% for slot in slots %}
+            {% if slot.start_time.date() != ns.current_day %}
+              {% if not loop.first %}</div>{% endif %}
+              {% set ns.current_day = slot.start_time.date() %}
+              <h3 class="rs-day-heading">
+                {{ slot.start_time.strftime('%A, %B %d, %Y') }}
+              </h3>
+              <div class="row row-cols-2 row-cols-md-3 row-cols-xl-4 g-2">
+            {% endif %}
+
+            <div class="col">
+              <input type="radio" class="btn-check" name="availability_id"
+                     value="{{ slot.id }}" id="slot-{{ slot.id }}"
+                     data-slot-when="{{ slot.start_time.strftime('%a, %b %d, %Y — %I:%M %p') }}"
+                     autocomplete="off" required>
+              <label class="btn btn-outline-app w-100" for="slot-{{ slot.id }}">
+                {{ slot.start_time.strftime('%I:%M %p') }}
+              </label>
             </div>
-        {% endfor %}
-        <button type="submit">Confirm New Time</button>
-        <a href="{{ url_for('patients.my_appointments') }}">Back</a>
+
+            {% if loop.last %}</div>{% endif %}
+          {% endfor %}
+        </div>
+
+        <!-- Pinned confirm bar -->
+        <div class="rs-footer">
+          <div class="rs-change">
+            <span class="rs-from">{{ appointment.scheduled_at.strftime('%b %d — %I:%M %p') }}</span>
+            <span class="rs-arrow">&rarr;</span>
+            <span class="rs-to" id="rsSelected">Select a slot</span>
+          </div>
+          <div class="d-flex align-items-center gap-3">
+            <a href="{{ url_for('patients.my_appointments') }}" class="rs-back">Cancel</a>
+            <button type="submit" class="btn btn-app-teal" id="rsConfirm" disabled>
+              Confirm new time
+            </button>
+          </div>
+        </div>
+      </div>
     </form>
-{% else %}
-    <p>No open slots available for  {{ professional.username }} right now.</p>
-    <a href="{{ url_for('patients.my_appointments') }}">Back to My Appointments</a>
-{% endif %}
+  {% else %}
+    <div class="card">
+      <div class="card-body text-center py-5">
+        <p class="rs-empty-title mb-2">No open slots right now</p>
+        <p class="rs-help mb-4">
+          {{ professional.username }} has no available times. Your current appointment is unchanged.
+        </p>
+        <a href="{{ url_for('patients.my_appointments') }}" class="btn btn-app-teal">
+          Back to My Appointments
+        </a>
+      </div>
+    </div>
+  {% endif %}
+
+</div>
+      <script src="{{ url_for('static', filename='js/reschedule.js') }}"></script>
+
 {% endblock %}

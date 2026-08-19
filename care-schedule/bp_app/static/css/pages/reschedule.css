@@ -1,0 +1,145 @@
+.rs-page { max-width: 900px; }
+
+.rs-eyebrow {
+  font-family: var(--app-font-mono);
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  font-size: .75rem;
+  color: var(--app-teal);
+  margin-bottom: .25rem;
+}
+
+.rs-title {
+  font-family: var(--app-font-serif);
+  color: var(--app-navy);
+  margin-bottom: 1.5rem;
+}
+
+.rs-subtitle {
+  font-family: var(--app-font-serif);
+  color: var(--app-navy);
+  font-size: 1.25rem;
+}
+
+.rs-help { color: var(--app-muted); font-size: .9rem; }
+
+/* Current appointment card */
+.rs-current-card { border-left: 4px solid var(--app-teal); }
+
+.rs-avatar {
+  width: 56px;
+  height: 56px;
+  flex: 0 0 56px;
+  border-radius: 50%;
+  background: var(--app-navy);
+  color: var(--app-offwhite);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.35rem;
+  font-weight: 600;
+}
+
+.rs-label {
+  font-family: var(--app-font-mono);
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  font-size: .7rem;
+  color: var(--app-muted);
+}
+
+.rs-pro { font-weight: 600; color: var(--app-navy); }
+.rs-specialty { color: var(--app-muted); font-size: .9rem; }
+
+.rs-current-time {
+  font-family: var(--app-font-mono);
+  color: var(--app-navy);
+}
+
+/* Scrollable slot panel */
+.rs-slot-panel {
+  max-height: 420px;
+  overflow-y: auto;
+    overflow-x:hidden;
+  border-top: 1px solid var(--app-border);
+}
+
+/* Rows carry negative side margins; pad the wrapper, not the row */
+.rs-slot-panel .row {
+  margin-left: 0;
+  margin-right: 0;
+  padding: 0 1rem 1rem;
+}
+
+.rs-day-heading {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  margin: 0;
+  padding: .6rem 1rem;
+  background: var(--app-bg);
+  border-bottom: 1px solid var(--app-border);
+  font-family: var(--app-font-mono);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  font-size: .75rem;
+  color: var(--app-muted);
+}
+
+/* Slot buttons — Bootstrap btn-check handles the checked state */
+.btn-outline-app {
+  font-family: var(--app-font-mono);
+  font-size: .85rem;
+  color: var(--app-navy);
+  border-color: var(--app-border);
+  background: #fff;
+}
+
+.btn-outline-app:hover {
+  border-color: var(--app-teal);
+  color: var(--app-teal);
+}
+
+.btn-check:checked + .btn-outline-app {
+  background: var(--app-teal);
+  border-color: var(--app-teal);
+  color: var(--app-offwhite);
+}
+
+.btn-check:focus-visible + .btn-outline-app {
+  outline: 2px solid var(--app-teal);
+  outline-offset: 2px;
+}
+
+/* Pinned confirm bar */
+.rs-footer {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  background: #fff;
+  border-top: 1px solid var(--app-border);
+}
+
+.rs-change {
+  font-family: var(--app-font-mono);
+  font-size: .85rem;
+  color: var(--app-muted);
+}
+
+.rs-from { text-decoration: line-through; }
+.rs-arrow { margin: 0 .5rem; }
+.rs-to.is-chosen { color: var(--app-teal); font-weight: 600; }
+
+.rs-back { color: var(--app-muted); font-size: .9rem; }
+.rs-back:hover { color: var(--app-error); }
+
+.rs-empty-title {
+  font-family: var(--app-font-serif);
+  font-size: 1.25rem;
+  color: var(--app-navy);
+}
