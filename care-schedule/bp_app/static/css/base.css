@@ -151,6 +151,29 @@ html, body {
   font-size: 1.05rem;
 }
 
+.flash-stack {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 1080;
+    width: min(400px, calc(100vw - 3rem));
+}
+
+.flash-stack .alert {
+    border:none;
+    border-left: 4px solid var(--app-success);
+    border-radius: 12px;
+    background-color: var(--app-offwhite);
+    color: var(--app-navy);
+    box-shadow: 0 8px 24px rgba(12, 25, 41, 0.15);
+    font-size: 0.9rem;
+    padding: 1rem 1.25rem;
+}
+
+.flash-stack .alert-danger{
+    border-left-color: var(--app-error);
+}
+
 @media (max-width: 767.98px) {
     .cta-section {
         padding: 3.5rem 0;
