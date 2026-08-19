@@ -63,3 +63,59 @@ I began working on the core structure of the backend. I did the full patient aut
 I am always looking forward to our presentation day because I learn a lot from other students. The ideas are impressive.
 
 
+### August 13, 2026
+Focused on building the patient dashboard and appointment booking workflow.
+
+- Created the patient dashboard page and layout.
+- Added patient sidebar navigation.
+- Made the dashboard sidebar reusable and overridable.
+- Built the patient dashboard route.
+- Added professional selection to the appointment booking route.
+- Created the appointment booking page.
+- Fixed the professional add-slot modal template.
+
+---
+
+### August 14, 2026
+Focused on improving the professional dashboard and displaying availability data.
+
+- Added queries for today's and upcoming professional availability slots.
+- Rendered dashboard information using data passed from Flask routes.
+- Added an empty state when a professional has no available slots.
+- Merged recent development changes into the `master` branch.
+
+---
+
+### August 17, 2026
+Focused on expanding the patient dashboard, appointment history, profiles, and authentication structure.
+
+- Updated models to support appointment history queries.
+- Created an appointment history page for patients.
+- Added an appointment history link to the patient sidebar.
+- Separated upcoming visits from past visits on the patient dashboard.
+- Added profile validation.
+- Separated patient registration validation into its own validator.
+- Fixed appointment history card markup.
+- Connected the sidebar to history and profile pages.
+- Added a shared authentication blueprint.
+- Stopped tracking the development database in Git.
+
+---
+
+### August 18, 2026
+Focused on improving appointment management, professional search, availability, and the booking experience.
+
+- Added professional search and filtering to the appointment booking page.
+- Styled the patient's **My Appointments** page.
+- Added a link from registration to the role-selection page.
+- Fixed the specialty dropdown so empty values are handled correctly.
+- Added a phone field for professional accounts.
+- Added a database seed script for development/testing data.
+- Made the appointment slot list scrollable with sticky date headings.
+- Made the dashboard sidebar remain in place while scrolling.
+- Changed appointment booking to use a confirmation modal instead of a separate page.
+- Styled the patient reschedule page with a scrollable slot panel and selection footer.
+- Fixed the collapsed sidebar so it maintains the correct narrow width.
+- Updated and expanded the README documentation for better clarity.
+
+
