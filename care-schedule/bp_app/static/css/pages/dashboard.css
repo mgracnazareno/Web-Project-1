@@ -102,7 +102,7 @@
 
     .dashboard-layout > .dashboard-sidebar {
         flex: 0 0 250px;      /* flex-basis beats width */
-        width: 250px !important;
+        width: 250px;
         max-width: 250px;
         min-height: 100vh;
         margin: 0;
@@ -150,14 +150,3 @@
     }
 }
 
-    .dashboard-layout > .dashboard-sidebar {
-        flex: 0 0 250px;
-        width: 250px !important;
-        max-width: 250px;
-        min-height: 100vh;
-        margin: 0;
-        transition: flex-basis 0.2s ease, width 0.2s ease;
-        position: sticky;
-        top: 0;
-        align-self: flex-start;
-    }
