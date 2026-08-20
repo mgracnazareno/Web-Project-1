@@ -98,25 +98,25 @@
 
                         </div>
                     </div>
-                    {% endfor %}
-                {% else %}
+                {% endfor %}
+            {% else %}
 
-                    <div class="card border-0 shadow-sm rounded-4 bg-app-card p-5 text-center">
-                        <div class="mb-3">
-                            <i class="bi bi-calendar-plus display-6 text-app-muted"></i>
-                        </div>
-                        <h2 class="h5 fw-bold text-app-navy">No slots yet</h2>
-                        <p class="text-app-muted mb-4">
-                            Add your first slot so patients can start booking with you.
-                        </p>
-                        <div>
-                            <button type="button"
-                                    class="btn bg-app-teal text-app-offwhite fw-bold px-3 py-2 rounded-3"
-                                    data-bs-toggle="modal" data-bs-target="#addSlotModal">
-                                <i class="bi bi-plus-lg me-1"></i> Add slot
-                            </button>
-                        </div>
+                <div class="card border-0 shadow-sm rounded-4 bg-app-card p-5 text-center">
+                    <div class="mb-3">
+                        <i class="bi bi-calendar-plus display-6 text-app-muted"></i>
                     </div>
+                    <h2 class="h5 fw-bold text-app-navy">No slots yet</h2>
+                    <p class="text-app-muted mb-4">
+                        Add your first slot so patients can start booking with you.
+                    </p>
+                    <div>
+                        <button type="button"
+                                class="btn bg-app-teal text-app-offwhite fw-bold px-3 py-2 rounded-3"
+                                data-bs-toggle="modal" data-bs-target="#addSlotModal">
+                            <i class="bi bi-plus-lg me-1"></i> Add slot
+                        </button>
+                    </div>
+                </div>
 
 
             {% endfor %}
@@ -209,7 +209,7 @@
                                     <span class="eyebrow text-app-muted d-block mb-1">
                                         Start time <span class="text-danger">*</span>
                                     </span>
-                                    <input type="time" name="start_time" class="form-control" required>
+                                    <input type="time" name="start_time" class="form-control" step="900" required>
                                 </label>
                             </div>
                             <div class="col">
@@ -217,7 +217,7 @@
                                     <span class="eyebrow text-app-muted d-block mb-1">
                                         End time <span class="text-danger">*</span>
                                     </span>
-                                    <input type="time" name="end_time" class="form-control" required>
+                                    <input type="time" name="end_time" class="form-control" step="900" required>
                                 </label>
                             </div>
                         </div>
@@ -286,7 +286,7 @@
                     class="text-danger">*</span></span><input type="time" name="start_time" class="form-control"
                                                               required></label></div>
             <div class="col"><label class="w-100"><span class="eyebrow text-app-muted d-block mb-1">End time <span
-                    class="text-danger">*</span></span><input type="time" name="end_time" class="form-control" required></label>
+                    class="text-danger">*</span></span><input type="time" name="end_time" class="form-control"  required></label>
             </div>
             <div class="col-auto d-flex align-items-end">
                 <button type="button" class="btn btn-outline-secondary remove-row" aria-label="Remove this time"><i
