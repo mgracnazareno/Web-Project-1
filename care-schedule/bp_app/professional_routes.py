@@ -315,7 +315,7 @@ def delete_availability(slot_id):
 
 @professional.route("/professional/appointments")
 @login_required
-def appointment():
+def appointments():
     if not isinstance(current_user, Professional):
         flash("This page is for professionals only", "error")
         return redirect(url_for("main.home"))
@@ -360,7 +360,7 @@ def complete_appointment(appointment_id):
     db.session.commit()
 
     flash("Appointment marked complete.", "success")
-    return redirect(url_for("professional.appointment"))
+    return redirect(url_for("professional.appointments"))
 
 
 
