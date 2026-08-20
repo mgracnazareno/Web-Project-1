@@ -99,6 +99,9 @@ def validate_slot(date_str, start_str, end_str):
     except ValueError:
         return None, None, "Please enter a valid date and times."
 
+    if start.minute % 15 or end.minute % 15:
+        return None, None, "Times must be on the hour, quarter past, half past or quarter to."
+
     if end <= start:
         return None, None, "End time must be after the start time."
 
