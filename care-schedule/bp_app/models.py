@@ -61,9 +61,12 @@ class Appointment(db.Model):
 
     reason = db.Column(db.Text, nullable = False)
 
+    cancellation_reason = db.Column(db.String(300))
+
     status = db.Column(db.Enum(AppointmentStatus), nullable= False, default = AppointmentStatus.CONFIRMED)
 
     scheduled_at = db.Column(db.DateTime, nullable=False)
+
 
     patient_id = db.Column(db.Integer, db.ForeignKey("patient.id"), nullable = False)
 
