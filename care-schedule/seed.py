@@ -99,7 +99,11 @@ def create_availability(professionals):
     return slots
 
 
+
 def book(patient, slot, reason, status):
+    if slot.is_booked:
+        raise ValueError(f"Slot {slot.id} at {slot.start_time} is already booked")
+
     appointment = Appointment(
         reason=reason,
         status=status,
@@ -129,10 +133,12 @@ def create_appointments(patients, slots_by_professional):
     book(joan, upcoming[0], "Annual heart check-up", AppointmentStatus.CONFIRMED)
     book(joan, upcoming[12], "Follow-up on blood pressure", AppointmentStatus.CONFIRMED)
     book(joan, past[3], "Chest pain assessment", AppointmentStatus.COMPLETED)
+    book(liam, past[10], "Sore throat", AppointmentStatus.CONFIRMED)
 
     cancelled_slot = upcoming[25]
     cancel(book(joan, cancelled_slot, "Skin rash consultation", AppointmentStatus.CONFIRMED),
            cancelled_slot)
+
 
     book(liam, upcoming[5], "Persistent cough", AppointmentStatus.CONFIRMED)
     book(liam, past[8], "Vaccination", AppointmentStatus.COMPLETED)
