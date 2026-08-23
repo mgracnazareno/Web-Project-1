@@ -260,7 +260,8 @@ def confirm_booking(availability_id):
             reason=reason,
             scheduled_at=slot.start_time,
             patient_id=current_user.id,
-            availability_id=slot.id
+            availability_id=slot.id,
+            professional_id=slot.professional_id
         )
 
         slot.is_booked = True
@@ -292,8 +293,10 @@ def cancel_appointment(appointment_id):
         return redirect(url_for('patients.my_appointments'))
 
     # free the slot so others can book it
-    if appointment.availability:
-        appointment.availability.is_booked = False
+    slot = appointment.availability
+    if slot:
+        slot.is_booked = False
+        appointment.availability = None # clears the unique FK so the slot is rebookable
 
     appointment.status = AppointmentStatus.CANCELLED
     db.session.commit()
@@ -312,7 +315,7 @@ def reschedule_appointment(appointment_id):
         flash('This appointment cannot be rescheduled.', 'warning')
         return redirect(url_for('patients.my_appointments'))
 
-    professional = appointment.availability.professional
+    professional = appointment.professional
 
     open_slots = Availability.query.filter(
         Availability.professional_id == professional.id,
@@ -332,11 +335,12 @@ def reschedule_appointment(appointment_id):
         appointment.availability.is_booked = False
         new_slot.is_booked = True
         appointment.availability = new_slot
+        appointment.professional_id = new_slot.professional_id
         appointment.scheduled_at = new_slot.start_time
         db.session.commit()
 
         flash('Appointment rescheduled.', 'success')
-        return redirect(url_for('patients.my_appointments'))
+        return redirect(url_for('patients.reschedule_appointment', appointment_id=appointment.id))
 
     return render_template('patients/reschedule.html',
                            appointment=appointment,

@@ -1,4 +1,6 @@
+
 import enum
+from datetime import datetime
 from flask_login import UserMixin
 
 from flask_sqlalchemy import SQLAlchemy
@@ -61,16 +63,20 @@ class Appointment(db.Model):
 
     reason = db.Column(db.Text, nullable = False)
 
-    cancellation_reason = db.Column(db.String(300))
-
     status = db.Column(db.Enum(AppointmentStatus), nullable= False, default = AppointmentStatus.CONFIRMED)
 
     scheduled_at = db.Column(db.DateTime, nullable=False)
 
-
     patient_id = db.Column(db.Integer, db.ForeignKey("patient.id"), nullable = False)
 
     patient = db.relationship("Patient", back_populates="appointments")
+
+    # Maintain a direct reference to the professional even after the slot is released.
+    # When an appointment is canceled, availability_id becomes None, so this link
+    # must not depend solely on the availability record.
+    professional_id = db.Column(db.Integer, db.ForeignKey("professional.id"), nullable=False)
+
+    professional = db.relationship("Professional", back_populates="appointments")
 
     availability_id = db.Column(
         db.Integer,
@@ -87,6 +93,14 @@ class Appointment(db.Model):
         back_populates="appointment"
     )
 
+    @property
+    def can_complete(self):
+        """A professional can only close out an appointmnet once it has finished."""
+        return (
+            self.status == AppointmentStatus.CONFIRMED
+            and self.scheduled_at is not None
+            and self.scheduled_at <= datetime.now()
+        )
 
 class Professional(UserMixin, db.Model):
     __tablename__ = "professional"
@@ -107,6 +121,8 @@ class Professional(UserMixin, db.Model):
     specialty = db.Column(db.String(150), nullable = True)
 
     biography = db.Column(db.Text)
+
+    appointments = db.relationship("Appointment", back_populates="professional")
 
     availabilities = db.relationship(
         "Availability",

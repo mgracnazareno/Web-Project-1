@@ -110,6 +110,7 @@ def book(patient, slot, reason, status):
         scheduled_at=slot.start_time,
         patient_id=patient.id,
         availability_id=slot.id,
+        professional_id=slot.professional_id,
     )
     slot.is_booked = True
     db.session.add(appointment)
