@@ -229,7 +229,8 @@ def manage_availability():
 
     slots = (
         Availability.query
-        .filter_by(professional_id=current_user.id)
+        .filter(Availability.professional_id==current_user.id,
+                   Availability.start_time > datetime.now())
         .order_by(Availability.start_time)
         .all()
     )
