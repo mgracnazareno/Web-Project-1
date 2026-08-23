@@ -61,11 +61,11 @@ Healthcare professionals can:
 - [x] Availability management (Create/Edit/Delete slots)
 - [x] Appointment booking & cancellation workflows
 - [x] Appointment history tracking
-- [x] Server-side data validation & CSRF protection
+- [x] Server-side data validation
 - [x] Authorization and resource ownership checks
 - [x] Fully responsive layout (Bootstrap 5)
 - [x] Basic accessibility considerations (semantic HTML, proper form labelling, ARIA attributes)
-- [x] Major error handling (404, 500, dynamic flash messages)
+- [x] Major error handling (dynamic flash messages)
 
 ### Optional Features
 - [ ] Search appointments by specialty / date (Deferred)
