@@ -129,7 +129,7 @@
                                 <span class="badge-slot badge-booked">Booked</span>
 
                                 <form method="POST"
-                                      action="{{ url_for('professional.complete_appointment', appointment_id=booking_id) }}"
+                                      action="{{ url_for('professional.complete_appointment', appointment_id=booking.id) }}"
                                       class="d-inline flex-shrink-0">
                                     <button type="submit"
                                             class="btn btn-sm bg-app-teal text-app-offwhite fw-bold px-3 rounded-pill">

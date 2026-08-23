@@ -1,20 +1,10 @@
 from datetime import datetime
-from bp_app.models import db, Professional, Availability, Appointment, AppointmentStatus
+from .models import db, Professional, Availability, Appointment, AppointmentStatus, SPECIALTIES
 from .utils import validate_professional_registration
-from flask_login import (current_user, login_user, login_required, logout_user)
+from flask_login import current_user, login_required, logout_user
 from flask import Blueprint, flash, render_template, redirect, url_for, request
 
 professional = Blueprint("professional", __name__)
-
-SPECIALTIES = [
-    "Family Medicine",
-    "Cardiology",
-    "Dermatology",
-    "Pediatrics",
-    "Psychiatry",
-    "Physiotherapy",
-    "Dentistry",
-]
 
 
 @professional.route("/professional/dashboard")
@@ -123,33 +113,6 @@ def register():
     return render_template("professional/register.html", specialties=SPECIALTIES)
 
 
-# @professional.route("/professional/login", methods=["GET", "POST"])
-# def login():
-#     if current_user.is_authenticated and isinstance(current_user, Professional):
-#         return redirect(url_for("professional.dashboard"))
-#
-#     if request.method == "POST":
-#         email = request.form["email"].strip()
-#         password = request.form["password"]
-#
-#         professional_user = Professional.query.filter_by(email=email).first()
-#
-#         if professional_user is None:
-#             flash("No account found with that email. Please register.", "error")
-#             return redirect(url_for("professional.register"))
-#
-#         if professional_user is None or not professional_user.check_password(password):
-#             flash("Invalid email or password", "error")
-#             return render_template("professional/login.html", email=email)
-#
-#         login_user(professional_user)
-#
-#         flash("You are now logged in.", "success")
-#         return redirect(url_for("professional.dashboard"))
-#
-#     return render_template("professional/login.html")
-
-
 @professional.route("/professional/logout", methods=["POST"])
 @login_required
 def logout():
@@ -185,11 +148,11 @@ def add_availability():
             start = datetime.strptime(f"{date_str} {start_str}", "%Y-%m-%d %H:%M")
             end = datetime.strptime(f"{date_str} {end_str}", "%Y-%m-%d %H:%M")
         except ValueError:
-            flash(f"{start_str}Please enter a valid date and times.", "danger")
+            flash("Please enter a valid date and times.", "danger")
             continue
 
         if end <= start:
-            flash(f"{start_str}End time must be after the start time.", "error")
+            flash("End time must be after the start time.", "error")
             continue
 
         if start <= datetime.now():
@@ -216,7 +179,7 @@ def add_availability():
 
     if added:
         db.session.commit()
-        flash(f"Added {added} slots(s).", "success")
+        flash(f"Added {added} slot(s).", "success")
     return redirect(url_for("professional.manage_availability"))
 
 
@@ -364,7 +327,7 @@ def complete_appointment(appointment_id):
     outcome = request.form.get("outcome", "completed")
 
     if outcome == "no_show":
-        booking.status = AppointmentStatus.N0_SHOW
+        booking.status = AppointmentStatus.NO_SHOW
         message = "Appointment marked as no show"
     else:
         booking.status = AppointmentStatus.COMPLETED
@@ -372,7 +335,7 @@ def complete_appointment(appointment_id):
 
     db.session.commit()
 
-    flash("Appointment marked complete.", "success")
+    flash(message, "success")
     return redirect(url_for("professional.appointments"))
 
 

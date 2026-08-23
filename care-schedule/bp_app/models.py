@@ -8,6 +8,17 @@ from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import (check_password_hash, generate_password_hash)
 
 db = SQLAlchemy()
+
+SPECIALTIES = [
+    "Family Medicine",
+    "Cardiology",
+    "Dermatology",
+    "Pediatrics",
+    "Psychiatry",
+    "Physiotherapy",
+    "Dentistry",
+]
+
 class Patient(UserMixin, db.Model):
     __tablename__ = "patient"
 
