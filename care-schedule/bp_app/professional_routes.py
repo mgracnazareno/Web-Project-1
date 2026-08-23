@@ -348,15 +348,27 @@ def complete_appointment(appointment_id):
 
     booking = db.session.get(Appointment, appointment_id)
 
-    if booking is None or booking.availability.professional_id != current_user.id:
+    if booking is None or booking.professional_id != current_user.id:
         flash("Appointment not found.", "error")
         return redirect(url_for("professional.appointments"))
 
     if booking.status != AppointmentStatus.CONFIRMED:
-        flash("Only confirmed appointments can be marked complete.", "error")
+        flash("This appointment has already been closed out.", "error")
         return redirect(url_for("professional.appointments"))
 
-    booking.status = AppointmentStatus.COMPLETED
+    if not booking.can_complete:
+        flash("This appointment hasn't happened yet.", "error")
+        return redirect(url_for('professional.appointments'))
+
+    outcome = request.form.get("outcome", "completed")
+
+    if outcome == "no_show":
+        booking.status = AppointmentStatus.N0_SHOW
+        message = "Appointment marked as no show"
+    else:
+        booking.status = AppointmentStatus.COMPLETED
+        message = "Appointment marked complete."
+
     db.session.commit()
 
     flash("Appointment marked complete.", "success")

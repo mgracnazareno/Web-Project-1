@@ -37,8 +37,10 @@
                             </div>
                             <div class="text-app-muted text-xs">
                                 {{ booking.availability.start_time.strftime("%b %d, %Y") }} &nbsp;
-                                {{ booking.availability.start_time.strftime("%I:%M %p") }} &ndash;
-                                {{ booking.availability.end_time.strftime("%I:%M %p") }}
+                                {{ booking.availability.start_time.strftime("%I:%M %p") }}
+                                {% if booking.availability %}
+                                    &ndash; {{ booking.availability.end_time.strftime("%I:%M %p") }}
+                                {% endif %}
                             </div>
                             {% if booking.reason %}
                                 <div class="text-app-muted text-xs fst-italic mt-1">
@@ -55,7 +57,7 @@
                         {% endif %}
 
                         <!-- Only a confirmed booking can be completed -->
-                        {% if booking.status.value == "confirmed" %}
+                        {% if booking.status.value == "confirmed" and booking.can_completed%}
                             <form method="POST"
                                   action="{{ url_for('professional.complete_appointment', appointment_id=booking.id) }}"
                                   class="d-inline flex-shrink-0">
@@ -104,8 +106,10 @@
                                 </div>
                                 <div class="text-app-muted text-xs">
                                     {{ booking.availability.start_time.strftime("%b %d, %Y") }} &nbsp;
-                                    {{ booking.availability.start_time.strftime("%I:%M %p") }} &ndash;
-                                    {{ booking.availability.end_time.strftime("%I:%M %p") }}
+                                    {{ booking.availability.start_time.strftime("%I:%M %p") }}
+                                    {% if booking.availability %}
+                                        &ndash;{{ booking.availability.end_time.strftime("%I:%M %p") }}
+                                    {% endif %}
                                 </div>
                                 {% if booking.reason %}
                                     <div class="text-app-muted text-xs fst-italic mt-1">
@@ -125,7 +129,7 @@
                                 <span class="badge-slot badge-booked">Booked</span>
 
                                 <form method="POST"
-                                      action="{{ url_for('professional.complete_appointment', appointment_id=booking.id) }}"
+                                      action="{{ url_for('professional.complete_appointment', appointment_id=booking_id) }}"
                                       class="d-inline flex-shrink-0">
                                     <button type="submit"
                                             class="btn btn-sm bg-app-teal text-app-offwhite fw-bold px-3 rounded-pill">
