@@ -16,7 +16,7 @@
     {% if past %}
         <div class="d-grid gap-3">
             {% for apt in past %}
-                {% set pro = apt.availability.professional if apt.availability else None %}
+                {% set pro = apt.professional %}
                 {% set status = apt.status.value %}
 
                 <div class="card border-0 shadow-sm rounded-3">
@@ -53,7 +53,7 @@
                                     <span class="ms-2">{{ apt.scheduled_at.strftime("%I:%M %p").lstrip("0") }}</span>
                                 </p>
                                 {% if apt.reason %}
-                                    <p class="small fst-italic text-secondary mb-0">{{ apt.reason }} &rdquo</p>
+                                    <p class="small fst-italic text-secondary mb-0">&ldquo;{{ apt.reason }}&rdquo;</p>
                                 {% endif %}
                             </div>
                         </div>
