@@ -30,7 +30,7 @@ Patients can:
 ### Healthcare Professional
 Healthcare professionals can:
 - Register for an account and log in securely
-- Manage professional profile details (specialty, office location, bio)
+- Manage professional profile details (specialty, bio)
 - Publish, edit, or remove available appointment time slots
 - View scheduled patient appointments and update booking status
 - Manage patient interactions securely
