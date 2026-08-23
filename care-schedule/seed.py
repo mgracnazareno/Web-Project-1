@@ -135,6 +135,7 @@ def create_appointments(patients, slots_by_professional):
     book(joan, upcoming[12], "Follow-up on blood pressure", AppointmentStatus.CONFIRMED)
     book(joan, past[3], "Chest pain assessment", AppointmentStatus.COMPLETED)
     book(liam, past[10], "Sore throat", AppointmentStatus.CONFIRMED)
+    
 
     cancelled_slot = upcoming[25]
     cancel(book(joan, cancelled_slot, "Skin rash consultation", AppointmentStatus.CONFIRMED),
