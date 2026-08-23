@@ -13,13 +13,12 @@ from .models import db, Patient, Professional
 from .main_routes import main
 from .patient_routes import patients
 from .professional_routes import professional
-from .api_routes import api
 from .auth_routes import auth
 
 
 app = Flask(__name__)
 
-app.config["SQLALCHEMY_DATABASE_URI"]="sqlite:///appointments.db"
+app.config["SQLALCHEMY_DATABASE_URI"]="sqlite:///careschedule.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 app.config["SECRET_KEY"] = os.getenv(
@@ -48,7 +47,6 @@ app.register_blueprint(main)
 app.register_blueprint(patients)
 app.register_blueprint(professional)
 app.register_blueprint(auth)
-app.register_blueprint(api)
 
 with app.app_context():
     db.create_all()
