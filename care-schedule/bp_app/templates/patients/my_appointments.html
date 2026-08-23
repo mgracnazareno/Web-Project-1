@@ -20,7 +20,7 @@
 } %}
 
      {% for appointment in appointments %}
-        {% set pro = appointment.availability.professional if appointment.availability else None %}
+        {% set pro = appointment.professional %}
         <div class="card border-0 shadow-sm rounded-4 bg-app-card p-4 mb-3 appointment-card">
             <div class="d-flex align-items-start gap-3">
                 <div class="avatar bg-light text-app-muted flex-shrink-0">
@@ -62,10 +62,14 @@
                         <i class="bi bi-calendar-event me-1"> Reschedule</i>
 
                     </a>
-                    <form action="{{ url_for('patients.cancel_appointment', appointment_id=appointment.id) }}"
-                          method="POST" class="m-0">
-                        <button type="submit" class="btn btn-link p-0 small text-app-muted text-decoration-none cancel-link">Cancel</button>
-                    </form>
+
+                        <button type="button"
+                                class="btn btn-link p-0 small text-app-muted text-decoration-none"
+                                data-bs-toggle="modal"
+                                data-bs-target="#cancelAppointmentModal"
+                                data-cancel-url="{{ url_for('patients.cancel_appointment', appointment_id=appointment.id) }}"
+                                data-appt-when="{{ appointment.scheduled_at.strftime('%B %#d, %Y at %I:%M %p') }}">Cancel</button>
+
                 </div>
             </div>
         </div>
@@ -84,4 +88,44 @@
             </div>
         </div>
     {% endfor %}
+
+
+    {# CANCEL MODAL #}
+    <div class="modal fade" id="cancelAppointmentModal" tabindex="-1"
+     aria-labelledby="cancelAppointmentLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4 border-0">
+
+            <div class="modal-header border-0 pb-2">
+                <h2 class="modal-title h5 fw-bold text-app-navy" id="cancelAppointmentLabel">
+                    Cancel appointment?
+                </h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body pt-0">
+                <p class="text-app-muted mb-0">
+                    This will cancel your appointment on
+                    <span class="text-app-navy fw-semibold" data-cancel-when></span>
+                    and make the time available to another patient.
+                </p>
+            </div>
+
+            <div class="modal-footer border-0">
+                <button type="button" class="btn btn-outline-secondary rounded-3" data-bs-dismiss="modal">
+                    Keep appointment
+                </button>
+                <form method="POST" data-cancel-form class="d-inline">
+                    <button type="submit" class="btn btn-danger rounded-3">
+                        Cancel appointment
+                    </button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+    <script src="{{ url_for('static', filename='js/cancel_appointment.js') }}"></script>
 {% endblock %}
+
+
