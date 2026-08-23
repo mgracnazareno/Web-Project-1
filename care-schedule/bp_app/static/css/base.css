@@ -11,6 +11,7 @@
 
     --app-teal-light: #4fa8c4; /*accent on dark background*/
     --app-muted-dark: #b9c5cc; /* body text on dark backgrounds*/
+    --app-warning: #a56a00;
 
     --app-font-serif: "Fraunces", Georgia, serif;
     --app-font-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;

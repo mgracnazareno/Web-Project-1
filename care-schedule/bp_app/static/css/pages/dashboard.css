@@ -89,6 +89,17 @@
     border: 1px solid #a56a00;
 }
 
+.badge-completed {
+    color: var(--app-success);
+    background-color: rgba(30,138, 95, 0.1);
+    border: 1px solid var(--app-success);
+}
+
+.badge-cancelled {
+    color: var(--app-error);
+    background-color: rgba(192, 32, 26, 0.1);
+    border: 1px solid var(--app-error);
+}
 .border-app-border {
     border-color: var(--app-border);
 }
