@@ -30,7 +30,7 @@ Patients can:
 ### Healthcare Professional
 Healthcare professionals can:
 - Register for an account and log in securely
-- Manage professional profile details (specialty, office location, bio)
+- Manage professional profile details (specialty, bio)
 - Publish, edit, or remove available appointment time slots
 - View scheduled patient appointments and update booking status
 - Manage patient interactions securely
@@ -61,11 +61,11 @@ Healthcare professionals can:
 - [x] Availability management (Create/Edit/Delete slots)
 - [x] Appointment booking & cancellation workflows
 - [x] Appointment history tracking
-- [x] Server-side data validation & CSRF protection
+- [x] Server-side data validation
 - [x] Authorization and resource ownership checks
 - [x] Fully responsive layout (Bootstrap 5)
 - [x] Basic accessibility considerations (semantic HTML, proper form labelling, ARIA attributes)
-- [x] Major error handling (404, 500, dynamic flash messages)
+- [x] Major error handling (dynamic flash messages)
 
 ### Optional Features
 - [ ] Search appointments by specialty / date (Deferred)
