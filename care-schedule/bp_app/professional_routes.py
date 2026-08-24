@@ -81,8 +81,9 @@ def register():
         lastname = request.form['lastname'].strip()
         specialty = request.form['specialty'].strip()
         bio = request.form['biography'].strip()
+        office = request.form.get('office', '').strip()
 
-        errors = validate_professional_registration(username, email, password, firstname, lastname, specialty, bio)
+        errors = validate_professional_registration(username, email, password, firstname, lastname, specialty, bio, office)
 
         if errors:
             for error in errors:
@@ -97,6 +98,7 @@ def register():
                 lastname=lastname,
                 specialty=specialty,
                 biography=bio,
+                office=office,
             )
 
             # No errors - create and save the Professional
@@ -107,7 +109,8 @@ def register():
             firstname=firstname,
             lastname=lastname,
             specialty=specialty,
-            biography=bio
+            biography=bio,
+            office=office or None,
         )
 
         professional_user.set_password(password)
@@ -342,6 +345,7 @@ def profile():
         phone = request.form.get("phone", "").strip()
         specialty = request.form.get("specialty", "").strip()
         biography = request.form.get("biography", "").strip()
+        office = request.form.get("office", "").strip()
 
         if not firstname or not lastname or not email or not phone:
             flash("First name, last name, and email and phone are required.", "error")
@@ -366,6 +370,7 @@ def profile():
         current_user.phone = phone or None
         current_user.specialty = specialty
         current_user.biography = biography
+        current_user.office = office or None
         db.session.commit()
 
         flash("Profile updated.", "success")

@@ -73,7 +73,7 @@ def validate_patient_registration(email, password):
 
     return errors
 
-def validate_professional_registration(username, email, password, firstname, lastname, specialty, bio):
+def validate_professional_registration(username, email, password, firstname, lastname, specialty, bio, office=None):
     errors =validate_credentials(username, email, password, Professional)
 
     if not firstname:
@@ -88,6 +88,9 @@ def validate_professional_registration(username, email, password, firstname, las
 
     if not specialty:
         errors.append("Specialty is required.")
+
+    if office and len(office) > 255:
+        errors.append("Office may contain at most 255 characters.")
 
     return errors
 
