@@ -23,17 +23,20 @@ def create_professionals():
     rows = [
         ("evasquez", "e.vasquez@careschedule.test", "Elena", "Vasquez",
          "514-555-0110", "Cardiology",
-         "Cardiologist with 15 years of hospital practice."),
+         "Cardiologist with 15 years of hospital practice.",
+         "1001 Boulevard De Maisonneuve O, Montreal, QC H3A 1M8"),
         ("mdubois", "m.dubois@careschedule.test", "Marc", "Dubois",
          "438-555-0121", "Family Medicine",
-         "Family physician focused on preventive care."),
+         "Family physician focused on preventive care.",
+         "3550 Rue Saint-Denis, Montreal, QC H2X 3P1"),
         ("aosei", "a.osei@careschedule.test", "Ama", "Osei",
          "514-555-0132", "Dermatology",
-         "Dermatologist specializing in skin cancer screening."),
+         "Dermatologist specializing in skin cancer screening.",
+         "5100 Rue Sherbrooke E, Montreal, QC H1V 3R9"),
     ]
 
     professionals = []
-    for username, email, firstname, lastname, phone, specialty, biography in rows:
+    for username, email, firstname, lastname, phone, specialty, biography, office in rows:
         pro = Professional(
             username=username,
             email=email,
@@ -42,6 +45,7 @@ def create_professionals():
             phone=phone,
             specialty=specialty,
             biography=biography,
+            office=office,
         )
         pro.set_password(DEMO_PASSWORD)
         db.session.add(pro)
