@@ -40,7 +40,7 @@ class Patient(UserMixin, db.Model):
 
     @property
     def full_name(self):
-        return f"Dr. {self.firstname} {self.lastname}"
+        return f"{self.firstname} {self.lastname}"
 
     @property
     def initials(self):
@@ -133,11 +133,14 @@ class Professional(UserMixin, db.Model):
 
     biography = db.Column(db.Text)
 
-    appointments = db.relationship("Appointment", back_populates="professional")
+    appointments = db.relationship(
+        "Appointment", back_populates="professional", cascade="all, delete-orphan"
+    )
 
     availabilities = db.relationship(
         "Availability",
-        back_populates = "professional"
+        back_populates = "professional",
+        cascade="all, delete-orphan",
     )
 
     def get_id(self):
