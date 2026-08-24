@@ -176,6 +176,45 @@ def find_user_by_email(email):
        or Professional.query.filter(func.lower(Professional.email) ==email).first()
    )
 
+def parse_dob(dob_str):
+    """Parse a YYYY-MM-DD date-of-birth string. Returns (date, error)."""
+    try:
+        return datetime.strptime(dob_str, "%Y-%m-%d").date(), None
+    except ValueError:
+        return None, "Please enter a valid date of birth."
+
+
+def format_week_label(week):
+    """Format a list of consecutive dates (e.g. a 7-day window) as a display label."""
+    if week[0].month == week[-1].month:
+        return week[0].strftime("%B %Y")
+    return f"{week[0].strftime('%b')} - {week[-1].strftime('%b %Y')}"
+
+
+def greeting_for_time(now):
+    """Return a time-of-day greeting for the given datetime."""
+    if now.hour < 12:
+        return "Good morning"
+    if now.hour < 18:
+        return "Good afternoon"
+    return "Good evening"
+
+
+def validate_booking_reason(reason):
+    if not reason:
+        return "Please provide a reason for your visit."
+    return None
+
+
+def is_slot_bookable(slot, professional_id=None):
+    """Check whether an availability slot can currently be booked."""
+    if slot is None or slot.is_booked or slot.start_time <= datetime.now():
+        return False
+    if professional_id is not None and slot.professional_id != professional_id:
+        return False
+    return True
+
+
 def dashboard_for(user):
     """Endpoint name of the dashboard belonging to this user type"""
     if isinstance(user, Professional):

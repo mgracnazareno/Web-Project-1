@@ -6,7 +6,15 @@ from flask_login import current_user, login_required, logout_user
 from sqlalchemy.exc import IntegrityError
 
 from .models import db, Patient, Availability, Appointment, AppointmentStatus, Professional
-from .utils import validate_patient_registration, validate_profile
+from .utils import (
+    validate_patient_registration,
+    validate_profile,
+    parse_dob,
+    format_week_label,
+    greeting_for_time,
+    validate_booking_reason,
+    is_slot_bookable,
+)
 
 patients = Blueprint("patients", __name__)
 
@@ -41,11 +49,9 @@ def register():
                 flash(error, "error")
             return render_template("patient_register.html", email=email)
 
-        dob = None
-        try:
-            dob = datetime.strptime(dob_str, "%Y-%m-%d").date()
-        except ValueError:
-            errors.append("Please enter a valid date of birth.")
+        dob, dob_error = parse_dob(dob_str)
+        if dob_error:
+            errors.append(dob_error)
 
         patient = Patient(
             email=email,
@@ -89,17 +95,8 @@ def dashboard():
     week = [date.today() + timedelta(days=i) for i in range(7)]
     booked_days = {a.scheduled_at.date() for a in upcoming}
 
-    if week[0].month == week[-1].month:
-        week_label = week[0].strftime("%B %Y")
-    else:
-        week_label = f"{week[0].strftime('%b')} - {week[-1].strftime('%b %Y')}"
-
-    if now.hour < 12:
-        greeting = "Good morning"
-    elif now.hour < 18:
-        greeting = "Good afternoon"
-    else:
-        greeting = "Good evening"
+    week_label = format_week_label(week)
+    greeting = greeting_for_time(now)
 
     return render_template(
         "patients/dashboard.html",
@@ -213,15 +210,16 @@ def my_appointments():
 def confirm_booking(availability_id):
     slot = db.session.get(Availability, availability_id)
 
-    if slot is None or slot.is_booked or slot.start_time <= datetime.now():
+    if not is_slot_bookable(slot):
         flash("That slot is no longer available.", "error")
         return redirect(url_for("patients.book"))
 
     if request.method == "POST":
         reason = request.form.get("reason", "").strip()
 
-        if not reason:
-            flash("Please provide a reason for your visit.", "error")
+        reason_error = validate_booking_reason(reason)
+        if reason_error:
+            flash(reason_error, "error")
             return render_template("patients/confirm_booking.html", slot=slot)
 
         appointment = Appointment(
@@ -297,7 +295,7 @@ def reschedule_appointment(appointment_id):
         new_slot_id = request.form.get("availability_id", type=int)
         new_slot = db.session.get(Availability, new_slot_id)
 
-        if not new_slot or new_slot.is_booked or new_slot.professional_id != professional.id:
+        if not is_slot_bookable(new_slot, professional_id=professional.id):
             flash("That slot is no longer available.", "warning")
             return redirect(url_for("patients.reschedule_appointment", appointment_id=appointment.id))
 
