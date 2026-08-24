@@ -131,6 +131,8 @@ class Professional(UserMixin, db.Model):
 
     specialty = db.Column(db.String(150), nullable = True)
 
+    office = db.Column(db.String(255), nullable = True)
+
     biography = db.Column(db.Text)
 
     appointments = db.relationship(
