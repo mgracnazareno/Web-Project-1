@@ -9,12 +9,6 @@
         <p class="text-app-muted mb-0">Your personal information.</p>
     </div>
 
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% for category, message in messages %}
-            <div class="alert alert-{{ 'danger' if category == 'error' else category }}">{{ message }}</div>
-        {% endfor %}
-    {% endwith %}
-
     <div class="card border-0 shadow-sm rounded-4 bg-app-card" style="max-width: 680px;">
         <div class="card-body p-4">
 

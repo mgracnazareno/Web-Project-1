@@ -7,6 +7,7 @@
 {% endblock %}
 
 {% block header %}{% endblock %}
+{% block flash %}{% endblock %}
 {% block content %}
     <div class="dashboard-layout {% block layout_class %}{% endblock %}" id="dashboardLayout">
 
@@ -17,7 +18,19 @@
 
         {# Right Side: Dynamic Page Data #}
         <div class="dashboard-main bg-app-page p-4 p-md-5">
-            {% block flash %}{{ super() }}{% endblock %}
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="flash-stack">
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show"
+                                 role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
             {% block dashboard_content %}
                 {# Data will be injected here #}
             {% endblock %}
