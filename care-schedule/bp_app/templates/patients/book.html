@@ -86,6 +86,11 @@
                                 Dr. {{ pro.firstname }} {{ pro.lastname }}
                             </div>
                             <div class="text-app-teal small">{{ pro.specialty }}</div>
+                            {% if pro.office %}
+                                <div class="text-app-muted text-xs">
+                                    <i class="bi bi-geo-alt"></i> {{ pro.office }}
+                                </div>
+                            {% endif %}
                             <div class="text-app-muted text-xs">
                                 {{ slot_counts.get(pro.id, 0) }} slot(s) available
                             </div>
