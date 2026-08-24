@@ -95,6 +95,11 @@
                                 </select>
 
                             </div>
+                            <div class="col-12">
+                                <label for="office" class="form-label">Office / clinic location</label>
+                                <input type="text" class="form-control" id="office" name="office"
+                                       value="{{ office or '' }}" placeholder="e.g. 123 Rue Sainte-Catherine, Montreal, QC">
+                            </div>
                             <div class="col-12 mb-3">
                                 <label for="biography" class="form-label">Biography</label>
                                 <textarea id="biography" class="form-control" name="biography">{{ biography or '' }}</textarea>

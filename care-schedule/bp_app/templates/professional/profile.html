@@ -83,6 +83,13 @@
                         </select>
                     </label>
 
+                    <label class="w-100 mb-3">
+                        <span class="eyebrow text-app-muted d-block mb-1">Office / clinic location</span>
+                        <input type="text" name="office" class="form-control"
+                               value="{{ current_user.office or '' }}"
+                               placeholder="e.g. 123 Rue Sainte-Catherine, Montreal, QC">
+                    </label>
+
                     <label class="w-100 mb-4">
                         <span class="eyebrow text-app-muted d-block mb-1">Biography</span>
                         <textarea name="biography" class="form-control" rows="4"
