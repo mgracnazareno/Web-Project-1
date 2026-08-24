@@ -5,33 +5,19 @@ from dotenv import load_dotenv
 from flask import Flask
 from flask_login import LoginManager
 
-
-# loads environment variables from .env file First
-load_dotenv()
-
 from .models import db, Patient, Professional
 from .main_routes import main
 from .patient_routes import patients
 from .professional_routes import professional
 from .auth_routes import auth
 
+# loads environment variables from .env file First1
+load_dotenv()
 
-app = Flask(__name__)
-
-app.config["SQLALCHEMY_DATABASE_URI"]="sqlite:///careschedule.db"
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-
-app.config["SECRET_KEY"] = os.getenv(
-    "SECRET_KEY", "dev-fallback-key-change-in-prod"
-)
-# initialize extensions
-db.init_app(app)
-
-# login
 login_manager = LoginManager()
 login_manager.login_view = "auth.login"
 login_manager.login_message = "Please sign in to continue."
-login_manager.init_app(app)
+
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -42,11 +28,28 @@ def load_user(user_id):
     except (AttributeError, TypeError, ValueError):
         return None
 
-# Register blueprints
-app.register_blueprint(main)
-app.register_blueprint(patients)
-app.register_blueprint(professional)
-app.register_blueprint(auth)
 
-with app.app_context():
-    db.create_all()
+def create_app():
+    app = Flask(__name__)
+
+    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///careschedule.db"
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+    app.config["SECRET_KEY"] = os.getenv(
+        "SECRET_KEY", "dev-fallback-key-change-in-prod"
+    )
+
+    # initialize extensions
+    db.init_app(app)
+    login_manager.init_app(app)
+
+    # Register blueprints
+    app.register_blueprint(main)
+    app.register_blueprint(patients)
+    app.register_blueprint(professional)
+    app.register_blueprint(auth)
+
+    with app.app_context():
+        db.create_all()
+
+    return app

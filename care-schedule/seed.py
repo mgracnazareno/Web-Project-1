@@ -1,6 +1,6 @@
 from datetime import date, datetime, time, timedelta
 
-from bp_app.app import app
+from bp_app.app import create_app
 from bp_app.models import (
     db,
     Patient,
@@ -161,6 +161,7 @@ def summary():
 
 
 def main():
+    app = create_app()
     with app.app_context():
         reset_database()
         professionals = create_professionals()
