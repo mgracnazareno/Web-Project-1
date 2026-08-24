@@ -1,4 +1,6 @@
 from datetime import datetime
+from functools import wraps
+
 from .models import db, Professional, Availability, Appointment, AppointmentStatus, SPECIALTIES
 from .utils import validate_professional_registration
 from flask_login import current_user, login_required, logout_user
@@ -7,13 +9,20 @@ from flask import Blueprint, flash, render_template, redirect, url_for, request
 professional = Blueprint("professional", __name__)
 
 
+def professional_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        if not isinstance(current_user, Professional):
+            flash("This page is for professionals only.", "error")
+            return redirect(url_for("main.home"))
+        return f(*args, **kwargs)
+    return decorated
+
+
 @professional.route("/professional/dashboard")
 @login_required
+@professional_required
 def dashboard():
-    if not isinstance(current_user, Professional):
-        flash("This page is for professionals only.", "error")
-        return redirect(url_for("main.home"))
-
     now = datetime.now()
 
     slots = (
@@ -123,11 +132,8 @@ def logout():
 
 @professional.route("/professional/availability/add", methods=["POST"])
 @login_required
+@professional_required
 def add_availability():
-    if not isinstance(current_user, Professional):
-        flash("This page is for Professionals only.", "danger")
-        return redirect(url_for("main.home"))
-
     date_str = request.form.get("date", "")
     start_times = request.form.getlist("start_time")
     end_str = request.form.getlist("end_time")
@@ -185,11 +191,8 @@ def add_availability():
 
 @professional.route("/professional/availability")
 @login_required
+@professional_required
 def manage_availability():
-    if not isinstance(current_user, Professional):
-        flash("This page is for professionals only.", "error")
-        return redirect(url_for('main.home'))
-
     slots = (
         Availability.query
         .filter(Availability.professional_id==current_user.id,
@@ -202,11 +205,8 @@ def manage_availability():
 
 @professional.route("/professional/availability/<int:slot_id>/edit", methods=["POST"])
 @login_required
+@professional_required
 def edit_availability(slot_id):
-    if not isinstance(current_user, Professional):
-        flash("This page is for professionals only.", "error")
-        return redirect(url_for("main.home"))
-
     slot = db.session.get(Availability, slot_id)
 
     if slot is None or slot.professional_id != current_user.id:
@@ -256,11 +256,8 @@ def edit_availability(slot_id):
 
 @professional.route("/professional/availability/<int:slot_id>/delete", methods=["POST"])
 @login_required
+@professional_required
 def delete_availability(slot_id):
-    if not isinstance(current_user, Professional):
-        flash("This page is for professionals only.", "error")
-        return redirect(url_for("main.home"))
-
     slot = db.session.get(Availability, slot_id)
 
     if slot is None or slot.professional_id != current_user.id:
@@ -279,11 +276,8 @@ def delete_availability(slot_id):
 
 @professional.route("/professional/appointments")
 @login_required
+@professional_required
 def appointments():
-    if not isinstance(current_user, Professional):
-        flash("This page is for professionals only", "error")
-        return redirect(url_for("main.home"))
-
     bookings = (
         Appointment.query
         .join(Availability)
@@ -305,11 +299,8 @@ def appointments():
 
 @professional.route("/professional/appointments/<int:appointment_id>/complete", methods=["POST"])
 @login_required
+@professional_required
 def complete_appointment(appointment_id):
-    if not isinstance(current_user, Professional):
-        flash("This page is for professionals only.", "error")
-        return redirect(url_for("main.home"))
-
     booking = db.session.get(Appointment, appointment_id)
 
     if booking is None or booking.professional_id != current_user.id:
@@ -342,11 +333,8 @@ def complete_appointment(appointment_id):
 
 @professional.route("/professional/profile", methods=["GET", "POST"])
 @login_required
+@professional_required
 def profile():
-    if not isinstance(current_user, Professional):
-        flash("This page is for professionals only.", "error")
-        return redirect(url_for("main.home"))
-
     if request.method == "POST":
         firstname = request.form.get("firstname", "").strip()
         lastname = request.form.get("lastname", "").strip()

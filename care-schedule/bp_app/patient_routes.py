@@ -190,6 +190,7 @@ def book():
 
 @patients.route("/appointments")
 @login_required
+@patient_required
 def my_appointments():
     appointments = (
         Appointment.query
@@ -247,6 +248,7 @@ def confirm_booking(availability_id):
 
 @patients.route("/appointments/<int:appointment_id>/cancel", methods=["POST"])
 @login_required
+@patient_required
 def cancel_appointment(appointment_id):
     appointment = db.get_or_404(Appointment, appointment_id)
 
@@ -269,6 +271,7 @@ def cancel_appointment(appointment_id):
 
 @patients.route("/appointments/<int:appointment_id>/reschedule", methods=["GET", "POST"])
 @login_required
+@patient_required
 def reschedule_appointment(appointment_id):
     appointment = db.get_or_404(Appointment, appointment_id)
 
