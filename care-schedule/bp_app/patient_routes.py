@@ -223,6 +223,17 @@ def confirm_booking(availability_id):
             flash(reason_error, "error")
             return render_template("patients/confirm_booking.html", slot=slot)
 
+        reserved = db.session.execute(
+            db.update(Availability)
+            .where(Availability.id == slot.id, Availability.is_booked == False)
+            .values(is_booked=True)
+        ).rowcount
+
+        if not reserved:
+            db.session.rollback()
+            flash("Sorry, that slot was just booked by someone else.", "error")
+            return redirect(url_for("patients.book"))
+
         appointment = Appointment(
             reason=reason,
             scheduled_at=slot.start_time,
@@ -230,7 +241,6 @@ def confirm_booking(availability_id):
             availability_id=slot.id,
             professional_id=slot.professional_id,
         )
-        slot.is_booked = True
         db.session.add(appointment)
 
         try:
