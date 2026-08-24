@@ -75,7 +75,7 @@ def register():
 
     if request.method == "POST":
         username = request.form['username'].strip()
-        email = request.form['email'].strip()
+        email = request.form['email'].strip().lower()
         password = request.form['password']
         firstname = request.form['firstname'].strip()
         lastname = request.form['lastname'].strip()
@@ -338,7 +338,7 @@ def profile():
     if request.method == "POST":
         firstname = request.form.get("firstname", "").strip()
         lastname = request.form.get("lastname", "").strip()
-        email = request.form.get("email", "").strip()
+        email = request.form.get("email", "").strip().lower()
         phone = request.form.get("phone", "").strip()
         specialty = request.form.get("specialty", "").strip()
         biography = request.form.get("biography", "").strip()

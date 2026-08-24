@@ -37,7 +37,7 @@ def register():
     if request.method == "POST":
         firstname = request.form.get("firstname", "").strip()
         lastname = request.form.get("lastname", "").strip()
-        email = request.form.get("email", "").strip()
+        email = request.form.get("email", "").strip().lower()
         password = request.form.get("password", "")
         dob_str = request.form.get("dob", "").strip()
         phone = request.form.get("phone", "").strip()

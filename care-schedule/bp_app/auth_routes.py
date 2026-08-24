@@ -16,7 +16,7 @@ def login():
         return redirect(url_for(dashboard_for(current_user)))
 
     if request.method == "POST":
-        email = request.form.get("email", "")
+        email = request.form.get("email", "").strip().lower()
         password =  request.form.get("password", "")
 
         user = find_user_by_email(email)
