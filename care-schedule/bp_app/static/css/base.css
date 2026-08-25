@@ -10,21 +10,30 @@
     --app-muted: #5c6b73;
 
     --app-mint: #0FBFAD;
---app-mint-dark: #0d9e8f;
+    --app-mint-dark: #0d9e8f;
 
     --app-teal-light: #4fa8c4; /*accent on dark background*/
     --app-muted-dark: #b9c5cc; /* body text on dark backgrounds*/
     --app-warning: #a56a00;
 
-    --app-font-serif: "Fraunces", Georgia, serif;
-    --app-font-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --app-font-sans: "Inter", sans-serif;
+    --app-font-serif: "Fraunces", serif;
     --app-font-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
 }
 html, body {
     min-height: 100%;
     background-color: var(--app-bg);
+    font-family: var(--app-font-sans);
 }
 
+/* Normal interface text */
+body,
+button,
+input,
+select,
+textarea {
+    font-family: var(--app-font-sans);
+}
 
 /* teal rounded square na may icon */
 .brand-mark {
@@ -199,4 +208,11 @@ html, body {
   background-color: var(--app-teal-light);
   border-color: var(--app-teal-light);
   color: var(--app-navy);
+}
+
+@media (max-width: 576px) {
+    .hero-content {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
 }

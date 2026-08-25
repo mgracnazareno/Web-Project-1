@@ -3,6 +3,13 @@
     background: var(--app-bg);
 }
 
+.patient-registration h1,
+.professional-registration h1,
+.patient-registration h2,
+.professional-registration h2 {
+    font-family: var(--app-font-serif);
+}
+
 .registration-sidebar {
     background-color: var(--app-navy);
 }
@@ -21,4 +28,22 @@
 
 .change-role:hover {
     color: var(--app-offwhite);
+}
+
+.register-btn {
+    background-color: #b4dbd7;
+    color: var(--app-teal);
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.register-btn:hover {
+    background-color: #1590a8;
+    color: white;
+}
+
+.register-btn:active {
+    transform: translateY(1px);
 }

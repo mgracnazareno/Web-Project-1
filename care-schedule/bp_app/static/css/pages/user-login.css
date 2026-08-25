@@ -31,7 +31,7 @@
 .role-card h4 { color: var(--app-navy); }
 .role-card p  { color: var(--app-muted); }
 
-.role-page h1 { color: var(--app-navy); }
+.role-page h1 { font-family: var(--app-font-serif); color: var(--app-navy); }
 .role-page .lead-sub { color: var(--app-muted); }
 
 .sign-in-link {

@@ -50,6 +50,7 @@ h1 {
 }
 
 .services .section-header h2 {
+  font-family: var(--app-font-serif);
   color: var(--app-navy);
 }
 
@@ -95,7 +96,6 @@ h1 {
 
 /*ABOUT SECTION */
 
-.about-title { font-family: Fraunces, serif; }
 .about-section {
     background-color: var(--app-navy);
     padding: 4rem 0;
