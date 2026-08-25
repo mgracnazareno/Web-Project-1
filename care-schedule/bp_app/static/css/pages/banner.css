@@ -1,5 +1,21 @@
 .hero {
     background-color: var(--app-navy);
+    background-image: linear-gradient(rgba(12, 25, 41, 0.88), rgba(12, 25, 41, 0.88)),
+                      url("../../images/banner-img.png");
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+}
+
+.hero .brand-mark {
+    background-color: var(--app-mint);
+}
+
+.hero .brand-name {
+    font-family: var(--app-font-serif);
+    color: #fff;
 }
 
 .hero-eyebrow {
