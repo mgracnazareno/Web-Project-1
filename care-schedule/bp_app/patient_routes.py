@@ -18,6 +18,23 @@ from .utils import (
 
 patients = Blueprint("patients", __name__)
 
+def conflicting_appointment(patient_id, slot, exclude_id=None):
+    """Return the patient's confirmed appointment overlapping this slot, if any."""
+    query = (
+        Appointment.query
+        .join(Availability, Appointment.availability_id == Availability.id)
+        .filter(
+            Appointment.patient_id == patient_id,
+            Appointment.status == AppointmentStatus.CONFIRMED,
+            Availability.start_time < slot.end_time,
+            Availability.end_time > slot.start_time,
+        )
+    )
+
+    if exclude_id is not None:
+        query = query.filter(Appointment.id != exclude_id)
+    return query.first()
+
 
 def patient_required(f):
     @wraps(f)
@@ -215,6 +232,15 @@ def confirm_booking(availability_id):
         flash("That slot is no longer available.", "error")
         return redirect(url_for("patients.book"))
 
+    conflict = conflicting_appointment(current_user.id, slot)
+    if conflict:
+        flash(
+            f"You already have an appointment with Dr. {conflict.professional.lastname} "
+            f"at that time. Cancel or reschedule it first.",
+            "error",
+        )
+        return redirect(url_for("patients.book", professional_id=slot.professional_id))
+
     if request.method == "POST":
         reason = request.form.get("reason", "").strip()
 
@@ -310,6 +336,14 @@ def reschedule_appointment(appointment_id):
 
         if not is_slot_bookable(new_slot, professional_id=professional.id):
             flash("That slot is no longer available.", "warning")
+            return redirect(url_for("patients.reschedule_appointment", appointment_id=appointment.id))
+
+        conflict = conflicting_appointment(current_user.id, new_slot, exclude_id=appointment.id)
+        if conflict:
+            flash(
+                f"That time overlaps your appointment with Dr. {conflict.professional.lastname}.",
+                "error",
+            )
             return redirect(url_for("patients.reschedule_appointment", appointment_id=appointment.id))
 
         appointment.availability.is_booked = False
