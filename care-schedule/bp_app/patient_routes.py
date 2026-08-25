@@ -47,7 +47,7 @@ def register():
         if errors:
             for error in errors:
                 flash(error, "error")
-            return render_template("patient_register.html", email=email)
+            return render_template("patients/patient_register.html", email=email)
 
         dob, dob_error = parse_dob(dob_str)
         if dob_error:
@@ -68,7 +68,7 @@ def register():
         flash("Your account has been created!", "success")
         return redirect(url_for("auth.login"))
 
-    return render_template("patient_register.html")
+    return render_template("patients/patient_register.html")
 
 
 @patients.route("/dashboard")
