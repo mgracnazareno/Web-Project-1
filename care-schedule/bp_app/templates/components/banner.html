@@ -1,14 +1,30 @@
-<section class="hero-banner d-flex align-items-center text-white py-2 py-md-4 py-xl-5">
-    <div class="container">
+<section class="hero py-5">
+    <div class="container py-md-5">
         <div class="row">
-            <div class="col-lg-6">
-                <h1 class="display-1 fw-normal mb-2">Book. Manage. <span class="d-block">Take Care.</span></h1>
-                <p class="lead fs-4 mb-4">Easy appointments booking for patients.
-                    <span class="d-block">Smarter scheduling for professionals.</span></p>
-                <a href="#" class="btn btn-primary btn-lg px-4">Book your Appointment Today</a>
+            <div class="col-12 col-lg-7">
+                <p class="hero-eyebrow d-flex align-items-center gap-3 mb-4">
+                    <span class="hero-rule"></span>Academic prototype &middot; 2026
+                </p>
+
+                <h1 class="hero-title mb-4">
+                    Your care,<br>
+                    <span class="text-mint">scheduled.</span>
+                </h1>
+
+                <p class="hero-lede text-app-muted-dark mb-5">
+                    CareSchedule connects patients with healthcare professionals
+                    through a clean, intuitive booking experience.
+                </p>
+
+                <div class="d-flex flex-wrap align-items-center gap-4">
+                    <a href="{{ url_for('auth.register') }}" class="btn btn-mint px-4 py-2">
+                        Create an account <i class="bi bi-arrow-right ms-1"></i>
+                    </a>
+                    <a href="{{ url_for('auth.login') }}" class="hero-link text-app-muted-dark">
+                        Sign in to your account
+                    </a>
+                </div>
             </div>
         </div>
-
     </div>
 </section>
-
