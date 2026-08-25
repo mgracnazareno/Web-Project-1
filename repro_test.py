@@ -1,6 +1,7 @@
 import os
 import tempfile
-from bp_app.app import app
+
+from bp_app import app
 from bp_app.models import db, Patient
 
 def test_registration_and_login():
