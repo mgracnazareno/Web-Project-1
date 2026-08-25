@@ -94,6 +94,8 @@ h1 {
 }
 
 /*ABOUT SECTION */
+
+.about-title { font-family: Fraunces, serif; }
 .about-section {
     background-color: var(--app-navy);
     padding: 4rem 0;
@@ -102,9 +104,10 @@ h1 {
 .about-section p {
     color: var(--app-muted-dark);
     line-height: 1.5;
-    font-size: 1.2rem;
+    font-size: 1.05rem;
+    max-width: 60ch;
 }
-.about-section .section-header {
+.about-section .eyebrow {
     font-size: .75rem;
     letter-spacing: .18em;
     text-transform: uppercase;
@@ -112,18 +115,72 @@ h1 {
 }
 
 .about-title {
+    font-family: var(--app-font-serif);
     font-size: clamp(1.9rem, 3.5vw, 2.5rem);
     color: var(--app-offwhite);
+    max-width: 15ch;
 }
 
 .about-section .img-holder{
     background-image: url("images/doctor-online.svg");;
     background-size: cover;
     background-position: center;
-    height: 450px;
     width: 100%;
-    display: block;
-    object-fit:cover;
+    aspect-ratio: 4 / 3;
+}
+
+/* FEATURES SECTION */
+.features-section {
+    background-color: #fbfcfd;
+}
+
+.features-title {
+    font-family: var(--app-font-serif);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    color: var(--app-navy);
+}
+
+.features-rule {
+    width: 3rem;
+    height: 3px;
+    margin-top: 1.25rem;
+    background-color: var(--app-teal);
+}
+
+.feature-item {
+    gap: 1.5rem;
+    padding: 2rem 0;
+    border-top: 1px solid var(--app-border);
+}
+
+.feature-item:first-child {
+    border-top: 0;
+    padding-top: 0;
+}
+
+.feature-num {
+    font-family: var(--app-font-serif);
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--app-border);
+    line-height: 1;
+    flex-shrink: 0;
+    -webkit-text-stroke: 1px var(--app-border);
+}
+
+.feature-heading {
+    font-family: var(--app-font-serif);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--app-navy);
+    margin-bottom: .5rem;
+}
+
+.feature-text {
+    color: var(--app-muted);
+    line-height: 1.6;
+    max-width: 60ch;
 }
 
 .auth-card {
