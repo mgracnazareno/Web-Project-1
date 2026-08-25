@@ -1,0 +1,50 @@
+.hero {
+    background-color: var(--app-navy);
+}
+
+.hero-eyebrow {
+    font-size: 0.75rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--app-mint);
+}
+
+.hero-rule {
+    width: 48px;
+    height: 1px;
+    background-color: var(--app-mint);
+}
+
+.hero-title {
+    font-family: var(--app-font-serif);
+    font-size: calc(2.5rem + 3vw);
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+}
+
+.hero-lede {
+    max-width: 30ch;
+    font-size: 1.15rem;
+}
+
+.text-mint {
+    color: var(--app-mint);
+}
+
+.btn-mint {
+    background-color: var(--app-mint);
+    border: 1px solid var(--app-mint);
+    color: var(--app-navy);
+    font-weight: 600;
+}
+
+.btn-mint:hover {
+    background-color: var(--app-mint-dark);
+    border-color: var(--app-mint-dark);
+    color: var(--app-navy);
+}
+
+.hero-link:hover {
+    color: #fff;
+}
