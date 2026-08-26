@@ -5,6 +5,23 @@ CareSchedule is a responsive medical appointment scheduling application develope
 > **Disclaimer:** This is a simulated academic application. All users, appointments, and medical information are fictional and intended for educational purposes only.
 
 ---
+## Live Application
+
+🔗 **Try CareSchedule:** [https://merigiichi.pythonanywhere.com](https://merigiichi.pythonanywhere.com)
+
+> This is a simulated academic application. All accounts, appointments, and medical information are fictional and intended for educational purposes only.
+
+## Demo Accounts
+
+### Patient
+
+- **Email:** patient@example.com
+- **Password:** Patient123!
+
+### Healthcare Professional
+
+- **Email:** doctor@example.com
+- **Password:** Doctor123!
 
 ## Client Need
 
