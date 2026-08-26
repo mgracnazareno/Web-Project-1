@@ -2,7 +2,7 @@ from urllib.parse import urlparse
 from flask import Blueprint, render_template, redirect, url_for, request, flash
 from flask_login import login_user, logout_user, login_required, current_user
 
-from .utils import find_user_by_email, dashboard_for
+from bp_app.utils import find_user_by_email, dashboard_for
 
 auth = Blueprint("auth", __name__)
 

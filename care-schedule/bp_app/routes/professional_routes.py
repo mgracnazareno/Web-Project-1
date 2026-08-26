@@ -1,8 +1,8 @@
 from datetime import datetime
 from functools import wraps
 
-from .models import db, Professional, Availability, Appointment, AppointmentStatus, SPECIALTIES
-from .utils import validate_professional_registration
+from bp_app.models import db, Professional, Availability, Appointment, AppointmentStatus, SPECIALTIES
+from bp_app.utils import validate_professional_registration
 from flask_login import current_user, login_required, logout_user
 from flask import Blueprint, flash, render_template, redirect, url_for, request
 
@@ -294,7 +294,7 @@ def appointments():
     past = [book for book in bookings if book.availability.start_time <= now]
 
     return render_template(
-    "professional/appointments.html",
+        "professional/appointments.html",
                        upcoming=upcoming,
                        past=past,
                        active_page="appointments")

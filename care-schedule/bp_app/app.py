@@ -6,10 +6,10 @@ from flask import Flask
 from flask_login import LoginManager
 
 from .models import db, Patient, Professional
-from .main_routes import main
-from .patient_routes import patients
-from .professional_routes import professional
-from .auth_routes import auth
+from bp_app.routes.main_routes import main
+from bp_app.routes.patient_routes import patients
+from bp_app.routes.professional_routes import professional
+from bp_app.routes.auth_routes import auth
 
 # loads environment variables from .env file First1
 load_dotenv()

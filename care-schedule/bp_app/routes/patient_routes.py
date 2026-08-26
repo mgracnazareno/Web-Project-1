@@ -5,8 +5,8 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash,
 from flask_login import current_user, login_required, logout_user
 from sqlalchemy.exc import IntegrityError
 
-from .models import db, Patient, Availability, Appointment, AppointmentStatus, Professional
-from .utils import (
+from bp_app.models import db, Patient, Availability, Appointment, AppointmentStatus, Professional
+from bp_app.utils import (
     validate_patient_registration,
     validate_profile,
     parse_dob,

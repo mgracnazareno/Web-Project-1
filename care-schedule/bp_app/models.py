@@ -106,7 +106,7 @@ class Appointment(db.Model):
 
     @property
     def can_complete(self):
-        """A professional can only close out an appointmnet once it has finished."""
+        """A professional can only close out an appointment once it has finished."""
         return (
             self.status == AppointmentStatus.CONFIRMED
             and self.scheduled_at is not None
