@@ -313,7 +313,4 @@ deactivate
 ```
 
 > The Flask development server is intended for local testing only and should not be used as a production server.
-### 1. Clone the Repository
-```bash
-git clone [https://github.com/mgracnazareno/Web-Project-1.git](https://github.com/mgracnazareno/Web-Project-1.git)
-cd Web-Project-1
+
