@@ -20,7 +20,7 @@ CareSchedule is a responsive medical appointment scheduling application develope
 
 ### Healthcare Professional
 
-- **Email:** e.vasquez@careschedule.com
+- **Email:** e.vasquez@careschedule.test
 - **Password:** Password123!
 
 ## Client Need
