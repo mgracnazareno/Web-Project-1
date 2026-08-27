@@ -15,6 +15,7 @@
     --app-teal-light: #4fa8c4; /*accent on dark background*/
     --app-muted-dark: #b9c5cc; /* body text on dark backgrounds*/
     --app-warning: #a56a00;
+     --app-danger: #b42318;
 
     --app-font-sans: "Inter", sans-serif;
     --app-font-serif: "Fraunces", serif;

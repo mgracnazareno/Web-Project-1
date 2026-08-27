@@ -38,6 +38,6 @@
 
 .cancel-link:hover,
 .cancel-link:focus {
-  color: var(--app-danger, #b42318) !important;
+  color: var(--app-danger) !important;
   text-decoration: underline !important;
 }
