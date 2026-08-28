@@ -68,8 +68,6 @@ Healthcare professionals can:
 
 ## Project Scope & Feature Status (Feature Freeze)
 
-> **Note:** Scope is currently frozen for Deliverable 4 (Feature-Complete Beta). No new major features will be added prior to final submission.
-
 ### Must-Have Features (Implemented)
 - [x] User registration & authentication (Flask-Login, hashed passwords)
 - [x] Role-based authorization & access control (Patient vs. Healthcare Professional)
