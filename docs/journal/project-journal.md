@@ -9,6 +9,7 @@
 **Semester:** Summer 2026
 
 ---
+# Week 1 - Project Planning and Scope
 
 ## July 27, 2026
 
@@ -62,6 +63,9 @@ I began working on the core structure of the backend. I did the full patient aut
 ## August 6, 2026
 I am always looking forward to our presentation day because I learn a lot from other students. The ideas are impressive.
 
+---
+
+# Week 3: Patient and Professional Dashboards
 
 ### August 13, 2026
 Focused on building the patient dashboard and appointment booking workflow.
@@ -86,8 +90,15 @@ Focused on improving the professional dashboard and displaying availability data
 
 ---
 
-### August 17, 2026
-Focused on expanding the patient dashboard, appointment history, profiles, and authentication structure.
+# Week 4: Appointment Management and Application Improvements
+
+## August 17, 2026
+
+### Appointment History, Profiles, and Authentication
+
+Today, I focused on expanding the patient dashboard, appointment history, profiles, and authentication structure.
+
+I completed the following tasks:
 
 - Updated models to support appointment history queries.
 - Created an appointment history page for patients.
@@ -102,8 +113,10 @@ Focused on expanding the patient dashboard, appointment history, profiles, and a
 
 ---
 
-### August 18, 2026
-Focused on improving appointment management, professional search, availability, and the booking experience.
+## August 18, 2026
+Today, I focused on improving appointment management, professional search, availability, and the booking experience.
+
+I completed the following tasks:
 
 - Added professional search and filtering to the appointment booking page.
 - Styled the patient's **My Appointments** page.
@@ -117,5 +130,37 @@ Focused on improving appointment management, professional search, availability, 
 - Styled the patient reschedule page with a scrollable slot panel and selection footer.
 - Fixed the collapsed sidebar so it maintains the correct narrow width.
 - Updated and expanded the README documentation for better clarity.
+
+---
+
+# Week 5: Testing, Deployment, Documentation, and Presentation
+
+## August 24–27, 2026
+
+### Final Project Completion
+
+During the final week, I focused on testing the application, preparing demonstration data, improving the documentation, deploying the project, and preparing for the final presentation.
+
+I completed the following tasks:
+
+- Tested the main patient and professional workflows.
+- Verified patient registration, login, appointment booking, rescheduling, and cancellation.
+- Tested professional login, availability management, and appointment management.
+- Tested the role-based authorization system to prevent patients from accessing professional pages.
+- Prepared fictional patient and professional accounts for the live demonstration.
+- Added sample appointment and availability data.
+- Improved the unified login system for patients and professionals.
+- Added additional validation to prevent appointment conflicts and double booking.
+- Updated the README with project information, installation instructions, local setup instructions, demo accounts, and the live application link.
+- Created supporting diagrams for the database structure, authentication process, and application workflow.
+- Deployed the application to PythonAnywhere.
+- Tested the deployed version of the application.
+- Prepared and delivered the final project presentation.
+
+The final application successfully demonstrated the main features of a medical appointment scheduling system. Patients can create accounts, book and manage appointments, while healthcare professionals can publish availability and manage their scheduled appointments.
+
+Although the project could be expanded with features such as email notifications, document uploads, and more advanced scheduling options, the completed application meets the main course requirements and provides a strong foundation for future development.
+
+
 
 
