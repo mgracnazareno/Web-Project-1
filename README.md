@@ -2,8 +2,6 @@
 
 For detailed information about the application’s architecture, workflow, database models, and relationships, see the [System Design Documentation](docs/SYSTEM-DESIGN.md).
 
----
-
 ## Project Management
 
 Project tasks and development progress were organized using Trello.
