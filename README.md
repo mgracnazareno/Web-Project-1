@@ -4,6 +4,14 @@ For detailed information about the application’s architecture, workflow, datab
 
 ---
 
+## Project Management
+
+Project tasks and development progress were organized using Trello.
+
+🔗 [View the CareSchedule Trello Board](https://trello.com/b/0t3cjNv5/web-project-1)
+
+---
+
 ## Installation and Local Setup
 
 Follow these steps to run CareSchedule on your local computer.
