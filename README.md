@@ -1,6 +1,6 @@
 ## Documentation
 
-For detailed information about the application’s architecture, workflow, database models, and relationships, see the [System Design Documentation](docs/SYSTEM_DESIGN.md).
+For detailed information about the application’s architecture, workflow, database models, and relationships, see the [System Design Documentation](docs/SYSTEM-DESIGN.md).
 
 ---
 
